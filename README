@@ -1,0 +1,19 @@
+-*- org -*-
+
+Project Overview
+--------------------
+I have put this off for too long. It's painful to think how many
+revisions of my dot-files I've wasted by not doing a better job at
+keeping track of them throughout the years. The main motivation for
+creating this repository today is for my emacs files. I seem to have
+wildly different config files at work vs. at home. No more.
+
+Features Files
+--------------------
+1. emacs files
+   + .emacs - Main configuration file.
+   + .emacs.d/* - Modular inclusion of various modules.
+
+Closing Thoughts
+--------------------
+None, yet.
