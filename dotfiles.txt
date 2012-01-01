@@ -1,0 +1,35 @@
+-*- org -*-
+
+#+TITLE:     dotfiles
+#+AUTHOR:    Jon Miller
+#+EMAIL:     jonEbird@gmail.com
+#+DATE:      2011-12-31 Sat
+#+DESCRIPTION: My personalized dotfiles
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:t d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:
+#+LINK_HOME:
+#+XSLT:
+
+* Progress Notes
+I keep notes for each project I work on. Every time I make progress,
+work on a task, I'm noting each step.
+** Intial Buildout of the GIT repository
+   DEADLINE: <2012-01-03 Tue> SCHEDULED: <2011-12-31 Sat>
+[2011-12-31 Sat 10:39] - (/Created/)
+Game plan for today:
+1. Make an initial commit of any "significant" dotfiles. \\
+   "significant" denotes anything I wouldn't want to lose. \\
+   Also
+2. emacs work \\
+   The whole reason for starting this.
+   - Clean up existing .emacs file.
+   - Move as much content to separate .emacs.d/ files as possible.
+   - Look into the extension features for emacs v24 for possible new tricks.
+3. Other files \\
+   - Add ~/bin/ contents.
