@@ -41,12 +41,18 @@
 ;; --------------------------------------------------
 
 ;; Capture new TODO items via org-capture
-(setq org-default-notes-file (concat org-directory "/notes.org"))
+(setq
+ org-directory "~/org"
+ org-default-notes-file (concat org-directory "/notes.org")
+ )
 
-; (setq org-agenda-files (quote ("~/org/todos.org" "c:/Documents and Settings/millej95/My Documents/projects/architecture/architecture.txt")))
-(setq org-capture-templates (quote (("t" "Todo item" entry (file+headline "~/org/todos.org" "Tasks") "* TODO %?
-%U (/Task created/)
-Via %K"))))
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
+(setq org-capture-templates (quote (
+   ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks") (file "~/org/todos.tmplt") )
+   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Incoming") (file "~/org/projects.tmplt") )
+   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings") (file "~/org/meetings.tmplt") )
+   ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas") (file "~/org/info.tmplt") )
+   )))
 
 ;; --------------------------------------------------
 ;; Additional Hacks
