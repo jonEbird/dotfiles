@@ -1,0 +1,18 @@
+#+TITLE:     Meeting Notes
+#+AUTHOR:    Jon Miller
+#+EMAIL:     jonEbird@gmail.com
+#+DESCRIPTION: Project notes; milestone events like performance reviews; mentoring;
+#+TODO: TODO(t@) STARTED(s) DELEGATED(d@) WAITING(w@) | INFO(i) DONE(o@) CANCELED(c@)
+#+TAGS: { @home(h) @work(w) } \n { 4boss(b) 4other(o) 4me(m) } \n techdebt tsb consult mentoring needsidea
+#+STARTUP: overview noindent hidestars lognoterefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
+
+* Meetings
+Meeting or consultation notes
+** INFO Quick consultation on Linux standards			:tsb:consult:
+   :PROPERTIES:
+   :ProjectManager:
+   :Attendees:
+   :END:
+[2012-01-03 Tue 17:08] (/Meeting Started/)
+Via

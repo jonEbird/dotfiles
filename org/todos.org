@@ -1,0 +1,72 @@
+#+TITLE: Incoming Tasks
+#+AUTHOR: Jon Miller
+#+TODO: TODO(t) STARTED(s) DELEGATED(d@) WAITING(w@) | DONE(o@) CANCELED(c@)
+#+TAGS: { @home(h) @work(w) } \n { 4boss(b) 4other(o) 4me(m) } \n techdebt tsb project consult mentoring needsidea
+#+STARTUP: overview noindent hidestars lognoterefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
+
+* Tasks
+** TODO Writeup use-cases for cloning
+[2011-12-29 Thu 08:28] - Created.
+1. Capture notes in electronic form
+2. Enumerate use-cases
+3. List out alternatives for support scenarios
+4. Make recommendation and justify decision
+** TODO See how to log a datetime when moving an item into a STARTED state.
+[2011-12-29 Thu 08:45] - Created.
+For the states that do not need a full annotation, would still like to note the datetime the task moved into that state.
+** TODO Create a robust, thought comprehensive Project template for captures
+[2011-12-29 Thu 09:38] - Created.
+Via [[c:/Documents%20and%20Settings/millej95/My%20Documents/projects/architecture/architecture.txt][{2011-12-29 Thu 08:30} - How to organize my notes in 2012 per my personal ideal org-mode style]]
+Should have the notion of using subtrees to organize milestone / significant efforts.
+Also put thought into the properties used on the project such as:
+- Project manager
+- Sponsor
+- Scope
+- Mission, gist of the effort
+Also include start time, effort and deadline.
+
+** DONE New Layout				      :4me:project:needsidea:
+  :LOGBOOK:
+  - State "DONE"       from "TODO"       [2012-01-03 Tue 17:40] \\
+    Completed creating my templates
+  CLOCK: [2012-01-02 Mon 23:57]--[2012-01-03 Tue 00:13] =>  0:16
+  :END:
+1. (P) Projects and Milestone Activities \\
+   Should contain significant PROPERTIES for projects & products
+   + long standing
+     - 1:1 sessions, mentoring
+     - roadmap updates
+     - performance reviews (REPEATING)
+   + short lived
+     - RFS involvement
+     - Small assignments
+   + products
+     - information about competing products (e.g. VCS vs. RHCS)
+     - track vendor support information
+2. (N) Notes for Meetings and Consultations
+   + repeating
+     - Use a repeating SCHEDULED value. (double ++)
+     - Team meetings
+     - Vendor relationships \\
+       vmware, ibm, redhat, etc all in a separate file.
+     - Create a weekly occurring event to review task and spend time for strategy
+   + one-time occurrences \\
+     These do not have a TODO state assigned to them.
+3. (I) Information and Ideas
+   + strategic thought planning
+     - team pain points
+     - skill analysis
+   + Informational
+     - People, organizational information
+   + Personal Development
+     - books
+     - training
+     - conferences
+4. categories of work (become tags)
+   + techdebt
+   + tsb
+   + project
+   + consult
+   + mentoring
+   + needsidea

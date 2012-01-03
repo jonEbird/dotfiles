@@ -1,0 +1,63 @@
+#+TITLE:     Projects, Periodics, Products and Vendors
+#+AUTHOR:    Jon Miller
+#+EMAIL:     jonEbird@gmail.com
+#+DESCRIPTION: Project notes; milestone events like performance reviews; mentoring;
+#+TODO: TODO(t) STARTED(s) DELEGATED(d@) WAITING(w@) | DONE(o@) INFO(i) CANCELED(c@)
+#+TAGS: { @home(h) @work(w) } \n { 4boss(b) 4other(o) 4me(m) } \n { ibm vmware redhat symantec novell nationwide }
+#+STARTUP: overview noindent hidestars lognoterefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
+
+* Incoming
+New captured items are thrown here
+* Projects
+** STARTED Fit4Purpose
+   :LOGBOOK:
+   CLOCK: [2012-01-03 Tue 16:44]--[2012-01-03 Tue 16:44] =>  0:00
+   :END:
+   :PROPERTIES:
+   :ProjectManager: Diane Schilling
+   :END:
+[2010-10-18 Mon 10:07] (/Project initiated/)
+- Part of a showcase partnership with IBM.
+** STARTED SLES9 zLinux Upgrade
+   :LOGBOOK:
+   - Refiled on [2012-01-03 Tue 16:48] \\
+     Project already started.
+   :END:
+   :PROPERTIES:
+   :ProjectManager: Chuck Swafford
+   :END:
+[2011-07-04 Mon 16:19] (/Project initiated/)
+* Periodic Activities
+1:1 sessions, mentoring, roadmap updates, performance reviews (REPEATING)
+** Callaghan 1:1
+- Boss meetings.
+* Products
+Vendor products or internal, in-house products. An information store.
+** Veritas Cluster Server					   :symantec:
+** RedHat Cluster Server					     :redhat:
+** vSphere							     :vmware:
+   :LOGBOOK:
+   - Refiled on [2012-01-03 Tue 16:39] \\
+     Belongs with vendors
+   :END:
+** Lab Manager							     :vmware:
+** vCloud Director						     :vmware:
+** INFO AIX Environment						 :nationwide:
+   :LOGBOOK:
+   - Refiled on [2012-01-03 Tue 17:28] \\
+     Internal product managed out of Des Moines
+   :END:
+   :PROPERTIES:
+   :ProjectManager: Perry Martin
+   :END:
+[2012-01-03 Tue 17:25] (/Project initiated/)
+- Information on our AIX environment
+* Vendors
+** VMware
+   :PROPERTIES:
+   :SalesRep: Matt Helmers <matt.helmers@vmware.com>
+   :TechRep:  Randy Snyder <randy.snyder@vmware.com>
+   :END:
+Virtualization company primarily known for their x86 virt products. Have also ventured into other
+product areas and generally want to help you run/manage your entire datacenter and desktop area.
