@@ -33,3 +33,36 @@ Game plan for today:
    - Look into the extension features for emacs v24 for possible new tricks.
 3. Other files \\
    - Add ~/bin/ contents.
+** Focus on emacs
+   :LOGBOOK:
+   CLOCK: [2012-01-02 Mon 11:56]
+   :END:
+   [2012-01-02 Mon 11:56] - /started/
+- Looking for pointers on organizing your .emacs file via emacswiki \\
+  Per [[http://www.emacswiki.org/emacs/emacs-init.el][Drew Adam's emacs-init]], found the following pointers:
+  #+begin_src emacs-lisp
+(if (eq system-type 'windows-nt)        ; Test
+    "C:\\drews-lisp-20"                 ; Windows path
+  "~/drews-lisp-20")                    ; non-Windows path
+
+;;; UNCOMMENT THIS TO DEBUG TROUBLE GETTING EMACS UP AND RUNNING.
+;;; (setq debug-on-error t)
+
+(setq inhibit-startup-echo-area-message "Jon Miller")
+
+;; Couple examples of conditional setting
+(when (and (eq system-type 'windows-nt) (require 'cygwin-mount nil t)) (require 'setup-cygwin))
+(if (and (< emacs-major-version 21) (eq system-type 'windows-nt)) (require 'ispell))
+
+(server-start)
+
+;;; (setq custom-file YOUR-CUSTOM-FILE-NAME)
+;;; (load-file custom-file)
+
+(expand-file-name "~/.emacs.d/")
+  #+end_src
+- I believe you update "load-path" and "require" \\
+  or use specific load-file calls.
+- Other approaches: \\
+  [[http://www.emacswiki.org/emacs/InitSplit][InitSplit]] or [[http://www.emacswiki.org/emacs/DotEmacsModular][DotEmacsModular]] \\
+  Think I'll go with the excerpts I've see from InitSplit
