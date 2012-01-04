@@ -15,7 +15,6 @@
 
 ; enable visual feedback on selections
 (setq transient-mark-mode t)
-(setq show-paren-mode t)
 
 ; include buffer name in titlebar
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
@@ -76,13 +75,15 @@
 ;;  when related to a major config, I may move it manually.
 ;;  until I move it, this will be a dropping zone
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(fill-column 100)
  '(flymake-log-level 3)
-)
+ '(scroll-bar-mode nil)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 
 ;; --------------------------------------------------
 ;; Key (re)assignments
@@ -149,3 +150,9 @@
 			"tramp_config"
 			"windows_config"
                        ))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
