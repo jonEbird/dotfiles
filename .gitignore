@@ -1,3 +1,4 @@
+_netrc
 .gitconfig
 .backups/*
 .emacs.d/auto-save-list/*
