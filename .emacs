@@ -81,6 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(fill-column 100)
  '(flymake-log-level 3)
+ '(org-agenda-files nil)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
