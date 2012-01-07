@@ -1,0 +1,3 @@
+Like Emacs's' *scratch* space, this too is a temporary dumping ground.
+Mostly a placeholder for future home directory initialization.
+(Note the additional scratch/* entry to .gitignore)
