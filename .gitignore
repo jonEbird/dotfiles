@@ -10,6 +10,7 @@ _netrc
 .emacs.d/.org-id-locations
 .emacs.d/bookmarks
 .emacs.d/confluence-el/*
+.emacs.d/semanticdb/*
 .emacs.d/*.el
 .emacs.d/kiwanami/*
 .emacs.d/server/*
@@ -30,3 +31,45 @@ org/todos.org
 # normal working directory where I'll have other projects checked out
 projects/*
 scratch/*
+# noise from a typical Linux build
+.PyCharm*
+.Skype*
+.adobe/*
+.cache/*
+.config/*
+.dbus/*
+.dropbox*
+.fontconfig/*
+.gaim/*
+.purple/*
+.gconf/*
+.gimp*
+.gnome*
+.gnu*
+.gtk*
+.kde/*
+.ipython/*
+.java*
+.libreoffice*
+.limewire*
+LimeWire*
+.local/*
+.macromedia/*
+.mozilla/*
+.openoffice.org/*
+.themes*
+.thumbnails*
+.bluefish/*
+.pulse*
+.subversion*
+Download/*
+Desktop/*
+Documents/*
+Dropbox/*
+Movies/*
+Music/*
+Pictures/*
+Videos/*
+# Others
+personal
+scripts/*
