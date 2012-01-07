@@ -39,9 +39,13 @@
 (setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org"))
 ; Refiling C-c C-w
 ;  This allows for file like pathing for refiling and lets me pick heading and subheading (level <= 2)
-(setq org-refile-use-outline-path t
-      org-refile-targets (quote ((nil :maxlevel . 2)))
-      )
+;; (setq org-refile-use-outline-path t
+;;       org-refile-targets (quote ((nil :maxlevel . 2)))
+(setq org-refile-targets (quote ((nil :maxlevel . 2)
+				 ("~/org/info.org" :maxlevel . 2)
+				 ("~/org/projects.org" :maxlevel . 2)
+				 )))
+
 ;; (setq org-refile-targets (quote (("~/org/projects.org" :maxlevel . 2)
 ;; 				 ("~/org/info.org" :maxlevel . 2)
 ;; 				 ("~/org/meetings.org" :maxlevel . 2)

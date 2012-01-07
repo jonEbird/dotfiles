@@ -22,3 +22,8 @@ _netrc
 org/*.html
 org/*archive
 org/architecture.org
+# specific org files which contain sensitive information
+org/info.org
+org/meetings.org
+org/projects.org
+org/todos.org

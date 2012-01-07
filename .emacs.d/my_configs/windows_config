@@ -15,7 +15,8 @@
 (defun confluence-support-setup()
   (setq load-path (cons (expand-file-name "~/.emacs.d/confluence-el/") load-path))
   (require 'confluence)
-  (setq confluence-url "http://nw-wiki.nwie.net/wiki/rpc/xmlrpc")
+  (setq confluence-url "http://nw-wiki.nwie.net/wiki/rpc/xmlrpc"
+	confluence-default-space-alist (list (cons confluence-url "virtual")))
   (eval-after-load "confluence"
     '(progn
        (require 'longlines)
@@ -24,6 +25,10 @@
 	 (add-hook 'confluence-before-save-hook 'longlines-before-revert-hook)
 	 (add-hook 'confluence-before-revert-hook 'longlines-before-revert-hook)
 	 (add-hook 'confluence-mode-hook '(lambda () (local-set-key "\C-j" 'confluence-newline-and-indent))))))
+  (global-set-key "\C-xwf" 'confluence-get-page)
+  (add-hook 'confluence-mode-hook
+	    '(lambda ()
+	       (local-set-key "\C-xw" confluence-prefix-map)))
   )
 
 ;; --------------------------------------------------
