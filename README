@@ -14,6 +14,20 @@ Features Files
    + .emacs - Main configuration file.
    + .emacs.d/* - Modular inclusion of various modules.
 
+Installing
+--------------------
+1. Checkout the repository to a temporary location
+   git clone git@github.com:jonEbird/dotfiles.git /tmp/dotfiles
+2. Copy all of the contents into your home directory \\
+   With the "--backup --suffix=.orig" options, files being overridden are backed up with a .orig extension.
+   #+begin_src shell
+   rsync -avn --backup --suffix=.orig /tmp/dotfiles/ ~/
+   #+end_src
+3. Verify
+   #+begin_src shell
+   cd; git status
+   #+end_src
+
 Closing Thoughts
 --------------------
 None, yet.

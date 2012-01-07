@@ -27,3 +27,5 @@ org/info.org
 org/meetings.org
 org/projects.org
 org/todos.org
+# normal working directory where I'll have other projects checked out
+projects/*
