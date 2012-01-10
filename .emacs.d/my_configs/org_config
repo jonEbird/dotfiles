@@ -39,8 +39,8 @@
 (setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org"))
 ; Refiling C-c C-w
 ;  This allows for file like pathing for refiling and lets me pick heading and subheading (level <= 2)
-;; (setq org-refile-use-outline-path t
-;;       org-refile-targets (quote ((nil :maxlevel . 2)))
+(setq org-refile-use-outline-path t)
+;; (setq org-refile-targets (quote ((nil :maxlevel . 2))))
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
 				 ("~/org/info.org" :maxlevel . 2)
 				 ("~/org/projects.org" :maxlevel . 2)
@@ -69,7 +69,7 @@
 (setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
 (setq org-capture-templates (quote (
    ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks") (file "~/org/todos.tmplt") )
-   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Incoming") (file "~/org/projects.tmplt") )
+   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects") (file "~/org/projects.tmplt") )
    ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings") (file "~/org/meetings.tmplt") )
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas") (file "~/org/info.tmplt") )
    )))
