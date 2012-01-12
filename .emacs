@@ -81,7 +81,7 @@
  ;; If there is more than one, they won't work right.
  '(fill-column 100)
  '(flymake-log-level 3)
- '(org-agenda-files nil)
+ '(org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil))

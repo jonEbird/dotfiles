@@ -36,7 +36,11 @@
 (setq org-export-html-postamble t)
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
 ; Agenda
-(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org"))
+(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")
+      org-agenda-todo-ignore-scheduled "all"
+      org-agenda-todo-ignore-deadlines "near"
+      org-agenda-text-search-extra-files (list 'agenda-archives)
+      )
 ; Refiling C-c C-w
 ;  This allows for file like pathing for refiling and lets me pick heading and subheading (level <= 2)
 (setq org-refile-use-outline-path t)
