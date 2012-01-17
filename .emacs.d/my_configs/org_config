@@ -74,7 +74,7 @@
 (setq org-capture-templates (quote (
    ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks") (file "~/org/todos.tmplt") )
    ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects") (file "~/org/projects.tmplt") )
-   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings") (file "~/org/meetings.tmplt") )
+   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings") (file "~/org/meetings.tmplt") :clock-in t)
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas") (file "~/org/info.tmplt") )
    )))
 

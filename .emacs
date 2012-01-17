@@ -65,6 +65,10 @@
 ; Extend the history length
 (setq history-length 250)
 
+; Browser support
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
+
 ; Desktop support
 (desktop-load-default)
 (setq desktop-enable t)
