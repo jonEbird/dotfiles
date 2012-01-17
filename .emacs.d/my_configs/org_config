@@ -19,6 +19,14 @@
 ; logging
 (setq org-log-into-drawer t)
 (setq org-clock-into-drawer t)
+; Hide all blank lines inside folded contents of headings
+(setq org-cycle-separator-lines 0)
+; Speed commands
+(setq org-use-speed-commands t)
+; RET follows links
+(setq org-return-follows-link t)
+; Don't remove the highlighting after an occur search (C-c / /)
+(setq org-remove-highlights-with-change nil)
 ; language recognition for #+begin_src blocks
 (setq org-src-lang-modes (quote
 			  (("ocaml" . tuareg)
@@ -39,6 +47,7 @@
 (setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")
       org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
+      org-deadline-warning-days 30
       org-agenda-text-search-extra-files (list 'agenda-archives)
       )
 ; Refiling C-c C-w
