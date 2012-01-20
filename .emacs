@@ -50,6 +50,13 @@
 ;; For longlines-mode
 (setq longlines-wrap-follows-window-size t)
 
+;; Show the datetime in the modeline?
+; display-time-format overrides display-time-day-and-date & display-time-24hr-format
+(setq display-time-format "%a %Y-%m-%d %H:%M"
+      display-time-load-average-threshold 5)
+; Enabling the modeline addition (Disable with a negative ARG)
+(display-time-mode 1)
+
 ;; Start server for emacsclient
 (server-start nil)
 
@@ -83,11 +90,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(display-time-mode t)
  '(fill-column 100)
  '(flymake-log-level 3)
- '(org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
+ '(visual-line-mode 1)
  '(tool-bar-mode nil))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces

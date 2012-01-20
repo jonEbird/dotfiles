@@ -20,10 +20,12 @@
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 ; columns shown in column mode (defaults to "%25ITEM %TODO %3PRIORITY %TAGS")
-(setq org-columns-default-format "%50ITEM %TODO %3PRIORITY %10Effort(Effort){:} %TAGS")
+(setq org-columns-default-format "%80ITEM %TODO %3PRIORITY %10Effort(Effort){:} %TAGS")
 ; logging
 (setq org-log-into-drawer t)
 (setq org-clock-into-drawer t)
+; Face it, your spelling sucks. You /need/ flyspell-mode on!
+(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
 ; Hide all blank lines inside folded contents of headings
 (setq org-cycle-separator-lines 0)
 ; Speed commands
@@ -32,6 +34,17 @@
 (setq org-return-follows-link t)
 ; Don't remove the highlighting after an occur search (C-c / /)
 (setq org-remove-highlights-with-change nil)
+; Setup additional colors for the various TODO states
+; #+TODO: TODO(t) STARTED(s) DELEGATED(d@) WAITING(w@) | DONE(o@) CANCELED(c@)
+(setq org-todo-keyword-faces
+      (quote (("TODO" :foreground "red" :weight bold)
+              ("STARTED" :foreground "steel blue" :weight bold)
+              ("INFO" :foreground "blue" :weight bold)
+              ("DELEGATED" :background "red" :foreground "black" :weight bold)
+              ("WAITING" :foreground "orange" :weight bold)
+              ("DONE" :foreground "forest green" :weight bold)
+              ("CANCELED" :foreground "yellow" :weight bold)
+              ("PHONE" :foreground "forest green" :weight bold))))
 ; language recognition for #+begin_src blocks
 (setq org-src-lang-modes (quote
 			  (("ocaml" . tuareg)
@@ -92,11 +105,23 @@
 
 (setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
 (setq org-capture-templates (quote (
-   ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks") (file "~/org/todos.tmplt") )
-   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects") (file "~/org/projects.tmplt") )
-   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings") (file "~/org/meetings.tmplt") :clock-in t)
-   ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas") (file "~/org/info.tmplt") )
+   ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks")
+    (file "~/org/todos.tmplt") :clock-in t :clock-resume t)
+   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects")
+    (file "~/org/projects.tmplt") :clock-in t :clock-resume t)
+   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
+    (file "~/org/meetings.tmplt") :clock-in t :clock-resume t)
+   ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
+    (file "~/org/info.tmplt") :clock-in t :clock-resume t)
    )))
+
+;; Custom agenda block views
+(setq org-agenda-custom-commands
+      '(("o" "Office-related tasks"
+	 ((agenda "" nil)
+	  (todo "TODO" nil)
+	  (todo "DELEGATED" nil)
+	  nil))))
 
 ;; --------------------------------------------------
 ;; Additional Hacks
@@ -105,20 +130,12 @@
 ;; Fold current subtree
 ;;  I like to fold a piece of text right from the middle of it...
 ;;  Manually, it would be: C-c C-p TAB
-;;  Assigning to C-S-f (C-F) via this function
 (defun org-fold-here()
   "Fold current subtree"
   (interactive)
   (outline-previous-visible-heading 1)
   (org-cycle))
-(global-set-key (quote [33554438]) (quote org-fold-here))
-
-;; I like to start a new header with a reference to when it was created.
-;;  Bound this macro to M-i which is easy to remember as "meta-insert... my next header"
-;; FIXME - Need to replace this habit with a proper org-capture.
-(fset 'org-insert-header-custom
-   [C-return ?\C-u ?1 ?\C-c ?! return ?  ?- ? ])
-(global-set-key "\351" (quote org-insert-header-custom))
+(global-set-key (kbd "C-S-f") 'org-fold-here)
 
 ;; Full unsplit org-timeline agenda view
 ;;  Running "C-u M-x org-timeline" and unspliting the windows for the timeline.
