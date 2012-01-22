@@ -1,0 +1,41 @@
+# -*- org-export-babel-evaluate: nil -*-
+#+Title: A Simple S5 example
+#+Babel: :results silent
+
+* quick start
+1. jump to the last heading/slide in this Org-mode file
+2. evaluate the emacs-lisp code block which defines the
+   =org-export-as-s5= command
+3. call =M-x org-export-as-s5=
+4. open the resulting page in your browser
+
+* what is S5
+- [[http://meyerweb.com/eric/tools/s5/][S5]] is "A Simple Standards-Based Slide Show System".
+
+- S5 allows writing of slide show presentations as /standards-based/
+  HTML and turns the web browser into the display software.
+
+* what is this
+- A single function named =org-export-as-s5= which modifies Org-mode's
+  existing html export to generate a valid S5 presentation.
+
+- This implementation relies heavily on Pierre de Buyl's [[http://thread.gmane.org/gmane.emacs.orgmode/33143/match=s5][very thorough
+  instructions]] posted to the Org-mode mailing list.
+
+* where's the code
+- The code is available [[https://github.com/eschulte/org-S5/raw/master/org-export-as-s5.el][here]]
+
+- Simply evaluate this code, or add it to your =.emacs=, then call
+  =M-x org-export-as-s5= form within an Org-mode buffer. *Note*: the
+  [[http://gitweb.adaptive.cs.unm.edu/org-S5.git/tree/HEAD:/ui][ui]] directory holding S5 support files must be located in the same
+  directory as the exported html.
+
+- Currently there are three themes which can be set with the
+  following.
+  #+begin_src emacs-lisp
+    (setq org-s5-theme "railscast")   ; based off `color-theme-railscasts'
+    (setq org-s5-theme "default")     ; the default S5 theme
+    (setq org-s5-theme "i18n")        ; the i18n theme by the author of S5
+  #+end_src
+
+- This entire directory is available as a [[https://github.com/eschulte/org-S5][git repository]]

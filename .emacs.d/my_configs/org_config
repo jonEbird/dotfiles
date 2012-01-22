@@ -75,6 +75,7 @@
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
 				 ("~/org/info.org" :maxlevel . 2)
 				 ("~/org/projects.org" :maxlevel . 2)
+				 ("~/org/personal.org" :maxlevel . 2)
 				 )))
 
 ;; (setq org-refile-targets (quote (("~/org/projects.org" :maxlevel . 2)
@@ -103,7 +104,7 @@
  org-default-notes-file (concat org-directory "/notes.org")
  )
 
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")))
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org" "~/org/personal.org")))
 (setq org-capture-templates (quote (
    ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks")
     (file "~/org/todos.tmplt") :clock-in t :clock-resume t)
@@ -111,17 +112,26 @@
     (file "~/org/projects.tmplt") :clock-in t :clock-resume t)
    ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
     (file "~/org/meetings.tmplt") :clock-in t :clock-resume t)
+   ("s" "Support Production or Oncall Consultation" entry (file+headline "~/org/projects.org" "Support Production")
+    (file "~/org/support.tmplt") :clock-in t :clock-resume t)
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
     (file "~/org/info.tmplt") :clock-in t :clock-resume t)
+   ("h" "Home Personal Item" entry (file+headline "~/org/personal.org" "Personal")
+    (file "~/org/personal.tmplt") :clock-in t :clock-resume t)
    )))
 
 ;; Custom agenda block views
+;; Stuff I want to see:
+;; 1. Any TODO or DELEGATED  - Best collection of items that need work.
+;; 2. tags :needsrefile:     - I have set this on certain heading properties to be inherited by sub-headings.
+;; 3. DONE or CANCELED tasks - They should be refiled.
 (setq org-agenda-custom-commands
-      '(("o" "Office-related tasks"
+      '(("w" "All my work-place items"
 	 ((agenda "" nil)
-	  (todo "TODO" nil)
-	  (todo "DELEGATED" nil)
-	  nil))))
+	  (todo "DELEGATED")
+	  (todo "TODO")
+	  (tags "needsrefile" nil ("org/projects.org" "org/meetings.org" "org/todos.org"))
+	  (todo "DONE")))))
 
 ;; --------------------------------------------------
 ;; Additional Hacks
@@ -158,3 +168,19 @@
   )
 (global-set-key "\C-ci" (quote org-work-checkin))
 (global-set-key "\C-co" (quote org-work-checkout))
+
+;; Presentations via S5 for your org file
+(load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
+
+;; A near direct copy of org-export-as-html-and-open from org-html.el
+(defun org-export-as-s5-and-open (arg)
+  "Export the outline as an S5 presentation and immediately open it with a browser.
+If there is an active region, export only the region.
+The prefix ARG specifies how many levels of the outline should become
+headlines.  The default is 3.  Lower levels will become bulleted lists."
+  (interactive "P")
+  (org-export-as-s5 arg 'hidden)
+  (org-open-file buffer-file-name)
+  (when org-export-kill-product-buffer-when-displayed
+    (kill-buffer (current-buffer))))
+(defalias 'org-present 'org-export-as-s5-and-open)
