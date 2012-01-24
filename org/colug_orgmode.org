@@ -1,0 +1,90 @@
+#+Title:     Org-mode Your Work
+#+AUTHOR:    Jon Miller
+#+EMAIL:     jonEbird@gmail.com
+#+DESCRIPTION: How to organize your work with Emacs' org-mode
+#+STARTUP: content noindent hidestars nologrefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
+
+* Let's talk Org-mode... err Emacs... No, actually Org-mode
+#+ Compliment previous speaker
+#+ Introduce myself
+- [[http://www.gnu.org/software/emacs/][Emacs]] user for as long as I've been a [[http://web.archive.org/web/19971224200256id_/http://slackware.com/][Linux user]]
+- Used [[http://www.emacswiki.org/emacs/OutlineMode][outline-mode]], then used [[http://orgmode.org/][org-mode]] as a /better/ outline-mode, then...
+- ...Spent the holidays learning org-mode and wanted to share with others
+* Capture, Arrange, Orchestrate
+  [[file:colug_orgmode.jpg]]
+#+ This is good advice regardless if you're using org-mode or not
+#+ Draw parallels to GTD
+* Quick Explanation of org-mode
+  + Just [[http://orgmode.org/manual/Document-Structure.html][text but structured]]
+    - [[http://orgmode.org/manual/Headlines.html#Headlines][headings]] "*"
+    - [[http://orgmode.org/manual/Plain-lists.html#Plain-lists][lists]] "-", "+", "1.", "1)"
+    - [[http://orgmode.org/manual/TODO-Items.html][TODO]] states
+    - [[http://orgmode.org/manual/Tags.html][tags]]
+  + Easy, [[http://orgmode.org/manual/Structure-editing.html][structured editing]]: Shift, Alt(M), Arrows, Enter combinations.
+  #+ Show a sample screen shot (color coded and highlighting sections / features)
+* Sample Org Structure
+  [[file:ord-mode_structure-example.jpg]]
+* Provide guideline to organizing work in org files
+  1. What kind of what do you do? Project work, singleton tasks, home... \\
+     Create a separate file for each logical grouping
+  2. Add top-level headings in each file for major categories \\
+     This will be our =files+headlines= structure making up our [[http://orgmode.org/manual/Agenda-files.html][agenda files]].
+  3. Add @<code>[[http://orgmode.org/manual/Per_002dfile-keywords.html#Per_002dfile-keywords][TODO]]@</code> states, @<code>[[http://orgmode.org/manual/Setting-tags.html#Setting-tags][tags]]@</code> and @<code>[[http://orgmode.org/manual/Property-syntax.html#Property-syntax][properties]]@</code> for your =files+headlines= \\
+     These can differ per file and aid in organizing your content. (@<i>See about [[http://orgmode.org/manual/Column-view.html#Column-view][column view]] later@</i>)
+  3. Setup @<code>[[http://orgmode.org/manual/Capture-templates.html#Capture-templates][Captures]]@</code> for adding content to your headlines \\
+     Where do you want to add new content to quickly. (@<i>Then use [[http://orgmode.org/manual/Refiling-notes.html][Refiling]] for moving@</i>). \\
+  4. Agendas for reviewing everything \\
+     Tweak markup until agendas reveal everything you need to see. (@<i>Consider a [[http://orgmode.org/manual/Block-agenda.html][Block Agenda]]@</i>)
+* Start modestly, then gradually customize as needed as habits form
+  Let's explore some of the org-mode features in a bit more depth
+* clocks & datetimes
+    - scheduled, deadlines. Repeating times, Active/inactive
+    - clock into your tasks!
+    - use column-view to see estimates (also within Agenda view)
+* Links - Create a link to a wide variety of documents and locations
+    - Favorite and most used example is a URL (example to a funny link)
+    - Next favorite is a link grabbed from dired mode (example with a pdf)
+    - Include a link to the list of supported link formats
+* [[http://orgmode.org/manual/Properties-and-Columns.html#Properties-and-Columns][Properties and Columns]]
+    - Example from my [[file:personal.org::*Personal][Personal Tasks]]
+    - There is a good example of [[http://orgmode.org/manual/Column-attributes.html#Column-attributes][Column attributes]] for a project status
+* Exporting
+    - Show my favorite html and open in browser (b) export
+    - Show how you can customize the html export
+    - Need to [[http://orgmode.org/manual/Comment-lines.html][exclude your comments from being exported]]?
+* Speed Commands ('?' at the heading)
+    - Give examples of customizing
+* Agenda Tricks
+    - Agendas are technically their own mode with [[http://orgmode.org/manual/Agenda-commands.html#Agenda-commands][custom commands and navigation]].
+* Tables
+    Let's look at [[http://en.wikipedia.org/wiki/Genetic_correlation][Genetic Correlation]]. The Following text:
+    #+begin_example
+    |        | Height | Weight |
+    | Height | 36     | 36     |
+    | Weight | 36     | 117    |
+    #+end_example
+    Will produce this table (@<i>[[http://orgmode.org/manual/HTML-export.html#HTML-export][when exporting to html]]@</i>)
+    |        | Height | Weight |
+    | Height | 36     | 36     |
+    | Weight | 36     | 117    |
+* Quick blocks
+* Sparse Trees
+* Walkthrough my =org_config=
+* Too deep in the weeds!... Okay, just remember this
+  [[file:colug_orgmode.jpg]]
+* Appendixes
+  + Helpful links
+    - [[http://orgmode.org/manual/][org-mode Manual]]
+    - Uber guides from others on org-mode: [[http://doc.norang.ca/org-mode.html][norang]]
+    - worg getting started guide
+    - emacswiki
+    - Jon's [[https://github.com/jonEbird/dotfiles][dotfiles]] github repo.
+  + emacs tricks
+  + org-mode cheat sheet
+    [[http://orgmode.org/orgcard.txt][Official org-mode cheat sheet]]
+* The End
+  + Contact information
+  + Closing sentiments
+    - Do more, read less
+    - Stay Focused
