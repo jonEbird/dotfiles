@@ -5,7 +5,7 @@
 #+STARTUP: content noindent hidestars nologrefile logredeadline logreschedule
 #+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
 
-* Let's talk Org-mode... err Emacs... No, actually Org-mode
+* Let's talk Emacs... Okay, actually Org-mode
 #+ Compliment previous speaker
 #+ Introduce myself
 - [[http://www.gnu.org/software/emacs/][Emacs]] user for as long as I've been a [[http://web.archive.org/web/19971224200256id_/http://slackware.com/][Linux user]]
@@ -16,16 +16,20 @@
 #+ This is good advice regardless if you're using org-mode or not
 #+ Draw parallels to GTD
 * Quick Explanation of org-mode
+  #+ Detour from main message to provide a quick explanation on what org-mode is
   + Just [[http://orgmode.org/manual/Document-Structure.html][text but structured]]
     - [[http://orgmode.org/manual/Headlines.html#Headlines][headings]] "*"
     - [[http://orgmode.org/manual/Plain-lists.html#Plain-lists][lists]] "-", "+", "1.", "1)"
     - [[http://orgmode.org/manual/TODO-Items.html][TODO]] states
     - [[http://orgmode.org/manual/Tags.html][tags]]
-  + Easy, [[http://orgmode.org/manual/Structure-editing.html][structured editing]]: Shift, Alt(M), Arrows, Enter combinations.
-  #+ Show a sample screen shot (color coded and highlighting sections / features)
+    - [[http://orgmode.org/manual/Visibility-cycling.html][Folding text]]
+  + Easy, [[http://orgmode.org/manual/Structure-editing.html][structured editing]]: \\
+    Shift, Alt(M), Arrows, Enter combinations.
 * Sample Org Structure
+  #+ Show a sample screen shot (color coded and highlighting sections / features)
   [[file:ord-mode_structure-example.jpg]]
-* Provide guideline to organizing work in org files
+  #+ Now, back to the habits and the core message
+* Do This For a Well Organized Org-mode Experience
   1. What kind of what do you do? Project work, singleton tasks, home... \\
      Create a separate file for each logical grouping
   2. Add top-level headings in each file for major categories \\
@@ -36,55 +40,173 @@
      Where do you want to add new content to quickly. (@<i>Then use [[http://orgmode.org/manual/Refiling-notes.html][Refiling]] for moving@</i>). \\
   4. Agendas for reviewing everything \\
      Tweak markup until agendas reveal everything you need to see. (@<i>Consider a [[http://orgmode.org/manual/Block-agenda.html][Block Agenda]]@</i>)
-* Start modestly, then gradually customize as needed as habits form
-  Let's explore some of the org-mode features in a bit more depth
-* clocks & datetimes
-    - scheduled, deadlines. Repeating times, Active/inactive
-    - clock into your tasks!
-    - use column-view to see estimates (also within Agenda view)
-* Links - Create a link to a wide variety of documents and locations
-    - Favorite and most used example is a URL (example to a funny link)
-    - Next favorite is a link grabbed from dired mode (example with a pdf)
-    - Include a link to the list of supported link formats
-* [[http://orgmode.org/manual/Properties-and-Columns.html#Properties-and-Columns][Properties and Columns]]
-    - Example from my [[file:personal.org::*Personal][Personal Tasks]]
-    - There is a good example of [[http://orgmode.org/manual/Column-attributes.html#Column-attributes][Column attributes]] for a project status
+* Habit 1 - =Captures= to Add New Content
+  - Use a separate capture for each /type/ of content you want to add and track.
+  - Use it for interruptions or the quick, "Oh yeah, don't forget to..."
+  - Can create numerous [[http://orgmode.org/manual/Capture-templates.html][Capture Templates]] which can fill in dynamic content: \\
+    =%K= link to currently clocked task, =%U= inactive timestamp, [[http://orgmode.org/manual/Template-expansion.html][plenty more]].
+
+*Note*: You can immediately refile the capture via: =C-c C-w=
+* Habit 1 - =Capture= - Example
+  Sample capture emacs-lisp configuration:
+  #+begin_src elisp
+  (setq org-capture-templates (quote (
+     ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks")
+      (file "~/org/todos.tmplt") :clock-in t :clock-resume t))))
+  #+end_src
+  And here is what my =~/org/todos.tmplt= looks like:
+  #+begin_example
+  * TODO %^{Action oriented description}
+     DEADLINE: %^{What is your Deadline for this?}t
+  %U (/Task created/) \\
+  Via %K
+  %?
+  #+end_example
+* Habit 2 - Use =Agenda= Views
+- Prototypical Agenda view (=C-c a a=) shows work in a day/week view
+- Other Agendas available for [[http://orgmode.org/manual/Global-TODO-list.html#Global-TODO-list][Global TODOs]], [[http://orgmode.org/manual/Matching-tags-and-properties.html#Matching-tags-and-properties][Tags and Properties]], [[http://orgmode.org/manual/Search-view.html#Search-view][Searches]], and [[http://orgmode.org/manual/Built_002din-agenda-views.html#Built_002din-agenda-views][more]].
+- Agendas are technically their own mode with [[http://orgmode.org/manual/Agenda-commands.html#Agenda-commands][custom commands and navigation]] \\
+  Can orchestrate and manipulate tasks from an Agenda view.
+- Best way to customize your [[http://orgmode.org/manual/Setting-Options.html#Setting-Options][Agenda views is by using tags]] \\
+  Do this by using [[http://orgmode.org/manual/Tag-inheritance.html#Tag-inheritance][Tag Inheritance]] and setting tags on top-level headlines \\
+  You can also ensure default tag settings in your [[http://orgmode.org/manual/Capture-templates.html#Capture-templates][capture templates]].
+* Habit 2 - =Agenda= - Example
+My /current/ [[http://orgmode.org/manual/Block-agenda.html][block agenda]]:
+#+begin_src elisp
+(setq org-agenda-custom-commands
+      '(("w" "All my work-place items"
+	 ((agenda "" nil)
+	  (todo "DELEGATED")
+	  (todo "TODO")
+	  (tags "needsrefile" nil ("org/projects.org" "org/meetings.org" "org/todos.org"))
+	  (todo "DONE")))))
+#+end_src
+* Habit 3 - =Refiling= to Move Stuff Around
+  - Refile a subtree (=C-c C-w= or "=w=" as a speed command) elsewhere.
+  - Setup =Refiling= targets and get used to using them
+  - See the help (=C-h v=) on the variable =org-refile-targets= for further details:
+    + Default behavior is to target top-level headlines in the current file.
+    + But you can target specific: =tags=, =TODO keyword=, =regexp=, =heading level=, =maximum level=
+*Note*: You can use a prefix to =goto= the refile target: =C-u C-c C-w=
+* Habit 3 - =Refiling= - Example
+I prefer to allow my top and second level headings become refile targets:
+#+begin_src elisp
+; Refiling C-c C-w
+(setq org-refile-targets '((nil :maxlevel . 2)
+			   ("~/org/info.org" :maxlevel . 2)
+			   ("~/org/projects.org" :maxlevel . 2)
+			   ("~/org/personal.org" :maxlevel . 2)
+			   ))
+; This allows for file like pathing for refiling
+;  and lets me pick heading and subheading (level <= 2)
+(setq org-refile-use-outline-path t)
+#+end_src
+* Exploring Features - Hold on!
+Let's explore some of the org-mode features in a bit more depth
+
+Start modestly, then gradually customize as needed as your habits form
+* [[http://orgmode.org/manual/Dates-and-Times.html][Clocks, Dates and Times]]
+- =SCHEDULED= - When do you /plan/ to work on this? (=C-c C-s=)
+- =DEADLINE= - When does this /need/ to be completed by? (=C-c C-d=)
+- Active timestamp: < 2012-01-24 Tue > (=C-c .=) \\
+  Inactive timestamp: [ 2012-01-24 Tue ] (=C-c !=) \\
+  Useful for sorting subtrees (=C-c ^=).\\
+  Use a prefix (=C-u=) to include time. E.g. (=C-u C-c !=)
+- [[http://orgmode.org/manual/Clocking-commands.html#Clocking-commands][Clock into your tasks]]! Optionally track against [[http://orgmode.org/manual/Effort-estimates.html#Effort-estimates][Estimated Efforts]] \\
+  Clock in (=C-c C-x C-i=), Clock out (=C-c C-x C-o=) \\
+  Goto the current clocked-in item: (=C-c C-x C-j=) or via the mode-line bar
+- No surprise: =SCHEDULED=, =DEADLINE= and timestamp leveraged in Agenda views.
+* Hyperlinks - Linking to a Variety of Documents
+- Favorite and most used example is a [[http://www.jimcarrey.com/][URL]] (/click me/) \\
+  Next favorite is a link grabbed from [[http://www.emacswiki.org/emacs/DiredMode][dired mode]]
+- Store / Capture a link (=C-c l=) \\
+  This works from another subtree, dired-mode above and [[http://orgmode.org/manual/External-links.html#External-links][more]].
+- Insert a link (=C-c C-l=) by providing your link or use a stored link. \\
+  Can use the current region (selected text) as the link's displayed text.
+- Handy to open links (=C-c C-o=) as well. \\
+  Depending on the link, will open a tab in your browser, \\
+  open PDF reader, jump to file location, etc...
+* Properties and Columns
+- [[http://orgmode.org/manual/Column-view.html#Column-view][Column view]] is handy for making widespread attribute changes. \\
+  Creates a temporary overlay on your org file in a table format.
+- Set custom columns based on your file's specific properties
+#+begin_example
+:COLUMNS:  %75ITEM %10Owner %TODO %TAGS
+:Owner_ALL: Jon Cher Hercules Yoshi Snowball
+#+end_example
+- There is a good example of [[http://orgmode.org/manual/Column-attributes.html#Column-attributes][Column attributes for a project]] status
+- Also common to use column-view to see work estimates \\
+- Column view is also available in Agenda view \\
+  *Pro Tip*: Agenda Views are a good place for manipulating metadata
 * Exporting
-    - Show my favorite html and open in browser (b) export
-    - Show how you can customize the html export
-    - Need to [[http://orgmode.org/manual/Comment-lines.html][exclude your comments from being exported]]?
+- My favorite is [[http://orgmode.org/manual/HTML-export.html#HTML-export][HTML Exporting]] (=C-c C-e b=) \\
+  The "=b=" is actually to export to HTML, then open in a @<b>b@</b>rowser \\
+- [[http://orgmode.org/manual/HTML-preamble-and-postamble.html][Customize the html export]] with your own format:
+#+begin_src elisp
+(setq org-export-html-postamble t)
+(setq org-export-html-postamble-format
+      '(("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>")))
+#+end_src
+- Other popular formats include: \\
+  [[http://orgmode.org/manual/LaTeX-and-PDF-export.html#LaTeX-and-PDF-export][LaTeX]], [[http://orgmode.org/manual/iCalendar-export.html#iCalendar-export][iCalendar]], [[http://orgmode.org/manual/DocBook-export.html#DocBook-export][DocBook]], [[http://orgmode.org/manual/OpenDocument-Text-export.html#OpenDocument-Text-export][OpenDocument]], and [[http://orgmode.org/manual/Exporting.html#Exporting][others]].
 * Speed Commands ('?' at the heading)
-    - Give examples of customizing
-* Agenda Tricks
-    - Agendas are technically their own mode with [[http://orgmode.org/manual/Agenda-commands.html#Agenda-commands][custom commands and navigation]].
+- Convenience feature giving you a wealth of commands via [[http://orgmode.org/manual/Speed-keys.html][single key strokes]] \\
+  Move your cursor (aka "point") to the heading and press... "?"
+- Apparently good when you are [[http://doc.norang.ca/org-mode.html][ssh'ed into your machine from your Android phone]].
+- Also a /really/ good idea for the non-emacsen of you out there.
+- Enable in your =.emacs= file
+#+begin_src elisp
+(setq org-use-speed-commands t)
+#+end_src
 * Tables
-    Let's look at [[http://en.wikipedia.org/wiki/Genetic_correlation][Genetic Correlation]]. The Following text:
-    #+begin_example
-    |        | Height | Weight |
-    | Height | 36     | 36     |
-    | Weight | 36     | 117    |
-    #+end_example
-    Will produce this table (@<i>[[http://orgmode.org/manual/HTML-export.html#HTML-export][when exporting to html]]@</i>)
-    |        | Height | Weight |
-    | Height | 36     | 36     |
-    | Weight | 36     | 117    |
-* Quick blocks
-* Sparse Trees
+  Let's look at [[http://en.wikipedia.org/wiki/Genetic_correlation][Genetic Correlation]]. The Following text:
+  #+begin_example
+  |        | Height | Weight |
+  | Height | 36     | 36     |
+  | Weight | 36     | 117    |
+  #+end_example
+  Will produce this table (@<i>[[http://orgmode.org/manual/HTML-export.html#HTML-export][when exporting to html]]@</i>)
+  |        | Height | Weight |
+  | Height | 36     | 36     |
+  | Weight | 36     | 117    |
+  [[http://orgmode.org/manual/Tables.html#Tables][Tables]] have /a lot/ of features and is left as homework for the audience.
+* Quick blocks and Source Code
+- It's a good idea, particularly if you export / share notes, to use [[http://orgmode.org/manual/Easy-Templates.html][Easy Templates]] \\
+  They make it quick and easy to create a block area for special text.
+- My favorites: [[http://orgmode.org/manual/Working-With-Source-Code.html#Working-With-Source-Code][Source Code]] (=<s=), Example blocks (=<e=) and Quotations (=<q=) \\
+  Enter the text "=<s=" in an org file and hit =TAB=. You will be inserting the following:
+  #+begin_example
+  #+begin_src elisp
+
+  #+end_src
+  #+end_example
+  (/Actually, I typed in "elisp" to specify Emacs Lisp/)
+- If you install the [[http://www.emacswiki.org/emacs/Htmlize][Htmlize]] Emacs package, \\
+  then HTML exports will be syntax highlighted. \\
+  (/[[http://jonebird.com/2011/12/29/installing-emacs-v24-on-fedora/][Install Emacs v24]] and use the new ELPA package system/)
 * Walkthrough my =org_config=
-* Too deep in the weeds!... Okay, just remember this
+[[https://raw.github.com/jonEbird/dotfiles/master/.emacs.d/my_configs/org_config][Jon's org-mode configurations]]
+
+Have to link to the github version because it's going to be changing a lot, I fear.
+
+* System Overload! Okay, just remember this
   [[file:colug_orgmode.jpg]]
 * Appendixes
   + Helpful links
     - [[http://orgmode.org/manual/][org-mode Manual]]
     - Uber guides from others on org-mode: [[http://doc.norang.ca/org-mode.html][norang]]
-    - worg getting started guide
-    - emacswiki
-    - Jon's [[https://github.com/jonEbird/dotfiles][dotfiles]] github repo.
-  + emacs tricks
-  + org-mode cheat sheet
-    [[http://orgmode.org/orgcard.txt][Official org-mode cheat sheet]]
+    - [[http://orgmode.org/worg/org-configs/org-customization-guide.html][worg getting started guide]]
+    - Good place for Emacs help is the [[http://www.emacswiki.org/][emacswiki]]
+    - For the brave at heart: Jon's [[https://github.com/jonEbird/dotfiles][dotfiles]] github repo.
+    - [[http://orgmode.org/orgcard.txt][org-mode cheat sheet]]
+  + emacs essentials \\
+    =M-x org--<keyword> TAB TAB= \\
+    Help me: =C-h w=, =C-h m=, =C-h v=, =C-h f=
 * The End
-  + Contact information
-  + Closing sentiments
-    - Do more, read less
-    - Stay Focused
++ Need help later? Try emailing me: \\
+  [[mailto:jonEbird@gmail.com][Jon Miller]]
++ Your productivity resolution
+  - Do more, read less \\
+    (/Use org-mode to manage it all/)
+  - Stay Focused \\
+    (=C-x n s= will narrow the file to only show current subtree)
