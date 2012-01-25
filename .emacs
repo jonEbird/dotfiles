@@ -132,6 +132,8 @@
   (interactive)
   (revert-buffer nil t))
 (global-set-key (quote [f5]) (quote revert-buffer-noask))
+; Stupid hack, but I've found when resizing windows re-enabling visual-line-mode helps
+(global-set-key (kbd "<f6>") '(lambda () (interactive) (visual-line-mode 1)))
 
 ;; Taken from http://stackoverflow.com/questions/679275/sending-email-in-emacs-programs
 (defun my-message-mail-region (b e to subject)
