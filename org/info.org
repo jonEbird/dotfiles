@@ -3,14 +3,22 @@
 #+EMAIL:     jonEbird@gmail.com
 #+DESCRIPTION: Information or Ideas typically without deadlines
 #+TODO: TODO(t@) STARTED(s@) DELEGATED(d@) WAITING(w@) | INFO(i) DONE(o@) CANCELED(c@)
-#+TAGS: { @home(h) @work(w) } \n { 4boss(b) 4other(o) 4me(m) } \n teaminfo thought techdebt needsidea
-#+STARTUP: overview noindent hidestars lognoterefile logredeadline logreschedule
+#+TAGS: { @home(h) @work(w) } \n { 4boss(b) 4other(o) 4me(m) } \n teaminfo thought techdebt needsidea needsrefile
+#+STARTUP: content noindent hidestars logrefile logredeadline logreschedule
 #+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
 
-* Incoming Ideas
-New captured items are thrown here
+* Incoming Ideas						:needsrefile:
+  :PROPERTIES:
+  :CATEGORY: NEWIDEA
+  :END:
 * Informational
 Team or organizational information
+** Network Related
+** Troubleshooting Techniques
+** Organizational
+** Technical Debt						   :techdebt:
+** Disaster Recovery
+** Teams
 * Strategic Planning
 Future Planning: new opportunities, core tenants
 Team related: pain points, skill analysis
@@ -18,3 +26,4 @@ Philosophical: core principles, leadership qualities
 * Development Planning
 How to improve oneself
 E.g. books, training, conferences
+** Kudos								:4me:

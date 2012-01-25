@@ -1,0 +1,15 @@
+#+TITLE:     Personal
+#+AUTHOR:    Jon Miller
+#+EMAIL:     jonEbird@gmail.com
+#+DESCRIPTION: Information or Ideas typically without deadlines
+#+TODO: TODO(t) STARTED(s@) DELEGATED(d@) WAITING(w@) | INFO(i) DONE(o@) CANCELED(c@)
+#+TAGS: { @home(h) @work(w) } \n choir phone errand fixup needsidea
+#+STARTUP: content noindent hidestars logrefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil
+
+* Personal
+  :PROPERTIES:
+  :CATEGORY: PERSONAL
+  :Owner_ALL: Jon Cher Hercules Yoshi Snowball
+  :COLUMNS:  %75ITEM %10Owner %TODO %TAGS
+  :END:
