@@ -154,7 +154,7 @@
 (defun jsm:load-config-file (filelist)
   (dolist (file filelist)
     (let ((fullpath (expand-file-name
-		     (concat jsm:emacs-config-dir file))))
+		     (concat jsm:emacs-config-dir file ".el"))))
       (if (file-exists-p fullpath)
 	  (load fullpath)
 	(message "Could NOT load config file:%s" file))
