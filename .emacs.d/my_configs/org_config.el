@@ -65,11 +65,13 @@
 			   ("c" . c)
 			   )))
 (setq org-src-preserve-indentation t)
-; Custom HTML exporting
+;; Custom HTML exporting
 (setq org-export-html-postamble t)
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
+; Update any dblocks before exporting
+(add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
 ; Agenda
-(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org")
+(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org" "~/org/personal.org")
       org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
       org-deadline-warning-days 30
@@ -123,6 +125,8 @@
     (file "~/org/support.tmplt") :clock-in t :clock-resume t)
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
     (file "~/org/info.tmplt") :clock-in t :clock-resume t)
+   ("a" "Bi-Weekly Architecture Topic" entry (file+olp "~/org/projects.org" "Repeating Projects" "Bi-Weekly Architecture")
+    (file "~/org/repeatmeeting_biweekly-architecture.tmplt") :clock-in t :clock-resume t)
    ("h" "Home Personal Item" entry (file+headline "~/org/personal.org" "Personal")
     (file "~/org/personal.tmplt") :clock-in t :clock-resume t)
    )))
