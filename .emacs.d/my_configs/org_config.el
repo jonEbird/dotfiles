@@ -2,10 +2,17 @@
 
 ;; org configurations
 (require 'org)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
 ;; Other packages you should have installed
-;; Use M-x list-packages and install these to enhance the experience
 ; 1. htmlize
+;    Good for syntax highlighting code blocks when exporting to HTML
+; 2. org-checklist
+;    Good for repeating tasks where you've used checkboxes
+;    and want them de-selected when marking the task as done.
+;    http://orgmode.org/worg/org-contrib/#repofile-contrib-lisp-org-checklist.el
+(load-file (expand-file-name "~/.emacs.d/org-checklist.el"))
+
 
 ;; --------------------------------------------------
 ;; Basic org configuration
@@ -64,14 +71,15 @@
 			   ("javascript" . js)
 			   ("c" . c)
 			   )))
-(setq org-src-preserve-indentation t)
+(setq org-src-preserve-indentation t
+      org-src-fontify-natively t)
 ;; Custom HTML exporting
 (setq org-export-html-postamble t)
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
 ; Update any dblocks before exporting
 (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
 ; Agenda
-(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org" "~/org/personal.org")
+(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")
       org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
       org-deadline-warning-days 30
@@ -90,7 +98,7 @@
 ;; (setq org-refile-targets (quote (("~/org/projects.org" :maxlevel . 2)
 ;; 				 ("~/org/info.org" :maxlevel . 2)
 ;; 				 ("~/org/meetings.org" :maxlevel . 2)
-;; 				 ("~/org/todos.org" :maxlevel . 2)
+;; 				 ("~/org/tasks.org" :maxlevel . 2)
 ;; 				 )))
 
 ;; (setq org-refile-targets (quote (("meetings.org" :maxlevel . 2)
@@ -113,10 +121,10 @@
  org-default-notes-file (concat org-directory "/notes.org")
  )
 
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/todos.org" "~/org/personal.org")))
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")))
 (setq org-capture-templates (quote (
-   ("t" "Todo Item" entry (file+headline "~/org/todos.org" "Tasks")
-    (file "~/org/todos.tmplt") :clock-in t :clock-resume t)
+   ("t" "Todo Item" entry (file+headline "~/org/tasks.org" "Tasks")
+    (file "~/org/tasks.tmplt") :clock-in t :clock-resume t)
    ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects")
     (file "~/org/projects.tmplt") :clock-in t :clock-resume t)
    ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
@@ -134,15 +142,25 @@
 ;; Custom agenda block views
 ;; Stuff I want to see:
 ;; 1. Any TODO or DELEGATED  - Best collection of items that need work.
+;;    From sections: Projects, Repeating Projects, Supporting Production,
 ;; 2. tags :needsrefile:     - I have set this on certain heading properties to be inherited by sub-headings.
 ;; 3. DONE or CANCELED tasks - They should be refiled.
+;; 4. Other things I should have focus on? Perhaps strategic topics which need thought vs. action?
+;;    tags "strategic-personal"
+;; 5. Everything in my Tasks list
+;;    tags "Tasks"
+;; 6. Stuff that needs archived
+;; Other Questions:
+;; 1. What to do about Meetings?
+;; 2. Personal Development items?
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
 	 ((agenda "" nil)
-	  (todo "DELEGATED")
-	  (todo "TODO")
-	  (tags "needsrefile" nil ("org/projects.org" "org/meetings.org" "org/todos.org"))
-	  (todo "DONE")))))
+	  (tags-todo "ProjectsFile")
+	  (tags-todo "TasksFile")
+	  (tags "needsrefile")
+	  (todo "DONE")
+	  ))))
 
 ;; --------------------------------------------------
 ;; Additional Hacks

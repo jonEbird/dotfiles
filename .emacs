@@ -28,6 +28,7 @@
 ; ELPA package support
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
