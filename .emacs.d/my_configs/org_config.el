@@ -96,16 +96,6 @@
 				 ("~/org/personal.org" :maxlevel . 2)
 				 )))
 
-;; (setq org-refile-targets (quote (("~/org/projects.org" :maxlevel . 2)
-;; 				 ("~/org/info.org" :maxlevel . 2)
-;; 				 ("~/org/meetings.org" :maxlevel . 2)
-;; 				 ("~/org/tasks.org" :maxlevel . 2)
-;; 				 )))
-
-;; (setq org-refile-targets (quote (("meetings.org" :maxlevel . 2)
-;; 				 ("someday.org" :level . 2))))
-
-
 ;; --------------------------------------------------
 ;; Customize Capture and Agenda
 ;; --------------------------------------------------
