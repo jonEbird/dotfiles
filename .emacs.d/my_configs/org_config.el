@@ -79,9 +79,7 @@
 ; Update any dblocks before exporting
 (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
 ; Agenda Info
-;  Leaving "~/org/personal.org" out of my org-agenda-files
-(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")
-      org-agenda-todo-ignore-scheduled "all"
+(setq org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
       org-deadline-warning-days 30
       org-agenda-text-search-extra-files (list 'agenda-archives)
@@ -112,7 +110,6 @@
  org-default-notes-file (concat org-directory "/notes.org")
  )
 
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")))
 (setq org-capture-templates (quote (
    ("t" "Todo Item" entry (file+headline "~/org/tasks.org" "Tasks")
     (file "~/org/tasks.tmplt") :clock-in t :clock-resume t)
@@ -152,6 +149,8 @@
 	  (tags "+needsrefile")
 	  (todo "DONE")
 	  ))))
+; Leaving "~/org/personal.org" out of my org-agenda-files
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")))
 
 ;; --------------------------------------------------
 ;; Additional Hacks
