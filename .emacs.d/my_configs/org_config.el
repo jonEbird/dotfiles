@@ -143,7 +143,7 @@
 ;; 2. Personal Development items?
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
-	 ((agenda "" nil)
+	 ((agenda "" ((org-agenda-span (quote day))))
 	  (tags-todo "ProjectsFile|TasksFile"
 		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
 	  (tags "+needsrefile")
