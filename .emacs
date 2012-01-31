@@ -37,6 +37,12 @@
 ;; set/use X clipboard
 (setq x-select-enable-clipboard t)
 
+;; I may enable flyspell-mode. When I do, let's kill the underline.
+(eval-after-load "flyspell"
+  '(progn
+     (set-face-underline-p 'flyspell-incorrect-face nil)
+     (set-face-underline-p 'flyspell-duplicate-face nil)))
+
 ;; don't iconify from within X
 (when window-system
   (global-unset-key "\C-z")) ; iconify-or-deiconify-frame (C-x C-z)
@@ -92,8 +98,8 @@
  '(flymake-log-level 3)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
- '(visual-line-mode 1)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(visual-line-mode 1 t))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

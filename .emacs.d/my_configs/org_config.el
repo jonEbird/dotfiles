@@ -78,8 +78,9 @@
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
 ; Update any dblocks before exporting
 (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
-; Agenda
-(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")
+; Agenda Info
+;  Leaving "~/org/personal.org" out of my org-agenda-files
+(setq org-agenda-files (list "~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")
       org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
       org-deadline-warning-days 30
@@ -156,9 +157,9 @@
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
 	 ((agenda "" nil)
-	  (tags-todo "ProjectsFile")
-	  (tags-todo "TasksFile")
-	  (tags "needsrefile")
+	  (tags-todo "ProjectsFile|TasksFile"
+		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
+	  (tags "+needsrefile")
 	  (todo "DONE")
 	  ))))
 
