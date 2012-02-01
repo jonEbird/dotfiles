@@ -44,6 +44,8 @@
 (setq org-alphabetical-lists t)
 ; Speed commands
 (setq org-use-speed-commands t)
+(setq org-speed-commands-user '(("P" . org-property-action)
+				("z" . org-add-note)))
 ; RET follows links
 (setq org-return-follows-link t)
 ; Don't remove the highlighting after an occur search (C-c / /)
@@ -149,8 +151,11 @@
 	  (tags "+needsrefile")
 	  (todo "DONE")
 	  ))))
-; Leaving "~/org/personal.org" out of my org-agenda-files
+; Leaving "~/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
 (setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")))
+; Controlling how the windows are setup during Agenda views
+(setq org-agenda-window-setup "other-window" ; Defaults to "reorganize-frame"
+      org-agenda-restore-windows-after-quit t)
 
 ;; --------------------------------------------------
 ;; Additional Hacks
@@ -166,12 +171,19 @@
   (org-cycle))
 (global-set-key (kbd "C-S-f") 'org-fold-here)
 
-;; Full unsplit org-timeline agenda view
-;;  Running "C-u M-x org-timeline" and unspliting the windows for the timeline.
-;;  Assigned to F9
-(fset 'org-timeline-separate-window
-   [?\C-u ?\M-x ?o ?r ?g ?- ?t ?i ?m ?e ?l ?i ?n ?e return ?\C-x ?1])
-(global-set-key (quote [f9]) (quote org-timeline-separate-window))
+;; Thanks norang - Exactly what I like to do
+;;  http://doc.norang.ca/org-mode.html#sec-15-21
+(defun jsm/insert-inactive-timestamp ()
+  (interactive)
+  (org-insert-time-stamp nil t t nil nil nil))
+
+(defun jsm/insert-heading-inactive-timestamp ()
+  (save-excursion
+    (org-return)
+    (org-cycle)
+    (jsm/insert-inactive-timestamp)))
+
+(add-hook 'org-insert-heading-hook 'jsm/insert-heading-inactive-timestamp 'append)
 
 ;; Want to be able to narrow to subtree and clockin at the same time,
 ;;  then be able to do the opposite with a clockout and widen
