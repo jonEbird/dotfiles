@@ -150,7 +150,10 @@
 		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
 	  (tags "+needsrefile")
 	  (todo "DONE")
-	  ))))
+	  ))
+	("W" "Work meeting start of notes" occur-tree "^[[][0-9-]* [A-Za-z]* [0-9:]*[]] /[^/]*/.*$"
+	 ((org-agenda-overriding-header "Sparse tree regexp for start of meeting")))))
+
 ; Leaving "~/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
 (setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")))
 ; Controlling how the windows are setup during Agenda views
@@ -215,3 +218,17 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
   (when org-export-kill-product-buffer-when-displayed
     (kill-buffer (current-buffer))))
 (defalias 'org-present 'org-export-as-s5-and-open)
+
+;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
+;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then
+;;  any logical effort within the project would be the 3rd level heading along with other siblings
+;;  Within a particular project's effort, I may participate in several meetings.
+;;  E.g. [2012-01-05 Thu 16:10] /Meeting Started/
+(defun jsm/org-insert-meeting-heading ()
+  "Inserts a new line containing an inactive datetime stamp
+followed by italicized meeting heading which is specified by the user"
+  (interactive)
+  (save-excursion
+    (org-end-of-line)
+    (org-insert-time-stamp nil t t "\n" (concat " /" (read-string "Meeting Title [Working Notes]: " nil '() "Working Notes") "/\n") nil)))
+(global-set-key "\M-i" 'jsm/org-insert-meeting-heading)
