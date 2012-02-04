@@ -228,7 +228,11 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
   "Inserts a new line containing an inactive datetime stamp
 followed by italicized meeting heading which is specified by the user"
   (interactive)
-  (save-excursion
+  (let ((prefix "\n")
+	(cur-sentence (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
+	(meeting-title (read-string "Meeting Title [Working Notes]: " nil '() "Working Notes")))
+    (if (equal cur-sentence "")
+	(setq prefix ""))
     (org-end-of-line)
-    (org-insert-time-stamp nil t t "\n" (concat " /" (read-string "Meeting Title [Working Notes]: " nil '() "Working Notes") "/\n") nil)))
+    (org-insert-time-stamp nil t t prefix (concat " /" meeting-title "/\n") nil)))
 (global-set-key "\M-i" 'jsm/org-insert-meeting-heading)
