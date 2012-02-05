@@ -1,8 +1,8 @@
-* %?
+* %^{Project Title}
    :PROPERTIES:
-   :ProjectManager:
-   :SalesRep:
-   :TechRep:
+   :ProjectManager: %^{Project Manager?|me}
+   :COLUMNS:  %72ITEM %10Owner %8TODO %14DEADLINE
+   :Owner_ALL: Jon Travis Ben Steve Kent Darryl Scott Craig Liz Oesch Jim Kevin Mike Jeff Tim Chris
    :END:
-%U (/Project Initiated/) \\
-Via %K
+   DEADLINE: %^{When is this project expected to end?}t
+%?

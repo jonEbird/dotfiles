@@ -115,7 +115,9 @@
 (setq org-capture-templates (quote (
    ("t" "Todo Item" entry (file+headline "~/org/tasks.org" "Tasks")
     (file "~/org/tasks.tmplt") :clock-in t :clock-resume t)
-   ("p" "Projects, Periodic, Vendor, Product" entry (file+headline "~/org/projects.org" "Projects")
+   ("v" "Vendor or Product" entry (file+olp "~/org/projects.org" "Vendors" "Misc Vendor or Product")
+    (file "~/org/vendor_product.tmplt") :clock-in t :clock-resume t)
+   ("p" "Projects or Repeating" entry (file+headline "~/org/projects.org" "Projects")
     (file "~/org/projects.tmplt") :clock-in t :clock-resume t)
    ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
     (file "~/org/meetings.tmplt") :clock-in t :clock-resume t)
@@ -126,7 +128,7 @@
    ("a" "Bi-Weekly Architecture Topic" entry (file+olp "~/org/projects.org" "Repeating Projects" "Bi-Weekly Architecture")
     (file "~/org/repeatmeeting_biweekly-architecture.tmplt") :clock-in t :clock-resume t)
    ("h" "Home Personal Item" entry (file+headline "~/org/personal.org" "Personal")
-    (file "~/org/personal.tmplt") :clock-in t :clock-resume t)
+    (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)
    )))
 
 ;; Custom agenda block views
@@ -236,3 +238,36 @@ followed by italicized meeting heading which is specified by the user"
     (org-end-of-line)
     (org-insert-time-stamp nil t t prefix (concat " /" meeting-title "/\n") nil)))
 (global-set-key "\M-i" 'jsm/org-insert-meeting-heading)
+;; Alternatively accomplished via an org-capture:
+; ("." "Current working heading" plain (clock) "%U - /%^{Meeting Title}/" :immediate-finish t :unnarrowed t)
+
+(defun jsm/org-project-properties ()
+  "Takes the current heading title, denoting the project, and
+sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
+  (interactive)
+  (save-excursion
+    (org-goto-marker-or-bmk org-capture-last-stored-marker)
+    ;(org-capture-goto-last-stored) ; Aka C-u C-u org-capture
+    (let ((project-title (org-get-heading t t)))
+      ;(message (concat "DEBUG: project-title = \"" project-title "\""))
+      (org-set-property "EXPORT_TITLE" project-title)
+      (org-set-property "CATEGORY" project-title))))
+;(add-hook 'org-capture-before-finalize-hook 'jsm/org-project-properties)
+;(add-hook 'org-capture-after-finalize-hook 'jsm/org-project-properties)
+
+; Per Marc-Oliver via org-mode ML
+(define-key org-mode-map
+  [(f11)]
+  (lambda () (interactive)
+    (progn
+      (occur (concat "^\\*+ .*"
+                     (read-from-minibuffer
+                      "Occur for toplevel headlines containing: "))
+             nil)
+      (pop-to-buffer "*Occur*")
+      ;(use-local-map (copy-keymap (current-local-map)))
+      (local-set-key (kbd "RET")
+                     (lambda () (interactive)
+                       (progn
+                         (occur-mode-goto-occurrence)
+                         (delete-other-windows)))))))
