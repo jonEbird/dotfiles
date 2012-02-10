@@ -45,7 +45,9 @@
 ; Speed commands
 (setq org-use-speed-commands t)
 (setq org-speed-commands-user '(("P" . org-property-action)
-				("z" . org-add-note)))
+				("z" . org-add-note)
+				("N" . org-narrow-to-subtree)
+				("W" . widen)))
 ; RET follows links
 (setq org-return-follows-link t)
 ; Don't remove the highlighting after an occur search (C-c / /)
@@ -131,6 +133,9 @@
     (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)
    )))
 
+; Leaving "~/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")))
+
 ;; Custom agenda block views
 ;; Stuff I want to see:
 ;; 1. Any TODO or DELEGATED  - Best collection of items that need work.
@@ -147,20 +152,34 @@
 ;; 2. Personal Development items?
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
-	 ((agenda "" ((org-agenda-span (quote day))))
+	 ((agenda "" ((org-agenda-span 'day)
+		      (org-agenda-files '("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org"))))
 	  (tags-todo "ProjectsFile|TasksFile"
 		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
+	  (agenda "" ((org-agenda-span 'day)
+		      (org-agenda-files '("~/org/personal.org"))))
 	  (tags "+needsrefile")
 	  (todo "DONE")
 	  ))
 	("W" "Work meeting start of notes" occur-tree "^[[][0-9-]* [A-Za-z]* [0-9:]*[]] /[^/]*/.*$"
 	 ((org-agenda-overriding-header "Sparse tree regexp for start of meeting")))))
 
-; Leaving "~/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")))
 ; Controlling how the windows are setup during Agenda views
 (setq org-agenda-window-setup "other-window" ; Defaults to "reorganize-frame"
       org-agenda-restore-windows-after-quit t)
+
+;; Setting up org2blog
+; Installed via ELPA
+;; (require 'org2blog-autoloads)
+;; (require 'netrc)
+;; (setq blog (netrc-machine (netrc-parse "~/.netrc") "jonebird" t))
+;; (setq org2blog/wp-blog-alist
+;;       '(("jonebird.com"
+;; 	 :url "http://jonebird.com/xmlrpc.php"
+;; 	 :username (netrc-get blog "login")
+;; 	 :password (netrc-get blog "password")
+;; 	 :tags-as-categories t)))
+;; ; (org2blog/wp-login)
 
 ;; --------------------------------------------------
 ;; Additional Hacks
@@ -174,7 +193,7 @@
   (interactive)
   (outline-previous-visible-heading 1)
   (org-cycle))
-(global-set-key (kbd "C-S-f") 'org-fold-here)
+(define-key org-mode-map (kbd "C-S-f") 'org-fold-here)
 
 ;; Thanks norang - Exactly what I like to do
 ;;  http://doc.norang.ca/org-mode.html#sec-15-21
@@ -195,15 +214,13 @@
 (defun org-work-checkin ()
   (interactive)
   (org-clock-in)
-  (org-narrow-to-subtree)
-  )
+  (org-narrow-to-subtree))
 (defun org-work-checkout ()
   (interactive)
-  (org-clock-out)
   (widen)
-  )
-(global-set-key "\C-ci" (quote org-work-checkin))
-(global-set-key "\C-co" (quote org-work-checkout))
+  (org-clock-out))
+(define-key org-mode-map "\C-ci" 'org-work-checkin)
+(define-key org-mode-map "\C-co" 'org-work-checkout)
 
 ;; Presentations via S5 for your org file
 (load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
@@ -237,7 +254,7 @@ followed by italicized meeting heading which is specified by the user"
 	(setq prefix ""))
     (org-end-of-line)
     (org-insert-time-stamp nil t t prefix (concat " /" meeting-title "/\n") nil)))
-(global-set-key "\M-i" 'jsm/org-insert-meeting-heading)
+(define-key org-mode-map "\M-i" 'jsm/org-insert-meeting-heading)
 ;; Alternatively accomplished via an org-capture:
 ; ("." "Current working heading" plain (clock) "%U - /%^{Meeting Title}/" :immediate-finish t :unnarrowed t)
 
@@ -246,12 +263,13 @@ followed by italicized meeting heading which is specified by the user"
 sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
   (interactive)
   (save-excursion
-    (org-goto-marker-or-bmk org-capture-last-stored-marker)
-    ;(org-capture-goto-last-stored) ; Aka C-u C-u org-capture
-    (let ((project-title (org-get-heading t t)))
-      ;(message (concat "DEBUG: project-title = \"" project-title "\""))
-      (org-set-property "EXPORT_TITLE" project-title)
-      (org-set-property "CATEGORY" project-title))))
+    (save-window-excursion
+      (org-goto-marker-or-bmk org-capture-last-stored-marker)
+      ;(org-capture-goto-last-stored) ; Aka C-u C-u org-capture
+      (let ((project-title (org-get-heading t t)))
+        ;(message (concat "DEBUG: project-title = \"" project-title "\""))
+	(org-set-property "EXPORT_TITLE" project-title)
+	(org-set-property "CATEGORY" project-title)))))
 ;(add-hook 'org-capture-before-finalize-hook 'jsm/org-project-properties)
 ;(add-hook 'org-capture-after-finalize-hook 'jsm/org-project-properties)
 
@@ -271,3 +289,15 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
                        (progn
                          (occur-mode-goto-occurrence)
                          (delete-other-windows)))))))
+
+;; I like to export to html and immediately open in a browser tab
+;;   Most of the time it is with a subtree. A tadbit annoying that
+;;   certain properties are used only when you select the region
+;;   vs. simplying having it narrowed.
+;; See http://orgmode.org/manual/Export-options.html for other properties
+(defun jsm/org-export-subtree-as-html-and-open ()
+  (interactive)
+  (save-excursion
+    (org-mark-subtree)
+    (org-export-as-html-and-open 3)))
+(define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)

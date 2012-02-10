@@ -175,4 +175,5 @@
 			"tramp_config"
 			"linux_config"
 			"windows_config"
+			"erc_config"
                        ))
