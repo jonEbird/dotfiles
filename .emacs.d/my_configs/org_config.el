@@ -77,11 +77,15 @@
 			   )))
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t)
+
 ;; Custom HTML exporting
 (setq org-export-html-postamble t)
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
 ; Update any dblocks before exporting
-(add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
+; (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
+;   (org-update-all-dblocks) -> kills large regions of my text file when region set using "C-c @"
+;   Or rather (org-map-dblocks 'org-update-dblock) does
+
 ; Agenda Info
 (setq org-agenda-todo-ignore-scheduled "all"
       org-agenda-todo-ignore-deadlines "near"
@@ -300,4 +304,21 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
   (save-excursion
     (org-mark-subtree)
     (org-export-as-html-and-open 3)))
+;; (defun jsm/org-export-subtree-as-html-and-open ()
+;;   (interactive)
+;;   (save-excursion
+;;     (save-restriction
+;;       (org-narrow-to-subtree)
+;;       (org-export-as-html-and-open 3))))
 (define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
+
+;; Hack to change the appearance of the checkboxes [X] via the ML
+ (font-lock-add-keywords
+  'org-mode `(("\\[X\\]"
+               (0 (progn (compose-region (match-beginning 0) (match-end 0)
+                                         "☑") ; ✔ ☐ ☑
+                         nil)))
+	      ("\\[ \\]"
+               (0 (progn (compose-region (match-beginning 0) (match-end 0)
+                                         "☐")
+                         nil)))))
