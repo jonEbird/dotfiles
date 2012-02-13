@@ -126,6 +126,9 @@
 ; desktop-change-dir rip off?
 ; emacsclient -e "(desktop-read \"$(pwd)\")"
 
+;; devilspie *.ds files are s-expressions
+(add-to-list 'auto-mode-alist '("\\.ds$" . emacs-lisp-mode))
+
 ;; --------------------------------------------------
 ;; Extra stuff not significant enough to be in own file. Aka. Hacks
 ;; --------------------------------------------------

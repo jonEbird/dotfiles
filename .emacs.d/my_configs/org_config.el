@@ -176,6 +176,8 @@
 ; Installed via ELPA
 ;; (require 'org2blog-autoloads)
 ;; (require 'netrc)
+;;; netrc entry would look like:
+;;; machine jonebird login admin password myrealpassword
 ;; (setq blog (netrc-machine (netrc-parse "~/.netrc") "jonebird" t))
 ;; (setq org2blog/wp-blog-alist
 ;;       '(("jonebird.com"
