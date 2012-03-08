@@ -33,8 +33,7 @@
   (require 'netrc)
   (setq confluence-creds (netrc-machine (netrc-parse "~/.netrc") "confluence" t))
   (setq confluence-save-credentials t
-	confluence-login-credential-alist
-	(cons confluence-url (list (cons (netrc-get confluence-creds "login") (netrc-get confluence-creds "password")))))
+	confluence-login-credential-alist (list (cons confluence-url (cons (netrc-get confluence-creds "login") (netrc-get confluence-creds "password")))) )
   )
 
 ;; --------------------------------------------------
