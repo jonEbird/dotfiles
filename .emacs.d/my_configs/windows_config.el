@@ -29,6 +29,12 @@
   (add-hook 'confluence-mode-hook
 	    '(lambda ()
 	       (local-set-key "\C-xw" confluence-prefix-map)))
+  ; Login information
+  (require 'netrc)
+  (setq confluence-creds (netrc-machine (netrc-parse "~/.netrc") "confluence" t))
+  (setq confluence-save-credentials t
+	confluence-login-credential-alist
+	(cons confluence-url (list (cons (netrc-get confluence-creds "login") (netrc-get confluence-creds "password")))))
   )
 
 ;; --------------------------------------------------
