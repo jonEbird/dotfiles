@@ -146,7 +146,7 @@
    ("p" "Projects or Repeating" entry (file+headline "~/org/projects.org" "Projects")
     (file "~/org/projects.tmplt") :clock-in t :clock-resume t)
    ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
-    (file "~/org/meetings.tmplt") :clock-in t :clock-resume t)
+    (file "~/org/meetings.tmplt") )
    ("s" "Support Production or Oncall Consultation" entry (file+headline "~/org/projects.org" "Support Production")
     (file "~/org/support.tmplt") :clock-in t :clock-resume t)
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
@@ -326,13 +326,15 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
   (save-excursion
     (org-mark-subtree)
     (org-export-as-html-and-open 3)))
-;; (defun jsm/org-export-subtree-as-html-and-open ()
-;;   (interactive)
-;;   (save-excursion
-;;     (save-restriction
-;;       (org-narrow-to-subtree)
-;;       (org-export-as-html-and-open 3))))
 (define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
+
+(defun jsm/org-export-subtree-as-html-with-subtree-name-and-open ()
+  (interactive)
+  (save-excursion
+    (let ((buffer-file-name (concat (file-name-directory (buffer-file-name)) (substring-no-properties (org-get-heading t t))) ))
+      (org-mark-subtree)
+      (org-export-as-html-and-open 3))))
+(define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
 
 ;; Hack to change the appearance of the checkboxes [X] via the ML
  (font-lock-add-keywords
