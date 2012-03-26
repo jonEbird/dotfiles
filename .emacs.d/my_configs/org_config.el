@@ -31,7 +31,8 @@
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 ; columns shown in column mode (defaults to "%25ITEM %TODO %3PRIORITY %TAGS")
-(setq org-columns-default-format "%80ITEM %TODO %3PRIORITY %10Effort(Effort){:} %TAGS")
+(setq org-columns-default-format "%80ITEM %TODO %3PRIORITY %10Effort(Effort){:} %TAGS"
+      org-tags-column -100)
 ; logging
 (setq org-log-into-drawer t)
 (setq org-clock-into-drawer t)
@@ -74,6 +75,7 @@
 			   ("python" . python)
 			   ("javascript" . js)
 			   ("c" . c)
+			   ("sql" . sql)
 			   )))
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t)
@@ -311,10 +313,20 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 (defun jsm/org-export-subtree-as-html-with-subtree-name-and-open ()
   (interactive)
   (save-excursion
-    (let ((buffer-file-name (concat (file-name-directory (buffer-file-name)) (substring-no-properties (org-get-heading t t))) ))
+    ;(let ((buffer-file-name (concat (file-name-directory (buffer-file-name)) (substring-no-properties (org-get-heading t t))) ))
+    ;(let ((buffer-file-name (concat (expand-file-name "~/published/") (substring-no-properties (org-get-heading t t))) ))
+    (let ((buffer-file-name "") (new-file-name (substring-no-properties (org-get-heading t t))) )
+      (when (string-match "[/&]" new-file-name)
+	(setq new-file-name (replace-match "" nil nil new-file-name)))
+      (setq buffer-file-name (concat (expand-file-name "~/published/") new-file-name ".org"))
+      (message (concat "Using the new file-name of: " buffer-file-name))
       (org-mark-subtree)
-      (org-export-as-html-and-open 3))))
+      (org-export-as-html-and-open 3) )))
 (define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
+
+;; (setq new-file-name "linux/Unix & blah")
+;; (when (string-match "[/&]" new-file-name)
+;;   (message (concat "[" (replace-match "" nil nil new-file-name) "]")))
 
 ;; Hack to change the appearance of the checkboxes [X] via the ML
  (font-lock-add-keywords
