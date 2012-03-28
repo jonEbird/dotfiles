@@ -80,6 +80,26 @@
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t)
 
+; org-babel configuration
+(org-babel-do-load-languages
+ (quote org-babel-load-languages)
+ (quote ((emacs-lisp . t)
+         (dot . t)
+         (ditaa . t)
+         (R . t)
+         (python . t)
+         (ruby . t)
+         (gnuplot . t)
+         (clojure . t)
+         (sh . t)
+         (ledger . t)
+         (org . t)
+         (plantuml . t)
+         (latex . t))))
+
+(setq org-ditaa-jar-path "/usr/share/java/ditaa.jar")
+(setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
+
 ;; Custom HTML exporting
 (setq org-export-html-postamble t)
 (setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
@@ -176,10 +196,10 @@
 
 ;; Setting up org2blog
 ; Installed via ELPA
-;; (require 'org2blog-autoloads)
-;; (require 'netrc)
-;;; netrc entry would look like:
-;;; machine jonebird login admin password myrealpassword
+;(require 'org2blog-autoloads)
+(require 'netrc)
+; netrc entry would look like:
+; machine jonebird login admin password myrealpassword
 ;; (setq blog (netrc-machine (netrc-parse "~/.netrc") "jonebird" t))
 ;; (setq org2blog/wp-blog-alist
 ;;       '(("jonebird.com"
@@ -187,7 +207,7 @@
 ;; 	 :username (netrc-get blog "login")
 ;; 	 :password (netrc-get blog "password")
 ;; 	 :tags-as-categories t)))
-;; ; (org2blog/wp-login)
+; (org2blog/wp-login)
 
 ;; --------------------------------------------------
 ;; Additional Hacks
