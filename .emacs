@@ -85,6 +85,15 @@
 (desktop-save-mode 1)
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
+;; Enabling ido Mode
+; Used http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/ for guidelines.
+(setq ido-enable-flex-matching t
+      ido-everywhere t
+      ido-use-filename-at-point 'guess
+      ido-create-new-buffer 'always
+      ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
+(ido-mode 1)
+
 ;; Leave this here for whenever I use M-x customize-variable.
 ;;  when related to a major config, I may move it manually.
 ;;  until I move it, this will be a dropping zone
