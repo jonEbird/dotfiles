@@ -6,7 +6,7 @@ set "HOME=%BASE%\soft\config"
 cd %HOME%
 REM Note, we actually start in the HOME directory via the shortcut
 del /P "*.lock"
-set PATH=%PATH%;"C:\Program Files (x86)\Git\bin\"
+REM set PATH=%PATH%;"C:\Program Files (x86)\Git\bin\"
 set PATH=%PATH%;%BASE%\soft\emacs-%EMACSVERSION%\bin\
 set PATH=%PATH%;%BASE%\Downloads\
 REM

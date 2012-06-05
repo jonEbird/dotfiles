@@ -22,10 +22,12 @@
        (require 'longlines)
        (progn
 	 (add-hook 'confluence-mode-hook 'longlines-mode)
+	 (add-hook 'confluence-mode-hook 'flyspell-mode)
 	 (add-hook 'confluence-before-save-hook 'longlines-before-revert-hook)
 	 (add-hook 'confluence-before-revert-hook 'longlines-before-revert-hook)
 	 (add-hook 'confluence-mode-hook '(lambda () (local-set-key "\C-j" 'confluence-newline-and-indent))))))
   (global-set-key "\C-xwf" 'confluence-get-page)
+  (defalias 'wiki-get-page 'confluence-get-page)
   (add-hook 'confluence-mode-hook
 	    '(lambda ()
 	       (local-set-key "\C-xw" confluence-prefix-map)))

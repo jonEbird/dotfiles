@@ -277,7 +277,7 @@ followed by italicized meeting heading which is specified by the user"
   (interactive)
   (let ((prefix "\n")
 	(cur-sentence (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
-	(meeting-title (read-string "Meeting Title [Working Notes]: " nil '() "Working Notes")))
+	(meeting-title (read-string "Meeting Title [Meeting Notes]: " nil '() "Meeting Notes")))
     (if (equal cur-sentence "")
 	(setq prefix ""))
     (org-end-of-line)
