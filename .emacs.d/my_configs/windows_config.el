@@ -55,4 +55,5 @@
 			("\\.pdf\\'" . default)
 			("\\.xlsx?" . default)
 			("\\.docx?" . default)))
+  (load-theme 'deeper-blue nil nil)
   )
