@@ -48,6 +48,7 @@
    ;; url-proxy-services '(("no_proxy" . "nwie\\.net")
    ;; 			("http" . "http-proxy.nwie.net:8080"))
    )
+  (setq magit-git-executable "C:\\Program Files (x86)\\Git\\bin\\git.exe")
   (confluence-support-setup)
   (setq org-file-apps '((auto-mode . emacs)
 			("\\.mm\\'" . default)
