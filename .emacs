@@ -29,6 +29,7 @@
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
@@ -129,6 +130,7 @@
 (global-set-key "\C-cw" 'delete-region) ; ala C-w and M-C-w
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
+(global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
 
 ;; I like to do a desktop-save in each of my projects
 ;(desktop-read (read-file-name "Which project desktop ? "))
