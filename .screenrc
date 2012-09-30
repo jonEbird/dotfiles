@@ -1,0 +1,131 @@
+# -*- shell-script -*-
+
+# set the official command prefix to C-\ *not* C-a!
+escape ^\\
+
+# ...however, i'll use F1 instead
+bindkey -k k1 command
+
+# F2 or F12 enters copy mode
+bindkey -k k2 copy
+bindkey -k F2 copy
+
+# pgup enters copy mode and scroll up a full page
+# ...nevermind, this interferes with using pgup in other apps like less
+#bindkey -k kP eval copy "stuff \033[5"
+bindkey ^[[5;3~ eval copy "stuff ^U"
+
+# F1 C-d *doesn't* detach
+bind ^D
+
+# C-g, C-c, backspace quit command mode
+bind ^g fit
+bind ^c fit
+bind ^? fit
+
+# C-0 through 2 switch to those windows. (never mind, this collides with a
+# few emacs keybindings.)
+# bind ^0 "select 0"
+# bind ^1 "select 1"
+# bind ^2 "select 2"
+
+# use my tcsh build
+#shell ${HOME}/bin/tcsh
+shell /bin/bash
+
+# don't pause for each screen message
+msgminwait 0
+
+# no flow control, e.g. ^S and ^Q
+defflow off
+
+# don't tell me when bells happen in other windows
+vbell off
+bell_msg ""
+
+# advertise hardstatus support
+termcapinfo  * '' 'hs:ts=\E_:fs=\E\\:ds=\E_\E\\'
+#hardstatus lastline string "[screen %n%?: %t%?] %h"
+caption always "[screen %n%?: %t%?] %h"
+
+defscrollback 32768
+
+setenv DISPLAY :0.0
+
+# Bind Control-PageDown to 'next', Control-PageUp to 'prev'
+# to navigate between windows
+bindkey ^[[5;5~ prev
+bindkey ^[[6;5~ next
+
+bindkey ^[[5^ prev
+bindkey ^[[6^ next
+
+# Bind arrow keys Control-Down to 'next', Control-Up to 'prev'
+# to navigate between windows
+bindkey ^[[1;5A prev
+bindkey ^[[1;5B next
+
+#################
+# copy mode stuff
+#################
+
+# emacs keybindings for navigation in copy mode
+markkeys ^B=Y:^F=V:h=^B:l=^F:0=^A:$=^E
+
+# C-g and other keys quit copy mode. Esc does nothing.
+markkeys \033=\015=^G=^D=h=j=k=l=H=M=L=G=g=y=c=v=a=x=b=e=B=E=w
+markkeys @=\033
+
+# special hack for C-e, since it should go *past* the last char.
+# (-m means this is for copy mode only.)
+bindkey -m ^e stuff "\$^f"
+
+# page up and page down
+bindkey -m -k kP stuff Y
+bindkey -m -k kN stuff V
+
+# C-space sets mark. markkeys does it in screen 4.0 and higher, but 3.9x
+# needs the bindkey command. (note the ^@ escape sequence for C-space.)
+markkeys ' '=^@
+# bindkey -m ^@ stuff ' '
+
+# fruitless attempt to make C-space do the right thing in i-search too
+# bindkey -m ^@ eval "stuff \033" "stuff ^@" 
+
+# copy word under point. (disabled since it overrode typing w in isearch :P)
+# markkeys W=w
+
+# control arrows move by words. (set B, e, and w to F keys so that i can use
+# them to move by words, but they themselves still quit copy mode.)
+markkeys B=[:E=]:b={:e=}:w=>
+bindkey -m ^[Od stuff {  #"[[}"
+bindkey -m ^[Oc stuff ]  #"}]^f"
+
+
+bufferfile "/home/jon/.screen-buffer"
+
+# M-w copies region, W escapes out of i-search and copies word. afterward,
+# synchronize the paste buffer with the X selection.
+#bindkey -m \033w eval "stuff ' '" writebuf "exec sh -c 'xsel -n < /home/jon/.screen-buffer' 'stuff ^C'"
+bindkey -m \033w eval "stuff ' '" writebuf "exec sh -c 'xsel -ip < /home/jon/.screen-buffer' 'stuff ^C'"
+
+# evidently only C-g, Esc, and C-space break out of i-search. so, use
+# C-space, because with my setup, it doesn't break out of copy mode too.
+# markkeys "^ =^u"
+bindkey -m W eval "stuff \033W" writebuf "exec sh -c 'xsel -ip < /home/jon/.screen-buffer' 'stuff ^C'"
+
+# make search case-insensitive
+ignorecase on
+
+
+###############
+# session setup
+###############
+
+screen /bin/bash # window 1
+screen /bin/bash # window 2
+screen /bin/bash # window 0
+
+select 0
+fit
+
