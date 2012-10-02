@@ -48,6 +48,10 @@ termcapinfo  * '' 'hs:ts=\E_:fs=\E\\:ds=\E_\E\\'
 #hardstatus lastline string "[screen %n%?: %t%?] %h"
 caption always "[screen %n%?: %t%?] %h"
 
+# Ensures my term can send width changes
+# # "You must specify Z0 and Z1 in  your  termcap  to use the width-changing commands."
+termcapinfo  xterm is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;4;6l
+
 defscrollback 32768
 
 setenv DISPLAY :0.0
