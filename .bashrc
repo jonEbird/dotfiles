@@ -5,10 +5,14 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
-# Tracktime Integration
-if [ -f ~/projects/tracktime/completion.bash ]; then
-    source ${HOME}/projects/tracktime/completion.bash ${HOME}/projects/tracktime ${HOME}/projects
-fi
+# Tracktime Integration - Couple known locations
+TRACKTIME_LOCATIONS="~/projects/tracktime ~/tracktime"
+for tracktime in $TRACKTIME_LOCATIONS; do
+    if eval [ -f ${tracktime}/completion.bash ]; then
+	eval source ${tracktime}/completion.bash ${tracktime} ${HOME}/projects
+	break
+    fi
+done
 
 # Keep the admin commands in my PATH and ~/bin
 PATH=$PATH:/sbin:/usr/sbin
@@ -21,7 +25,7 @@ export EDITOR=emacsclient
 export PYTHONSTARTUP=~/.pythonrc
 
 # User specific aliases and functions
-xset b off
+xset b off 2>&-
 alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
 alias n="screen -x normal "
@@ -36,3 +40,5 @@ alias gerp=grep
 #  # normally, execution of this rc script ends here...
 #  echo "Screen failed! continuing with normal bash startup"
 #fi
+
+[ -f ~/.proxy ] && source ~/.proxy
