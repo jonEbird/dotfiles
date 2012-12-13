@@ -25,6 +25,11 @@
 ; always end a file with a newline
 (setq require-final-newline 't)
 
+; Useful for conditional variables
+(defvar hostname
+  (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
+  "hostname of this machine")
+
 ; ELPA package support
 (require 'package)
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -84,6 +89,8 @@
 (desktop-load-default)
 (setq desktop-enable t)
 (desktop-save-mode 1)
+(setq desktop-base-file-name (concat ".emacs.desktop." hostname))
+
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ;; Enabling ido Mode
@@ -92,6 +99,7 @@
       ido-everywhere t
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
+      ido-save-directory-list-file (concat ".ido.last." hostname)
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (ido-mode 1)
 
@@ -191,3 +199,5 @@
 			"windows_config"
 			"erc_config"
                        ))
+
+(setq frame-title-format '(buffer-file-name "%f" ("%b")))
