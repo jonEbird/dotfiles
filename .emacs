@@ -89,7 +89,10 @@
 (desktop-load-default)
 (setq desktop-enable t)
 (desktop-save-mode 1)
-(setq desktop-base-file-name (concat ".emacs.desktop." hostname))
+(setq
+ desktop-base-file-name (concat ".emacs.desktop." hostname)
+ desktop-base-lock-name (concat ".emacs.desktop." hostname ".lock")
+ )
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
