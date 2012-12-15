@@ -151,6 +151,19 @@
 ;; devilspie *.ds files are s-expressions
 (add-to-list 'auto-mode-alist '("\\.ds$" . emacs-lisp-mode))
 
+;; Transparency
+(eval-when-compile (require 'cl))
+(set-frame-parameter (selected-frame) 'alpha '(80 50))
+(add-to-list 'default-frame-alist '(alpha 80 50))
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (cadr (find 'alpha (frame-parameters nil) :key #'car))
+       100)
+      (set-frame-parameter nil 'alpha '(100 100))
+    (set-frame-parameter nil 'alpha '(80 60))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
+
 ;; --------------------------------------------------
 ;; Extra stuff not significant enough to be in own file. Aka. Hacks
 ;; --------------------------------------------------
