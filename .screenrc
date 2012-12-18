@@ -129,6 +129,7 @@ ignorecase on
 screen /bin/bash # window 1
 screen /bin/bash # window 2
 screen /bin/bash # window 0
+screen -t devilspie 11 /usr/bin/devilspie
 
 select 0
 fit

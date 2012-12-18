@@ -14,8 +14,7 @@
 ;; --------------------------------------------------
 (when (eq system-type 'gnu/linux)
   (message "Setting up specific settings for Linux")
-  (setq browse-url-generic-program
-	(substring (shell-command-to-string "gconftool-2 -g /desktop/gnome/applications/browser/exec") 0 -1)
+  (setq browse-url-generic-program "google-chrome"
 	browse-url-browser-function 'browse-url-generic)
   ; FIXME
   (setq org-file-apps '((auto-mode . emacs)
