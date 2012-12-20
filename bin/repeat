@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Uber simple script to repeat execution of something
+# - Used most often in my screen sessions where I want to be able to
+#   execute a simple command but be able to kill it and have it respawn.
+
+COMMAND_FULL="$@"
+
+# Keep track of number of iterations
+N=1
+
+while :; do
+    echo "\"${COMMAND_FULL}\" - #${N}"
+    $COMMAND_FULL
+    N=$((N+1))
+done
