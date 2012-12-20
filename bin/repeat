@@ -5,10 +5,14 @@
 #   execute a simple command but be able to kill it and have it respawn.
 
 COMMAND_FULL="$@"
+function reset_msg() {
+    echo -e '\b'
+    printf "Restarting.\n\n"
+}
+trap reset_msg SIGTERM SIGINT
 
 # Keep track of number of iterations
 N=1
-
 while :; do
     echo "\"${COMMAND_FULL}\" - #${N}"
     $COMMAND_FULL
