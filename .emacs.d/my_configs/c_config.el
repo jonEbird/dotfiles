@@ -6,8 +6,8 @@
 ; (gtags-visit-rootdir "/usr/src/linux-2.6.21")
 
 ;; etags-select extensions
-;; (require 'etags-select)
-;; (require 'etags-table)
+(require 'etags-select)
+(require 'etags-table)
 (global-set-key "\M-?" 'etags-select-find-tag-at-point)
 (global-set-key "\M-." 'etags-select-find-tag)
 ; This helps you automatically search and find the TAGS file

@@ -31,10 +31,13 @@
   "hostname of this machine")
 
 ; ELPA package support
-(require 'package)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
-(add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+  (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
+  )
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
