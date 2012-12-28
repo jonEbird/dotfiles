@@ -154,6 +154,11 @@
 ;; devilspie *.ds files are s-expressions
 (add-to-list 'auto-mode-alist '("\\.ds$" . emacs-lisp-mode))
 
+;; Install yaml-mode via the ELPA repository and associate file types
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+
 ;; Transparency
 (eval-when-compile (require 'cl))
 (set-frame-parameter (selected-frame) 'alpha '(80 50))
