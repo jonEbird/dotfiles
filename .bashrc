@@ -30,6 +30,8 @@ alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
 alias n="screen -x normal "
 alias gerp=grep
+alias nmap-sp='nmap -PE -sn ' # Named after the old way of "nmap -sP <cidr>"
+alias sudo='sudo ' # This way you can sudo execute other aliased commands
 
 #if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x ]
 #then
