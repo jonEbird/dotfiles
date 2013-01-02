@@ -1,0 +1,28 @@
+; Need to encapsulate multiple rules into a begin block or separate files.
+(begin
+ (if (is (application_name) "oclock")
+     (begin
+      (geometry "120x120+5+0")
+      (pin)
+      (stick)
+      (skip_pager)
+      (skip_tasklist)
+      (below)
+      (undecorate)
+      (unshade)
+      )
+   )
+ ; cairo-clock is a better alternative since it stays out of your pager
+ (if (is (application_name) "cairo-clock")
+     (begin
+      (geometry "176x183+-11+16")
+      (pin)
+      (stick)
+      (skip_pager)
+      (skip_tasklist)
+      (below)
+      (undecorate)
+      (unshade)
+      )
+   )
+)

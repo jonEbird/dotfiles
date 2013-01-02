@@ -1,0 +1,7 @@
+(if (is (application_name) "emacs")
+    (begin
+     (geometry "1406x964+401+54") ; via devilspie itself
+     (pin)
+     (stick)
+     )
+  )

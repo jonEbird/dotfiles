@@ -94,7 +94,7 @@ markkeys ' '=^@
 # bindkey -m ^@ stuff ' '
 
 # fruitless attempt to make C-space do the right thing in i-search too
-# bindkey -m ^@ eval "stuff \033" "stuff ^@" 
+# bindkey -m ^@ eval "stuff \033" "stuff ^@"
 
 # copy word under point. (disabled since it overrode typing w in isearch :P)
 # markkeys W=w
@@ -129,8 +129,9 @@ ignorecase on
 screen /bin/bash # window 1
 screen /bin/bash # window 2
 screen /bin/bash # window 0
-screen -t devilspie 11 /usr/bin/devilspie
+screen -t devilspie 11 repeat /usr/bin/devilspie
+# screen -t wallclock 12 /usr/bin/oclock -transparent -minute darkblue
+screen -t wallclock 12 cairo-clock -t radium --width=200 --height=200 -d -i
 
 select 0
 fit
-
