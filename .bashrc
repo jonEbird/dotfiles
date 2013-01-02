@@ -23,6 +23,8 @@ export MPD_HOST=sajou
 export MPD_PORT=6600
 export EDITOR=emacsclient
 export PYTHONSTARTUP=~/.pythonrc
+export PAGER=less
+export LESS="-I-q-s-F"
 
 # User specific aliases and functions
 xset b off 2>&-
@@ -30,8 +32,20 @@ alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
 alias n="screen -x normal "
 alias gerp=grep
-alias nmap-sp='nmap -PE -sn ' # Named after the old way of "nmap -sP <cidr>"
-alias sudo='sudo ' # This way you can sudo execute other aliased commands
+
+# Domain / Site specific configurations
+DOMAIN=$(dnsdomainname 2>&-)
+if [ -n "${DOMAIN}" -a -r ~/.bashrc.${DOMAIN} ]; then
+    echo "DEBUG: sourcing ~/.bashrc.${DOMAIN}"
+fi
+# Special "domains"
+DOMAINS_SPECIAL="home work laptop"
+for d in $DOMAINS_SPECIAL; do
+    if [ -r ~/.bashrc.${d} ]; then
+	echo "DEBUG: sourcing ~/.bashrc.${d}"
+	source ~/.bashrc.${d}
+    fi
+done
 
 #if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x ]
 #then
