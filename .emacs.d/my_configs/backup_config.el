@@ -6,10 +6,10 @@
    in one place, instead of all over the filesystem."
   (require 'dired)
   (message (concat "make-backup: " file-name))
-  (if (file-exists-p "~/.backups")
-      (concat (expand-file-name "~/.backups/")
-	      (dired-replace-in-string "/" "|" file-name))
-    (concat file-name "~")))
+  (if (not (file-exists-p "~/.backups"))
+      (make-directory (expand-file-name "~/.backups/") 't))
+  (concat (expand-file-name "~/.backups/")
+	  (dired-replace-in-string "/" "|" file-name)))
 
 ;; Set different methods depending on what system
 (if (eq system-type 'windows-nt)
