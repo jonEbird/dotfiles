@@ -30,22 +30,23 @@ export LESS="-I-q-s-F"
 xset b off 2>&-
 alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
-alias n="screen -x normal "
-alias gerp=grep
+alias n='screen -x normal '
+alias gerp='grep '
+alias sudo='sudo '
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
-if [ -n "${DOMAIN}" -a -r ~/.bashrc.${DOMAIN} ]; then
-    echo "DEBUG: sourcing ~/.bashrc.${DOMAIN}"
+if [ -d ~/.bashrc.${DOMAIN}.d ]; then
+    for bashrc in ~/.bashrc.${DOMAIN}.d/*; do
+	source ${bashrc}
+    done
 fi
-# Special "domains"
-DOMAINS_SPECIAL="home work laptop"
-for d in $DOMAINS_SPECIAL; do
-    if [ -r ~/.bashrc.${d} ]; then
-	echo "DEBUG: sourcing ~/.bashrc.${d}"
-	source ~/.bashrc.${d}
-    fi
-done
+MACHINE=$(hostname | sed 's/^\([^\.]*\).*$/\1/g')
+if [ -d ~/.bashrc.${MACHINE}.d ]; then
+    for bashrc in ~/.bashrc.${MACHINE}.d/*; do
+	source ${bashrc}
+    done
+fi
 
 #if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x ]
 #then
