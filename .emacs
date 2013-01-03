@@ -172,6 +172,11 @@
     (set-frame-parameter nil 'alpha '(80 60))))
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
+;; GnuPG Setup
+(setq epa-armor 't)
+(require 'epa-file)
+(epa-file-enable)
+
 ;; --------------------------------------------------
 ;; Extra stuff not significant enough to be in own file. Aka. Hacks
 ;; --------------------------------------------------
@@ -194,6 +199,23 @@
     (insert (save-excursion (set-buffer orig-buffer)
                             (buffer-substring-no-properties b e)))
     (message-send-and-exit)))
+
+;; Used for preferring a .gpg version of a file over a normal one
+;;   Handy for dynamically building configs, such as org-mode during boot.
+(defun jsm:prefer-gpg (filelist)
+  (interactive)
+  (if (listp filelist)
+      (let (mylist (reverse filelist))
+	(dolist (file filelist mylist)
+	  (if (file-exists-p (expand-file-name (concat file ".gpg")))
+	      (setq mylist (cons (expand-file-name (concat file ".gpg")) mylist))
+	    (setq mylist (cons (expand-file-name file) mylist))))
+	)
+    ; filelist is not really a list
+    (if (file-exists-p (expand-file-name (concat filelist ".gpg")))
+	(expand-file-name (concat filelist ".gpg"))
+      (expand-file-name filelist)
+      )))
 
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files
