@@ -1,0 +1,14 @@
+(if
+    (is (application_name) "Pithos")
+    (begin
+     (geometry "551x165+-1+970") ; 551x230+-1+940
+     (unshade)
+     (pin)
+     (stick)
+     (below)
+     (skip_pager)
+     (skip_tasklist)
+     (undecorate)
+     (unshade)
+     )
+  )
