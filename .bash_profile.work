@@ -1,0 +1,16 @@
+#-*- mode:sh; -*-
+
+reset-and-boot-vm() {
+    vm=$1
+    if [ -z "${vm}" ]; then
+	echo "Usage: reset-and-boot-vm <vm-name>" 1>&2
+	return 1
+    fi
+    sudo virsh destroy $vm
+    if [ -f ~/vmimages/${vm}.img ]; then
+	VMSIZE=$(qemu-img info ~/vmimages/${vm}.img | awk '/^virtual size:/{ print $3 }')
+	rm -f ~/vmimages/${vm}.img
+	qemu-img create -f qcow2 -o preallocation=metadata vmimages/neo-vm2-spacewalk-jsmiller.img $VMSIZE
+    fi
+    sudo virsh start $vm
+}
