@@ -5,5 +5,5 @@ else
     echo "Starting screen session \"normal\" in background"
     screen -dmS normal
     #screen -dmr normal -X screen /usr/bin/synergys -a :6700 -d DEBUG -f
-    screen -dmr normal -X screen synergys -a :24800 -d DEBUG -f
+    screen -dmr normal -X screen -t synergy 20 synergys -a :24800 -d DEBUG -f
 fi

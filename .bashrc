@@ -18,6 +18,9 @@ done
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
+# Standard PS1
+PS1="[\u@\h \W]\$ "
+
 export HISTSIZE=100000
 export MPD_HOST=sajou
 export MPD_PORT=6600
@@ -25,6 +28,7 @@ export EDITOR=emacsclient
 export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
 export LESS="-I-q-s-F"
+export WORKON_HOME=~/venv
 
 # User specific aliases and functions
 xset b off 2>&-
@@ -46,6 +50,11 @@ if [ -d ~/.bashrc.${MACHINE}.d ]; then
     for bashrc in ~/.bashrc.${MACHINE}.d/*; do
 	source ${bashrc}
     done
+fi
+
+# virtualenvwrapper
+if type -P virtualenvwrapper.sh 1>/dev/null 2>&1; then
+    source virtualenvwrapper.sh
 fi
 
 #if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x ]

@@ -10,7 +10,18 @@ reset-and-boot-vm() {
     if [ -f ~/vmimages/${vm}.img ]; then
 	VMSIZE=$(qemu-img info ~/vmimages/${vm}.img | awk '/^virtual size:/{ print $3 }')
 	rm -f ~/vmimages/${vm}.img
-	qemu-img create -f qcow2 -o preallocation=metadata vmimages/neo-vm2-spacewalk-jsmiller.img $VMSIZE
+	qemu-img create -f qcow2 -o preallocation=metadata ~/vmimages/${vm}.img $VMSIZE
     fi
     sudo virsh start $vm
+}
+
+which_l() {
+    # which alternate that will traverse links and tell you the _actual_ path
+    # E.g. which_l java -> /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java instead of /usr/bin/java
+    local comm=$1
+    local comm_path=$(type -P $comm)
+    while [ -h $comm_path ]; do
+	comm_path=$(readlink $comm_path)
+    done
+    echo $comm_path
 }
