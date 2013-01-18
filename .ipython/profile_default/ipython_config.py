@@ -378,3 +378,20 @@ c.TerminalInteractiveShell.confirm_exit = False
 # This will enable completion on elements of lists, results of function calls,
 # etc., but can be unsafe because the code is actually evaluated on TAB.
 # c.IPCompleter.greedy = False
+
+# Thanks http://rodesia.org/2012/09/04/making-ipython-virtualenv-aware/
+import site
+from os import environ
+from os.path import join
+from sys import version_info
+
+if 'VIRTUAL_ENV' in environ:
+    virtual_env = join(environ.get('VIRTUAL_ENV'),
+                       'lib',
+                       'python%d.%d' % version_info[:2],
+                       'site-packages')
+    site.addsitedir(virtual_env)
+    print 'VIRTUAL_ENV ->', virtual_env
+    del virtual_env
+del site, environ, join, version_info
+# Also see: http://isbullsh.it/2012/04/Embed-ipython-in-virtualenv/

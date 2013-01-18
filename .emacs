@@ -120,9 +120,11 @@
  '(display-time-mode t)
  '(fill-column 100)
  '(flymake-log-level 3)
+ '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
+ '(virtualenv-root (expand-file-name "~/venv/"))
  '(visual-line-mode 1 t))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces
@@ -145,6 +147,10 @@
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
+
+; I like C-PGUP for previous-buffer and C-PGDN for next-buffer
+(global-set-key [C-prior] 'previous-buffer)
+(global-set-key [C-next] 'next-buffer)
 
 ;; I like to do a desktop-save in each of my projects
 ;(desktop-read (read-file-name "Which project desktop ? "))
