@@ -26,6 +26,9 @@
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-cb" 'org-iswitchb)
 
+; And allow ace-jump-mode within my org files
+(define-key org-mode-map (kbd "C-c SPC") 'ace-jump-mode)
+
 ;; Other Org variables
 ; Typical work estimates for a task
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
@@ -153,8 +156,8 @@
     (file "~/org/support.tmplt") :clock-in t :clock-resume t)
    ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
     (file "~/org/info.tmplt") :clock-in t :clock-resume t)
-   ("a" "Bi-Weekly Architecture Topic" entry (file+olp "~/org/projects.org" "Repeating Projects" "Bi-Weekly Architecture")
-    (file "~/org/repeatmeeting_biweekly-architecture.tmplt") :clock-in t :clock-resume t)
+   ("k" "Kudos to You" entry (file+olp "~/org/info.org" "Development Planning" "Kudos")
+    (file "~/org/kudos.tmplt") )
    ("h" "Home Personal Item" entry (file+headline "~/org/personal.org" "Personal")
     (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)
    )))
