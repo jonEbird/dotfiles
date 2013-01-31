@@ -112,6 +112,10 @@
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (ido-mode 1)
 
+;; Using ace-jump
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
 ;; Leave this here for whenever I use M-x customize-variable.
 ;;  when related to a major config, I may move it manually.
 ;;  until I move it, this will be a dropping zone
