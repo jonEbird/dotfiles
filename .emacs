@@ -5,6 +5,9 @@
 ;; Basic variable configurations
 ;; --------------------------------------------------
 
+;; Extra load path
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+
 ; turn off the toolbar and menu bar
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -114,7 +117,7 @@
 
 ;; Using ace-jump
 (require 'ace-jump-mode)
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 
 ;; Leave this here for whenever I use M-x customize-variable.
 ;;  when related to a major config, I may move it manually.
