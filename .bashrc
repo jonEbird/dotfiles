@@ -36,6 +36,7 @@ alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
 alias n='screen -x normal '
 alias gerp='grep '
+alias grpe='grep '
 alias sudo='sudo '
 
 # Domain / Site specific configurations

@@ -15,7 +15,7 @@
 (defun confluence-support-setup()
   (setq load-path (cons (expand-file-name "~/.emacs.d/confluence-el/") load-path))
   (require 'confluence)
-  (setq confluence-url "http://nw-wiki.nwie.net/wiki/rpc/xmlrpc"
+  (setq confluence-url "https://confluence.qualcomm.com/confluence/rpc/xmlrpc"
 	confluence-default-space-alist (list (cons confluence-url "virtual")))
   (eval-after-load "confluence"
     '(progn

@@ -51,6 +51,9 @@
   '(progn
      (set-face-underline-p 'flyspell-incorrect-face nil)
      (set-face-underline-p 'flyspell-duplicate-face nil)))
+; Most of my flyspell hook are located in their own respective config files,
+;   but for some modes I don't have a dedicated .el file
+(add-hook 'text-mode-hook 'turn-on-flyspell 'append)
 
 ;; don't iconify from within X
 (when window-system
@@ -167,15 +170,15 @@
 
 ;; Transparency
 (eval-when-compile (require 'cl))
-(set-frame-parameter (selected-frame) 'alpha '(80 50))
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
 (add-to-list 'default-frame-alist '(alpha 80 50))
 (defun toggle-transparency ()
   (interactive)
   (if (/=
        (cadr (find 'alpha (frame-parameters nil) :key #'car))
        100)
-      (set-frame-parameter nil 'alpha '(100 100))
-    (set-frame-parameter nil 'alpha '(80 60))))
+      (set-frame-parameter nil 'alpha '(100 100)) ; Not transparent
+    (set-frame-parameter nil 'alpha '(80 60))))   ; Tranparent
 (global-set-key (kbd "C-c t") 'toggle-transparency)
 
 ;; GnuPG Setup
