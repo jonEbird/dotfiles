@@ -157,6 +157,7 @@
 (global-set-key "\C-cc" 'comment-region)
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
+(global-set-key "\M-1" 'string-insert-rectangle)
 
 ; I like C-PGUP for previous-buffer and C-PGDN for next-buffer
 (global-set-key [C-prior] 'previous-buffer)
