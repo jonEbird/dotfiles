@@ -1,0 +1,7 @@
+[color]
+	ui = auto
+	interactive = auto
+[alias]
+	l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(blue)- %an, %ar%Creset'
+	lg = log --graph --oneline --decorate
+	d = diff --color-words
