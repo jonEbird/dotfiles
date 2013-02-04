@@ -27,7 +27,7 @@ export MPD_PORT=6600
 export EDITOR=emacsclient
 export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
-export LESS="-I-q-s-F"
+export LESS="-I-q-s-F-R"
 export WORKON_HOME=~/venv
 
 # User specific aliases and functions
