@@ -1,0 +1,3 @@
+[submodule ".emacs.d/org-jira"]
+	path = .emacs.d/org-jira
+	url = git://github.com/baohaojun/org-jira.git
