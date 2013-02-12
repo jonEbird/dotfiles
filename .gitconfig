@@ -2,7 +2,7 @@
 	ui = auto
 	interactive = auto
 [alias]
-	l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(blue)- %an, %ar%Creset'
+	l = log --graph --decorate --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(blue)- %an, %ar%Creset'
 	lg = log --graph --oneline --decorate
 	d = diff --color-words
 	alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort

@@ -12,6 +12,9 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+; tabs are evil
+(setq-default indent-tabs-mode nil)
+
 ; turn on font-lock mode
 (when (fboundp 'global-font-lock-mode)
   (global-font-lock-mode t))
@@ -255,6 +258,7 @@
 (jsm:load-config-file '("php_config"
 			"org_config"
 			"c_config"
+                        "c++_config"
                         "backup_config"
 			"python_config"
 			"tramp_config"
