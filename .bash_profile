@@ -7,6 +7,11 @@ fi
 
 # User specific environment and startup programs
 
+# Helpful functions
+epoch2date() {
+    date --date="@${1:-0}" +"${2:-%c}"
+}
+
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
 if [ -d ~/.bash_profile.${DOMAIN}.d ]; then
