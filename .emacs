@@ -220,6 +220,14 @@
                             (buffer-substring-no-properties b e)))
     (message-send-and-exit)))
 
+(defun jsm:kill-ring-sexp(&optional arg)
+  "Highlight the current sexp ala mark-sexp and then copy ala kill-ring-save"
+  (interactive "^p")
+  (or arg (setq arg 1))
+  (mark-sexp arg)
+  (kill-ring-save (region-beginning) (region-end)))
+(global-set-key "\M-p" 'jsm:kill-ring-sexp)
+
 ;; Used for preferring a .gpg version of a file over a normal one
 ;;   Handy for dynamically building configs, such as org-mode during boot.
 (defun jsm:prefer-gpg (filelist)
