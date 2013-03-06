@@ -45,6 +45,10 @@
   (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
   )
 
+;; Extra add-ons
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
+(require 'nyan-mode)
+
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
