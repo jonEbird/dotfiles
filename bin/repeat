@@ -4,6 +4,13 @@
 # - Used most often in my screen sessions where I want to be able to
 #   execute a simple command but be able to kill it and have it respawn.
 
+# support a delayed startup
+if [ "$1" == "-p" -o "$1" == "--pause" ]; then
+    echo "Delayed startup for $(($2+0)) seconds."
+    sleep $(($2+0))
+    shift 2
+fi
+
 COMMAND_FULL="$@"
 function reset_msg() {
     echo -e '\b'
@@ -15,6 +22,6 @@ trap reset_msg SIGTERM SIGINT
 N=1
 while :; do
     echo "\"${COMMAND_FULL}\" - #${N}"
-    $COMMAND_FULL
+    eval $COMMAND_FULL
     N=$((N+1))
 done

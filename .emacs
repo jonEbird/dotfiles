@@ -45,9 +45,12 @@
   (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
   )
 
-;; Extra add-ons
+;; Extra add-ons - Typcially from git submodules
+; nyan-mode
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
 (require 'nyan-mode)
+(setq nyan-wavy-trail 't
+      nyan-animate-nyancat 't)
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
@@ -89,8 +92,15 @@
 ;; Start server for emacsclient
 (server-start nil)
 
-;; Kill trailing whitespace
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; Kill trailing whitespace but only in certain modes
+(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode"))
+(defun delete-trailing-whitespace-inmodes ()
+  "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
+  (interactive)  
+  (if (member (symbol-name major-mode) delete-trailing-whitespace-modes)
+      (delete-trailing-whitespace)))
+(add-hook 'before-save-hook 'delete-trailing-whitespace-inmodes)
+
 
 ; Bookmarks support
 ; See http://emacs-fu.blogspot.com/2009/11/bookmarks.html
@@ -135,7 +145,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(display-time-mode t)
- '(fill-column 100)
+ '(fill-column 75)
  '(flymake-log-level 3)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(scroll-bar-mode nil)
