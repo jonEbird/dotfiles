@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# See http://www.emacswiki.org/emacs/EmacsClient for alternative options
+exec emacsclient -n "$@"

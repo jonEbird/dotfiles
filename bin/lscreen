@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Lock the screen by whichever method is available to us based on what kind
+# of screen locking mechanism we might be employing. Order by preference of
+# typical WM and/or locking daemons.
+
+source /etc/init.d/functions
+
+# 1. First check for gnome-screensaver 
+if pidofproc gnome-screensaver >/dev/null; then
+    gnome-screensaver-command -l
+
+# 2. Next check for xscreensaver
+elif pidofproc xscreensaver >/dev/null; then
+    xscreensaver-command -lock
+fi
