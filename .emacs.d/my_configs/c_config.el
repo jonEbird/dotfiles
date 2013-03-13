@@ -27,3 +27,9 @@
     (etags-select-find (ido-completing-read "Tag: " tag-names))))
 ;; Commented out for now. Nice but too slow for huge TAGS files such as for the Linux kernel
 ; (global-set-key (kbd "M-.") 'my-ido-find-tag)
+
+; Set my coding style for working with other Linux source
+(add-hook 'c-mode-hook
+          '(lambda ()
+             (c-set-style "linux")))
+

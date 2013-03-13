@@ -2,5 +2,5 @@
 	path = .emacs.d/org-jira
 	url = git://github.com/baohaojun/org-jira.git
 [submodule "/home/jsmiller/.emacs.d/nyan-mode"]
-	path = /home/jsmiller/.emacs.d/nyan-mode
+	path = .emacs.d/nyan-mode
 	url = https://github.com/TeMPOraL/nyan-mode.git

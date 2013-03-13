@@ -36,6 +36,7 @@
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
   "hostname of this machine")
 
+; ace-jump-mode, yaml-mode, etags-select, etags-table, lua-mode
 ; ELPA package support
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -147,6 +148,7 @@
  '(display-time-mode t)
  '(fill-column 75)
  '(flymake-log-level 3)
+ '(nyan-mode t)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)

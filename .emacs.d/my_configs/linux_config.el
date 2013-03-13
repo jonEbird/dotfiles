@@ -21,4 +21,7 @@
 		      ("\\.mm\\'" . default)
 		      ("\\.x?html?\\'" . "/opt/google/chrome/google-chrome %s")
 		      ("\\.pdf\\'" . default)) )
+  (load-theme 'tango-dark nil nil)
+  (eval-after-load "magit"
+    '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
   )

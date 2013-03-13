@@ -19,6 +19,7 @@ _netrc
 .emacs.d/url/*
 .emacs.desktop*
 .eshell/*
+.ido.*
 .history
 org/*.html
 org/*archive
@@ -36,6 +37,8 @@ scratch/*
 .Skype*
 .adobe/*
 .cache/*
+.ccache/*
+.distcc/*
 .config/*
 .dbus/*
 .dropbox*
@@ -59,17 +62,26 @@ LimeWire*
 .openoffice.org/*
 .themes*
 .thumbnails*
+.snapshot/*
+.nfs*
 .bluefish/*
 .pulse*
 .subversion*
-Download/*
+Download*
 Desktop/*
 Documents/*
-Dropbox/*
-Movies/*
-Music/*
-Pictures/*
-Videos/*
+Dropbox*
+Movies*
+Music*
+Pictures*
+Videos*
+backups/*
+.FBReader*
 # Others
 personal
 scripts/*
+pithos/*
+# sensitive data
+.netrc
+.pki/*
+.pip/*
