@@ -307,7 +307,10 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+    -- More unholy key sequences that I got used to during my Gnome days
+    awful.key({ "Mod1", "Control" }, "Left",   awful.tag.viewprev  ),
+    awful.key({ "Mod1", "Control" }, "Right",  awful.tag.viewnext  )
 )
 
 -- Compute the maximum number of digit we need, limited to 9
