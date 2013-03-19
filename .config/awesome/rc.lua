@@ -310,7 +310,15 @@ clientkeys = awful.util.table.join(
         end),
     -- More unholy key sequences that I got used to during my Gnome days
     awful.key({ "Mod1", "Control" }, "Left",   awful.tag.viewprev  ),
-    awful.key({ "Mod1", "Control" }, "Right",  awful.tag.viewnext  )
+    awful.key({ "Mod1", "Control" }, "Right",  awful.tag.viewnext  ),
+    -- Lovely hack thanks to xdotool and a predictable music player location
+    -- Switch to tag 4 and the click pause/resume
+    awful.key({ modkey, "Shift"   }, "m",
+              function (c)
+                 awful.tag.viewonly(tags[1][4])
+                 awful.util.spawn("x-pause_music.sh")
+                 awful.tag.history.restore()
+              end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
