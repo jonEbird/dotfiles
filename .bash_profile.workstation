@@ -1,3 +1,6 @@
+# Lets ensure a ssh-agent is started
+eval $(ssh-agent )
+
 # Start a screen session
 if screen -ls | egrep -q '[0-9]+\.normal'; then
     echo "Normal session already started."

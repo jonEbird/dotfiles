@@ -12,9 +12,6 @@ epoch2date() {
     date --date="@${1:-0}" +"${2:-%c}"
 }
 
-# Lets ensure a ssh-agent is started
-eval $(ssh-agent )
-
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
 if [ -d ~/.bash_profile.${DOMAIN}.d ]; then
