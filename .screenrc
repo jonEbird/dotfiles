@@ -132,12 +132,6 @@ screen /bin/bash # window 2
 screen /bin/bash # window 3
 screen /bin/bash # window 4
 screen /bin/bash # window 5
-screen /bin/bash # window 6
-screen -t devilspie 11 repeat /usr/bin/devilspie
-# screen -t wallclock 12 /usr/bin/oclock -transparent -minute darkblue
-screen -t wallclock 12 repeat -p 120 /usr/bin/cairo-clock -t radium --width=200 --height=200 -d -i
-screen -t pithos    13 repeat ~/pithos/bin/pithos
-# screen -t synergy   20 synergys -a :24800 -d DEBUG -f # Executed via .bash_profile.home
 
 select 0
 fit

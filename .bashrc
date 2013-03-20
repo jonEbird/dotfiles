@@ -34,7 +34,7 @@ export WORKON_HOME=~/venv
 xset b off 2>&-
 alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
-alias n='screen -x normal '
+alias n='normal-screen '
 alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
