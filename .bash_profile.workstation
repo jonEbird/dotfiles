@@ -1,3 +1,5 @@
+# -*- sh -*-
+
 # Lets ensure a ssh-agent is started
 eval $(ssh-agent )
 

@@ -25,3 +25,23 @@ which_l() {
     done
     echo $comm_path
 }
+
+mv2workspace() {
+    local bd=$1
+    local WORKSPACE=${2:-/opt/data/${USER}/workstation}
+    local USAGE="Usage: mv2workspace <dir> [<workspacedir>]"
+    [ -z "${bd}" ] && { echo $USAGE 1>&2; return 1; }
+    if [ ! -d ${WORKSPACE} ]; then
+        echo "Error: Workplace \"${WORKSPACE}\" does not exist." 1>&2
+        echo $USAGE 1>&2
+        return 2
+    fi
+    if [ ! -d ${WORKSPACE}/$bd -a -d ~/${bd} ]; then
+        echo "Moving $bd over to $WORKSPACE"
+        rsync -a ~/${bd} ${WORKSPACE}/
+        if [ $? -eq 0 ]; then
+            rm -rf ~/${bd}
+            ln -s ${WORKSPACE}/${bd} ~/${bd}
+        fi
+    fi
+}

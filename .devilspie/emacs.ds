@@ -1,6 +1,6 @@
 (if (is (application_name) "emacs")
     (begin
-     (geometry "1545x964+262+54") ; via devilspie itself
+     (geometry "1758x1000+262+40") ; via devilspie itself
      (pin)
      (stick)
      )
@@ -8,5 +8,6 @@
 ; What you see in Gnome is 9.25 times smaller than what Devilspie wants to see.
 ; 152x48 = 1406x964
 ; 167x48 = 1545x964
+; 190x52 = 1758x482
 ; Move over 138.75 with that size increase
 ; New value "1545x964+262+54" from "1406x964+401+54"
