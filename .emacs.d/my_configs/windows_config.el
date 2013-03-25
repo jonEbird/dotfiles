@@ -44,7 +44,8 @@
 (when (eq system-type 'windows-nt)
   (message "Setting up specific settings for Winblows")
   (setq
-   ispell-program-name "c:\\Program Files (x86)\\Aspell\\bin\\aspell.exe"
+   ispell-program-name "C:\\Users\\jsmiller\\software\\Aspell\\bin\\aspell.exe"
+   ; "c:\\Program Files (x86)\\Aspell\\bin\\aspell.exe"
    ;; url-proxy-services '(("no_proxy" . "nwie\\.net")
    ;; 			("http" . "http-proxy.nwie.net:8080"))
    )
