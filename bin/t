@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Simple wrapper to quickly launch a terminal, optionally specifying which
+# one I want to run but defaulting to a favorite.
+
+term_choice=${1:-gnome-terminal}
+
+declare -A termopts
+termopts[gnome-terminal]=''
+termopts[xterm]='-u8 +sb +mb'
+
+exec ${term_choice} ${termopts[$term_choice]}
