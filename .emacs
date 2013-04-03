@@ -288,6 +288,12 @@
       (expand-file-name filelist)
       )))
 
+;; Convert the Region/buffer to a colorized face via existing ascii escapes
+(defun ansi-color-buffer ()
+  (interactive)
+  (save-excursion
+    (ansi-color-apply-on-region (point-min) (point-max))))
+
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files
 ;; --------------------------------------------------
