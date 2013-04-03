@@ -38,6 +38,7 @@ alias n='normal-screen '
 alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
+alias ls='ls --color=auto -F '
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)

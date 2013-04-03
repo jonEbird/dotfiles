@@ -36,6 +36,9 @@ scratch/*
 .PyCharm*
 .Skype*
 .adobe/*
+.ansible/*
+.thunderbird/*
+venv/*
 .cache/*
 .ccache/*
 .distcc/*

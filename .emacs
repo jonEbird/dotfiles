@@ -36,7 +36,7 @@
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
   "hostname of this machine")
 
-; ace-jump-mode, yaml-mode, etags-select, etags-table, lua-mode
+; ace-jump-mode, yaml-mode, etags-select, etags-table, lua-mode, markdown-mode, cups
 ; ELPA package support
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -68,6 +68,13 @@
 ; Most of my flyspell hook are located in their own respective config files,
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
+
+;; Printing support!
+(require 'printing)
+(pr-update-menus t)
+; make sure we use localhost as cups server
+(setenv "CUPS_SERVER" "localhost")
+(require 'cups)
 
 ;; don't iconify from within X
 (when (not (eq nil window-system))
@@ -170,7 +177,8 @@
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(virtualenv-root (expand-file-name "~/venv/"))
- '(visual-line-mode 1 t))
+ '(visual-line-mode 1 t)
+ '(global-visual-line-mode t))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -211,10 +219,13 @@
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
+;; Markdown files
+(add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+
 ;; Transparency
 (eval-when-compile (require 'cl))
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
-(add-to-list 'default-frame-alist '(alpha 80 50))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 (defun toggle-transparency ()
   (interactive)
   (if (/=

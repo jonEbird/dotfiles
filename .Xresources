@@ -70,4 +70,4 @@ xterm*color14:                 S_base1
 xterm*color15:                 S_base3
 
 XTerm*faceName:                DejaVu Sans Mono
-XTerm*faceSize:                12
+XTerm*faceSize:                11
