@@ -125,8 +125,8 @@
 (setq desktop-enable t)
 (desktop-save-mode 1)
 (setq
- desktop-base-file-name (concat ".emacs.desktop." hostname)
- desktop-base-lock-name (concat ".emacs.desktop." hostname ".lock")
+ desktop-base-file-name (concat (expand-file-name "~/.emacs.desktop.") hostname)
+ desktop-base-lock-name (concat (expand-file-name "~/.emacs.desktop.") hostname ".lock")
  )
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
@@ -137,7 +137,7 @@
       ido-everywhere t
       ido-use-filename-at-point 'guess
       ido-create-new-buffer 'always
-      ido-save-directory-list-file (concat ".ido.last." hostname)
+      ido-save-directory-list-file (concat (expand-file-name "~/.ido.last.") hostname)
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (ido-mode 1)
 
