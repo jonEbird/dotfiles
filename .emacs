@@ -31,6 +31,9 @@
 ; always end a file with a newline
 (setq require-final-newline 't)
 
+; Shorten the yes-or-no question
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ; Useful for conditional variables
 (defvar hostname
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
@@ -51,7 +54,8 @@
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
 (require 'nyan-mode)
 (setq nyan-wavy-trail 't
-      nyan-animate-nyancat 't)
+      nyan-animate-nyancat 't
+      nyan-bar-length 20)
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)

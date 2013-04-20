@@ -1,7 +1,16 @@
 ; -*- emacs-lisp -*-
 
+; Set which modules to load
+(setq erc-modules '( pcomplete autojoin button completion fill
+                               irccontrols list log match menu move-to-prompt
+                               netsplit networks noncommands readonly ring stamp track))
+
 (setq erc-echo-notices-in-minibuffer-flag t)
 ; Ohio Linux Fest planning @ irc.oftc.net #ohiolinux on Thursdays at 20:00 EST
+
+; Logging the sessions
+(setq erc-log-channels-directory "~/.erc/logs/")
+(setq erc-save-buffer-on-part t)
 
 ; Nick notify-send Notification
 ; Modified from http://www.emacswiki.org/emacs/ErcOSD
@@ -17,7 +26,7 @@
   (save-window-excursion
     (shell-command
      (format
-      "notify-send -u low \"%s\" \"%s\"" summary msg))))
+      "notify-send -a IRC -u low \"%s\" \"%s\"" summary msg))))
 
 (defun jsm/erc-notify-send (matched-type nick msg)
   (interactive)
