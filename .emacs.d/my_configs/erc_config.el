@@ -9,8 +9,10 @@
 ; Ohio Linux Fest planning @ irc.oftc.net #ohiolinux on Thursdays at 20:00 EST
 
 ; Logging the sessions
-(setq erc-log-channels-directory "~/.erc/logs/")
-(setq erc-save-buffer-on-part t)
+(setq erc-log-channels-directory "~/.erc/logs/"
+      erc-save-buffer-on-part t
+      jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc" t)
+      )
 
 ; Nick notify-send Notification
 ; Modified from http://www.emacswiki.org/emacs/ErcOSD
@@ -43,3 +45,7 @@
       )))
 
 (add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
+
+; Typical connection
+(erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
+         :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")

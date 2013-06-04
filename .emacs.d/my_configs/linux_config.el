@@ -25,4 +25,6 @@
   ;; (eval-after-load "magit"
   ;;   '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
   (load-theme 'solarized-dark nil nil)
+  ; And when we are switching between GUI and TUI I need to keep re-setting this
+  (global-set-key (kbd "<f7>") '(lambda () (interactive) (load-theme 'solarized-dark nil nil)))
   )

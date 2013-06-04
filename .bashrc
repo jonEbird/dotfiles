@@ -8,7 +8,7 @@ fi
 # Tracktime Integration - Couple known locations
 TRACKTIME_LOCATIONS="~/projects/tracktime ~/tracktime"
 for tracktime in $TRACKTIME_LOCATIONS; do
-    if eval [ -f ${tracktime}/completion.bash ]; then
+    if [ -f ${tracktime}/completion.bash ]; then
 	eval source ${tracktime}/completion.bash ${tracktime} ${HOME}/projects
 	break
     fi
@@ -20,6 +20,16 @@ PATH=$PATH:~/bin
 
 # Standard PS1
 PS1="[\u@\h \W]\$ "
+
+_git_repo() {
+    basename $(git remote -v | awk '/^origin.*(fetch)/{ print $2 }') | sed 's/\.git//g'
+}
+
+if [ -r ~/git-prompt.sh ]; then
+    . ~/git-prompt.sh
+    PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+    #PS1='[\u@\h \W ($(_git_repo):$(__git_ps1 "%s)")]\$ '
+fi
 
 export HISTSIZE=100000
 export MPD_HOST=sajou

@@ -10,13 +10,21 @@
 ;; Non-trivial Setups
 ;; --------------------------------------------------
 
+; Login information
+(require 'netrc)
+
 ;; confluence support
 ; Downloaded and extracted from http://confluence-el.googlecode.com/files/confluence-el-1.5.tar.gz
 (defun confluence-support-setup()
   (setq load-path (cons (expand-file-name "~/.emacs.d/confluence-el/") load-path))
   (require 'confluence)
-  (setq confluence-url "https://confluence.qualcomm.com/confluence/rpc/xmlrpc"
-	confluence-default-space-alist (list (cons confluence-url "virtual")))
+  (custom-set-variables
+   '(confluence-url "https://confluence.qualcomm.com/confluence/rpc/xmlrpc")
+   '(confluence-default-space-alist (list (cons confluence-url "MOAB")))
+   '(confluence-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "confluence" t))
+   '(confluence-save-credentials t)
+   '(confluence-login-credential-alist (list (cons confluence-url (cons (netrc-get confluence-creds "login") (netrc-get confluence-creds "password")))))
+   )
   (eval-after-load "confluence"
     '(progn
        (require 'longlines)
@@ -31,11 +39,14 @@
   (add-hook 'confluence-mode-hook
 	    '(lambda ()
 	       (local-set-key "\C-xw" confluence-prefix-map)))
-  ; Login information
-  (require 'netrc)
-  (setq confluence-creds (netrc-machine (netrc-parse "~/.netrc") "confluence" t))
-  (setq confluence-save-credentials t
-	confluence-login-credential-alist (list (cons confluence-url (cons (netrc-get confluence-creds "login") (netrc-get confluence-creds "password")))) )
+  ;; (setq tls-program
+  ;;       '("gnutls-cli --x509cafile /etc/pki/tls/certs/ca-bundle.crt -p %p %h"
+  ;;         "gnutls-cli --x509cafile /etc/pki/tls/certs/ca-bundle.crt -p %p %h --protocols ssl3"
+  ;;         "openssl s_client -connect %h:%p -CAfile /etc/pki/tls/certs/ca-bundle.crt -no_ssl2 -ign_eof"))
+  (setq tls-program
+        '("openssl s_client -connect %h:%p -no_ssl2 -ign_eof"))
+          ;; "gnutls-cli -p %p %h"
+          ;; "gnutls-cli -p %p %h --protocols ssl3"
   )
 
 ;; --------------------------------------------------

@@ -207,7 +207,7 @@
 (require 'netrc)
 ; netrc entry would look like:
 ; machine jonebird login admin password myrealpassword
-;; (setq blog (netrc-machine (netrc-parse "~/.netrc") "jonebird" t))
+;; (setq blog (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebird" t))
 ;; (setq org2blog/wp-blog-alist
 ;;       '(("jonebird.com"
 ;; 	 :url "http://jonebird.com/xmlrpc.php"

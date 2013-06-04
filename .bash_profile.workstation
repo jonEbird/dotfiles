@@ -1,8 +1,5 @@
 # -*- sh -*-
 
-# Lets ensure a ssh-agent is started
-eval $(ssh-agent )
-
 normal-screen() {
     # Start a screen session
     if screen -ls | egrep -q '[0-9]+\.normal'; then
@@ -10,6 +7,8 @@ normal-screen() {
         screen -x normal 
     else
         echo "Starting screen session \"normal\" in background"
+        # Lets ensure a ssh-agent is started
+        eval $(ssh-agent )
         ssh-add
         screen -dmS normal
         # Are we in an X environment? 
