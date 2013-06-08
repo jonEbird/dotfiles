@@ -4,3 +4,9 @@
 [submodule "/home/jsmiller/.emacs.d/nyan-mode"]
 	path = .emacs.d/nyan-mode
 	url = https://github.com/TeMPOraL/nyan-mode.git
+[submodule "solarized"]
+	path = solarized
+	url = git@github.com:altercation/solarized.git
+[submodule "gnome-terminal-colors-solarized"]
+	path = gnome-terminal-colors-solarized
+	url = git://github.com/sigurdga/gnome-terminal-colors-solarized.git

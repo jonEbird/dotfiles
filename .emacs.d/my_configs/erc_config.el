@@ -47,5 +47,13 @@
 (add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
 
 ; Typical connection
-(erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
-         :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")
+(defun irc-work ()
+  (interactive)
+  (erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
+           :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")
+  )
+(defun irc-home ()
+  (interactive)
+  (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
+           :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")
+  )
