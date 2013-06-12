@@ -267,6 +267,14 @@
                             (buffer-substring-no-properties b e)))
     (message-send-and-exit)))
 
+(defun jsm:highlight-current-word(b e)
+  (interactive "r")
+  (highlight-phrase
+   (buffer-substring-no-properties b e)
+   'hi-yellow))
+; I do not use mark-paragraph
+(global-set-key "\M-h" 'jsm:highlight-current-word)
+
 (defun jsm:kill-ring-sexp(&optional arg)
   "Highlight the current sexp ala mark-sexp and then copy ala kill-ring-save"
   (interactive "^p")
