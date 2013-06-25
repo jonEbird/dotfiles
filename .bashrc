@@ -69,6 +69,10 @@ if type -P virtualenvwrapper.sh 1>/dev/null 2>&1; then
     source virtualenvwrapper.sh
 fi
 
+# Solarized shell themes
+[ -f ~/gnome-terminal-colors-solarized/set_light.sh ] && alias light=~/gnome-terminal-colors-solarized/set_light.sh
+[ -f ~/gnome-terminal-colors-solarized/set_dark.sh ]  && alias dark=~/gnome-terminal-colors-solarized/set_dark.sh
+
 #if [ "$PS1" != "" -a "${STARTED_SCREEN:-x}" = x ]
 #then
 #  STARTED_SCREEN=1 ; export STARTED_SCREEN
