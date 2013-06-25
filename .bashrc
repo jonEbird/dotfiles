@@ -21,15 +21,17 @@ PATH=$PATH:~/bin
 # Standard PS1
 PS1="[\u@\h \W]\$ "
 
-_git_repo() {
-    basename $(git remote -v | awk '/^origin.*(fetch)/{ print $2 }') | sed 's/\.git//g'
-}
+gitps1() {
+    _git_repo() {
+        basename $(git remote -v | awk '/^origin.*(fetch)/{ print $2 }') | sed 's/\.git//g'
+    }
 
-if [ -r ~/git-prompt.sh ]; then
-    . ~/git-prompt.sh
-    PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
-    #PS1='[\u@\h \W ($(_git_repo):$(__git_ps1 "%s)")]\$ '
-fi
+    if [ -r ~/git-prompt.sh ]; then
+        . ~/git-prompt.sh
+        PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+        #PS1='[\u@\h \W ($(_git_repo):$(__git_ps1 "%s)")]\$ '
+    fi
+}
 
 export HISTSIZE=100000
 export MPD_HOST=sajou
@@ -49,6 +51,7 @@ alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
 alias ls='ls --color=auto -F '
+alias magit='emacsclient -a emacs -e "(magit-status \"$(pwd)\")"'
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
