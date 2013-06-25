@@ -24,6 +24,8 @@
           :type elpa
           :after (progn ()
 		   (global-set-key (kbd "C-x C-z") 'magit-status)))
+   (:name org2blog
+          :type elpa)
    ))
 
 ; (el-get 'sync)
@@ -32,7 +34,8 @@
 (setq jsm-packages
       (append
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized lua-mode
-              etags-select etags-table markdown-mode cups cl-lib magit htmlize)
+              etags-select etags-table markdown-mode cups cl-lib magit htmlize
+              org2blog)
        
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
 
