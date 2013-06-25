@@ -55,5 +55,5 @@
 (defun irc-home ()
   (interactive)
   (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
-           :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")
+           :password (netrc-get jonebird-irc-creds "password") :nick "jon")
   )

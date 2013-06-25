@@ -39,7 +39,6 @@
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
   "hostname of this machine")
 
-; ace-jump-mode, yaml-mode, etags-select, etags-table, lua-mode, markdown-mode, cups
 ; ELPA package support
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -172,17 +171,17 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(display-time-mode t)
  '(fill-column 75)
  '(flymake-log-level 3)
+ '(global-visual-line-mode t)
  '(safe-local-variable-values (quote ((encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(virtualenv-root (expand-file-name "~/venv/"))
- '(visual-line-mode 1 t)
- '(global-visual-line-mode t))
+ '(visual-line-mode 1 t))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -334,6 +333,7 @@
 			"linux_config"
 			"windows_config"
 			"erc_config"
+                        "el_get"
                        ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
