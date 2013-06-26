@@ -1,0 +1,6 @@
+(:name ldap-mode
+       :description "Major modes for editing LDAP schema and LDIF files"
+       :type http
+       :url http://www.loveshack.ukfsn.org/emacs/ldap-mode.el
+       :website http://www.loveshack.ukfsn.org/emacs/
+       )

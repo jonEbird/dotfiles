@@ -35,7 +35,7 @@
       (append
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized lua-mode
               etags-select etags-table markdown-mode cups cl-lib magit htmlize
-              org2blog)
+              org2blog ldap-mode)
        
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
 
