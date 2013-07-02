@@ -323,7 +323,8 @@
 	(message "Could NOT load config file:%s" file))
       )))
 ; load my configuration files
-(jsm:load-config-file '("php_config"
+(jsm:load-config-file '("el_get"
+                        "php_config"
 			"org_config"
 			"c_config"
                         "c++_config"
@@ -333,7 +334,6 @@
 			"linux_config"
 			"windows_config"
 			"erc_config"
-                        "el_get"
-                       ))
+                        ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
