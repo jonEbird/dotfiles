@@ -313,7 +313,7 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 
 ; Per Marc-Oliver via org-mode ML
 (define-key org-mode-map
-  [(f11)]
+  [(f10)]
   (lambda () (interactive)
     (progn
       (occur (concat "^\\*+ .*"

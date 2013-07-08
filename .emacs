@@ -116,6 +116,17 @@
       (delete-trailing-whitespace)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace-inmodes)
 
+(defun switch-between-mu4e ()
+  "Either switch to mu4e or return to previous window configuration"
+  (interactive)
+  ; mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
+  (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
+      (jump-to-register 101)
+    (progn
+      (window-configuration-to-register 101 nil)
+      (delete-other-windows)
+      (mu4e))))
+(global-set-key (kbd "<f11>") 'switch-between-mu4e)
 
 ; Bookmarks support
 ; See http://emacs-fu.blogspot.com/2009/11/bookmarks.html
@@ -207,7 +218,6 @@
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
 (global-set-key "\M-1" 'string-insert-rectangle)
-(global-set-key (kbd "<f11>") 'mu4e)
 
 ; I like C-PGUP for previous-buffer and C-PGDN for next-buffer
 (global-set-key [C-prior] 'previous-buffer)

@@ -22,14 +22,14 @@
      (mu4e-trash-folder "/Qualcomm/Deleted Items")
      (mu4e-refile-folder "/Qualcomm/Archives")
      (user-mail-address "jsmiller@qti.qualcomm.com")
-     (message-signature-file ".Qualcomm-sig.txt"))
+     (message-signature-file (expand-file-name "~/.Qualcomm-sig.txt")))
     ("Gmail"
      (mu4e-sent-folder "/Gmail/Sent Items")
      (mu4e-drafts-folder "/Gmail/Drafts")
      (mu4e-trash-folder "/Gmail/Deleted Items")
      (mu4e-refile-folder "/Gmail/Archives")
      (user-mail-address "jonEbird@gmail.com")
-     (message-signature-file ".Gmail-sig.txt"))))
+     (message-signature-file (expand-file-name "~/.Gmail-sig.txt")))))
 
 (setq
  mu4e-get-mail-command      "offlineimap"        ;; offlineimap separates messages for me
@@ -42,6 +42,9 @@
  org-mu4e-convert-to-html   t                    ;; Oh yeah, exactly what I wanted
  mu4e-attachment-dir        "~/Downloads"        ;; Match browser default
  )
+
+(add-to-list 'mu4e-view-actions
+             '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
