@@ -18,6 +18,7 @@ _netrc
 .emacs.d/tutorial/*
 .emacs.d/url/*
 .emacs.desktop*
+.emacs.d/el-get/
 .eshell/*
 .ido.*
 .history
@@ -88,3 +89,14 @@ pithos/*
 .netrc
 .pki/*
 .pip/*
+hb-trunk
+repos/*
+iMacros
+.nv
+.icedtea
+.erc/logs/
+.offlineimap/
+Maildir/
+rpmbuild/
+u_drive
+.mu/

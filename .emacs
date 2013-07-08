@@ -28,6 +28,9 @@
 ; default to unified diffs
 (setq diff-switches "-u")
 
+; Helps my email package and/or other multi-lingual files
+(set-language-environment "UTF-8")
+
 ; always end a file with a newline
 (setq require-final-newline 't)
 
@@ -176,7 +179,7 @@
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
- '(safe-local-variable-values (quote ((encoding . utf-8))))
+ '(safe-local-variable-values (quote ((eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
@@ -204,6 +207,7 @@
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
 (global-set-key "\M-1" 'string-insert-rectangle)
+(global-set-key (kbd "<f11>") 'mu4e)
 
 ; I like C-PGUP for previous-buffer and C-PGDN for next-buffer
 (global-set-key [C-prior] 'previous-buffer)
@@ -334,6 +338,7 @@
 			"linux_config"
 			"windows_config"
 			"erc_config"
+                        "email_config"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
