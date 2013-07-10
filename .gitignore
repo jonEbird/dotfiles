@@ -96,7 +96,7 @@ iMacros
 .icedtea
 .erc/logs/
 .offlineimap/
-Maildir/
+Maildir*/
 rpmbuild/
 u_drive
 .mu/

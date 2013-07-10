@@ -108,25 +108,15 @@
 (server-start nil)
 
 ;; Kill trailing whitespace but only in certain modes
-(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode"))
+(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode" "emacs-lisp-mode"))
 (defun delete-trailing-whitespace-inmodes ()
   "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
-  (interactive)  
+  (interactive)
   (if (member (symbol-name major-mode) delete-trailing-whitespace-modes)
       (delete-trailing-whitespace)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace-inmodes)
-
-(defun switch-between-mu4e ()
-  "Either switch to mu4e or return to previous window configuration"
-  (interactive)
-  ; mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
-  (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
-      (jump-to-register 101)
-    (progn
-      (window-configuration-to-register 101 nil)
-      (delete-other-windows)
-      (mu4e))))
-(global-set-key (kbd "<f11>") 'switch-between-mu4e)
+; For all else, at least show trailing whitespace
+(setq show-trailing-whitespace t)
 
 ; Bookmarks support
 ; See http://emacs-fu.blogspot.com/2009/11/bookmarks.html

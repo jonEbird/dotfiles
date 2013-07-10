@@ -5,7 +5,8 @@
 (setq
  user-mail-address  "jsmiller@qti.qualcomm.com"
  user-full-name     "Jon Miller"
- mail-user-agent    'mu4e-user-agent)
+ mail-user-agent    'mu4e-user-agent
+ mu4e-user-mail-address-list '("jsmiller@qti.qualcomm.com" "jonEbird@gmail.com"))
 
 ;; These are actually the defaults
 (setq
@@ -22,29 +23,34 @@
      (mu4e-trash-folder "/Qualcomm/Deleted Items")
      (mu4e-refile-folder "/Qualcomm/Archives")
      (user-mail-address "jsmiller@qti.qualcomm.com")
-     (message-signature-file (expand-file-name "~/.Qualcomm-sig.txt")))
+     (message-signature-file "~/.Qualcomm-sig.txt"))
     ("Gmail"
      (mu4e-sent-folder "/Gmail/Sent Items")
      (mu4e-drafts-folder "/Gmail/Drafts")
-     (mu4e-trash-folder "/Gmail/Deleted Items")
+     (mu4e-trash-folder "/Gmail/Trash")
      (mu4e-refile-folder "/Gmail/Archives")
      (user-mail-address "jonEbird@gmail.com")
-     (message-signature-file (expand-file-name "~/.Gmail-sig.txt")))))
+     (message-signature-file "~/.Gmail-sig.txt"))))
 
 (setq
- mu4e-get-mail-command      "offlineimap"        ;; offlineimap separates messages for me
- mu4e-update-interval       300                  ;; update every 5 minutes
- mu4e-use-fancy-chars       t                    ;; Pretty symbols in the view
- mu4e-view-show-images      t                    ;; Show images inline
- mu4e-view-image-max-width  800                  ;; Limit too big photos
- mu4e-view-prefer-html      t                    ;; I get a lot of HTML emails
+ mu4e-get-mail-command            "offlineimap"  ;; calling offlineimap separately
+ mu4e-update-interval             300            ;; Not needed with offlineimap hooks
+ mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
+ mu4e-view-show-images            t              ;; Show images inline
+ mu4e-view-image-max-width        800            ;; Limit too big photos
+ mu4e-view-prefer-html            t              ;; I get a lot of HTML emails
+ mu4e-compose-dont-reply-to-self  t              ;; Do not include myself in replies
  mu4e-html2text-command "w3m -dump -T text/html" ;; Good text representation
- org-mu4e-convert-to-html   t                    ;; Oh yeah, exactly what I wanted
- mu4e-attachment-dir        "~/Downloads"        ;; Match browser default
+ org-mu4e-convert-to-html         t              ;; Oh yeah, exactly what I wanted
+ mu4e-attachment-dir              "~/Downloads"  ;; Match browser default
  )
 
 (add-to-list 'mu4e-view-actions
              '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
+(setq mu4e-maildir-shortcuts
+      '(("/Qualcomm/INBOX" . ?Q)
+        ("/GMail/INBOX"    . ?g)))
 
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
@@ -127,8 +133,27 @@
 (setq gnus-dired-mail-mode 'mu4e-user-agent)
 (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
 
+;; My way to switch between my email window configuration and other ongoing work
+(defun switch-between-mu4e ()
+  "Either switch to mu4e or return to previous window configuration"
+  (interactive)
+  ; They all start with "mu4e": mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
+  (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
+      (progn
+        (window-configuration-to-register 109 nil)
+        (jump-to-register 101))
+    (progn
+      (window-configuration-to-register 101 nil)
+      (delete-other-windows)
+      (if (string= "Register a is empty" (view-register 109))
+          (mu4e)
+        (jump-to-register 109)))))
+(global-set-key (kbd "<f11>") 'switch-between-mu4e)
+
 ;; mu4e TODO
 ; crypto - http://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Crypto.html#MSGV-Crypto
 ; org-mode emails - http://www.djcbsoftware.nl/code/mu/mu4e/Rich_002dtext-messages-with-org_002dmode.html#Rich_002dtext-messages-with-org_002dmode
 ; notifications - http://www.djcbsoftware.nl/code/mu/mu4e/Getting-new-mail-notifications-with-Sauron.html#Getting-new-mail-notifications-with-Sauron
-; Tweet citation - http://www.djcbsoftware.nl/code/mu/mu4e/Citations-with-mu_002dcite.html#Citations-with-mu_002dcite
+; Tweak citation - http://www.djcbsoftware.nl/code/mu/mu4e/Citations-with-mu_002dcite.html#Citations-with-mu_002dcite
+; Calendaring - http://doughellmann.com/2007/10/working-with-imap-and-icalendar-2.html
+; RPM packaging - http://pastebin.com/5Ja8SJsB

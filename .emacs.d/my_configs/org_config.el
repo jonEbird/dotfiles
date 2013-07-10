@@ -340,18 +340,17 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
     (org-export-as-html-and-open 3)))
 (define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
 
-(defun jsm/org-export-subtree-as-html-with-subtree-name-and-open ()
-  (interactive)
+(defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)
+  (interactive "P")
   (save-excursion
-    ;(let ((buffer-file-name (concat (file-name-directory (buffer-file-name)) (substring-no-properties (org-get-heading t t))) ))
-    ;(let ((buffer-file-name (concat (expand-file-name "~/published/") (substring-no-properties (org-get-heading t t))) ))
-    (let ((buffer-file-name "") (new-file-name (substring-no-properties (org-get-heading t t))) )
-      (when (string-match "[/&]" new-file-name)
-	(setq new-file-name (replace-match "" nil nil new-file-name)))
-      (setq buffer-file-name (concat (expand-file-name "~/published/") new-file-name ".org"))
-      (message (concat "Using the new file-name of: " buffer-file-name))
+    (let ((new-file-name (concat
+                          (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (substring-no-properties (org-get-heading t t)))
+                          ".html") ))
       (org-mark-subtree)
-      (org-export-as-html-and-open 3) )))
+      (org-export-as-html arg 'hidden nil new-file-name nil "~/published")
+      (switch-to-buffer new-file-name)
+      (write-file "~/published" nil)
+      (kill-buffer))))
 (define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
 
 ;; (setq new-file-name "linux/Unix & blah")
