@@ -39,6 +39,7 @@ export MPD_PORT=6600
 export EDITOR=emacsclient
 export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
+export LANG=en_US.UTF-8
 export LESS="-I-q-s-F-R"
 export WORKON_HOME=~/venv
 
@@ -87,3 +88,4 @@ fi
 #fi
 
 [ -f ~/.proxy ] && source ~/.proxy
+. ~/.bash_profile.workstation 

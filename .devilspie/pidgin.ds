@@ -1,0 +1,8 @@
+(if
+    (is (application_name) "Pidgin")
+    (begin
+     (geometry "881x722+369+50")
+     (pin)
+     (stick)
+     )
+  )

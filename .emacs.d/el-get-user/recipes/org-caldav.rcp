@@ -1,0 +1,5 @@
+(:name org-caldav
+       :website "https://github.com/dengste/org-caldav"
+       :description "Caldav sync for Emacs Orgmode"
+       :type github
+       :pkgname "dengste/org-caldav")

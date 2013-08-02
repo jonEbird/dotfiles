@@ -1,0 +1,5 @@
+(:name url-dav
+       :descriptoin "WebDAV support for Emacs <= 24.2"
+       :type http
+       :url "http://www.randomsample.de/url-dav.el"
+       :localname "url-dav.el")

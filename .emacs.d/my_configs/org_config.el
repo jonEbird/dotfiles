@@ -342,20 +342,29 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 
 (defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)
   (interactive "P")
-  (save-excursion
-    (let ((new-file-name (concat
-                          (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (substring-no-properties (org-get-heading t t)))
-                          ".html") ))
+  (let ((new-file-name (concat
+                        (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (substring-no-properties (org-get-heading t t)))
+                        ".html") ))
+    (save-excursion
       (org-mark-subtree)
       (org-export-as-html arg 'hidden nil new-file-name nil "~/published")
       (switch-to-buffer new-file-name)
       (write-file "~/published" nil)
-      (kill-buffer))))
+      (kill-buffer))
+    new-file-name))
 (define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
 
-;; (setq new-file-name "linux/Unix & blah")
-;; (when (string-match "[/&]" new-file-name)
-;;   (message (concat "[" (replace-match "" nil nil new-file-name) "]")))
+(defun jsm/org-export-subtree-attach-to-email (arg)
+  (interactive "P")
+  (let ((exported-file-name
+         (expand-file-name
+          (concat "~/published/"
+                  (jsm/org-export-subtree-as-html-with-subtree-name-and-open 3)))))
+    ;; Need to create a plist with :path to file and :subject for file
+    (mu4e-action-capture-message
+     (list :path exported-file-name
+           :subject "Exported by Org"))
+    (mu4e-compose-attach-captured-message)))
 
 ;; Hack to change the appearance of the checkboxes [X] via the ML
  (font-lock-add-keywords

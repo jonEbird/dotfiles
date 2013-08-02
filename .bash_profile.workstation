@@ -11,10 +11,11 @@ normal-screen() {
         eval $(ssh-agent )
         ssh-add
         screen -dmS normal
+        screen -dmr normal -X screen -t linbird 11 repeat ssh -L6667:localhost:6667 linbird
         # Are we in an X environment? 
         if /bin/xset -b >/dev/null 2>&1; then
-            screen -dmr normal -X screen -t synergy 20 repeat synergys -a :24800 -d DEBUG -f
-            screen -dmr normal -X screen -t pithos  21 repeat ~/pithos/bin/pithos
+            #screen -dmr normal -X screen -t synergy 20 repeat synergys -a :24800 -d DEBUG -f
+            [ -f ~/pithos/bin/pithos ] && screen -dmr normal -X screen -t pithos  21 repeat ~/pithos/bin/pithos
             # Gnome or AwesomeWM ?
             if ! ps --no-headers -e -o comm | egrep '^awesome$' >/dev/null 2>&1; then
                 screen -dmr normal -X screen -t devilspie 15 repeat /usr/bin/devilspie

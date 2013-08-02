@@ -40,18 +40,27 @@
  mu4e-view-image-max-width        800            ;; Limit too big photos
  mu4e-view-prefer-html            t              ;; I get a lot of HTML emails
  mu4e-compose-dont-reply-to-self  t              ;; Do not include myself in replies
- mu4e-html2text-command "w3m -dump -T text/html" ;; Good text representation
+ mu4e-html2text-command "w3m -dump -S -cols 100 -T text/html" ;; Good text representation
+ ;mu4e-html2text-command "html2text -utf8 -width 72"
  org-mu4e-convert-to-html         t              ;; Oh yeah, exactly what I wanted
  mu4e-attachment-dir              "~/Downloads"  ;; Match browser default
+ mu4e-headers-skip-duplicates     t              ;; Eliminate Gmail dups
  )
 
+;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions
              '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
+;; When 'j'umping to a Maildir, you can set these shortcuts
 (setq mu4e-maildir-shortcuts
-      '(("/Qualcomm/INBOX" . ?Q)
-        ("/GMail/INBOX"    . ?g)))
+      '(("/Qualcomm/INBOX"      .  ?q)
+        ("/Qualcomm/Root Mail"  .  ?r)
+        ("/Qualcomm/Sent Items" .  ?s)
+        ("/GMail/INBOX"         .  ?g)))
 
+;; Here you can use the full power of a "mu find" command. Try playing
+;; around with the CLI version and then incorporate that search as a
+;; bookmark.
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed" "Unread messages"      ?u)
          ("\"Maildir:/Qualcomm/INBOX\""      "Qualcomm Inbox"       ?q)
@@ -109,8 +118,15 @@
                   (set (car var) (cadr var)))
               account-vars)
       (error "No email account found"))))
-
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
+
+(defun my-mu4e-compose-settings ()
+  "Set some custom variables when composing an email"
+  (progn
+    (setq
+     fill-column 77) ; Was set to 99 before
+    ))
+(add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-settings)
 
 ;; Awesome way to mark & attach files to a new email message. Mark the
 ;; file(s) in dired you would like to attach and press C-c RET C-a, and
@@ -140,14 +156,14 @@
   ; They all start with "mu4e": mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
   (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
       (progn
-        (window-configuration-to-register 109 nil)
-        (jump-to-register 101))
+        (window-configuration-to-register ?m nil)
+        (jump-to-register ?e))
     (progn
-      (window-configuration-to-register 101 nil)
+      (window-configuration-to-register ?e nil)
       (delete-other-windows)
-      (if (string= "Register a is empty" (view-register 109))
-          (mu4e)
-        (jump-to-register 109)))))
+      (if (string= "a window configuration." (describe-register-1 ?m))
+          (jump-to-register ?m)
+        (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
 
 ;; mu4e TODO
