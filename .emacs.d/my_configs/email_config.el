@@ -45,7 +45,9 @@
  org-mu4e-convert-to-html         t              ;; Oh yeah, exactly what I wanted
  mu4e-attachment-dir              "~/Downloads"  ;; Match browser default
  mu4e-headers-skip-duplicates     t              ;; Eliminate Gmail dups
+ mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
  )
+;; mu4e-hide-index-messages - set once you've updated mu4e
 
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions
@@ -166,10 +168,26 @@
         (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
 
+(defun compose-reply-spacing ()
+  "Create two newlines worth of spacing for replying to emails in
+internet style formatting. Also move cursor to the first reply
+location."
+  (interactive)
+  (progn
+    (save-excursion
+      (replace-regexp "^\\(> .*
+> .*
+\\)>>" "\\1
+" nil))
+    (search-forward-regexp "^> .*
+
+")))
+(add-hook 'mu4e-compose-mode-hook 'compose-reply-spacing)
+
 ;; mu4e TODO
 ; crypto - http://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Crypto.html#MSGV-Crypto
 ; org-mode emails - http://www.djcbsoftware.nl/code/mu/mu4e/Rich_002dtext-messages-with-org_002dmode.html#Rich_002dtext-messages-with-org_002dmode
 ; notifications - http://www.djcbsoftware.nl/code/mu/mu4e/Getting-new-mail-notifications-with-Sauron.html#Getting-new-mail-notifications-with-Sauron
 ; Tweak citation - http://www.djcbsoftware.nl/code/mu/mu4e/Citations-with-mu_002dcite.html#Citations-with-mu_002dcite
-; Calendaring - http://doughellmann.com/2007/10/working-with-imap-and-icalendar-2.html
+; DONE - Calendaring - http://doughellmann.com/2007/10/working-with-imap-and-icalendar-2.html - doesn't work with our Exchange server
 ; RPM packaging - http://pastebin.com/5Ja8SJsB

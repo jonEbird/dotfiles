@@ -30,6 +30,8 @@ org/info.org
 org/meetings.org
 org/projects.org
 org/todos.org
+org/ui/*
+published/
 # normal working directory where I'll have other projects checked out
 projects/*
 scratch/*
@@ -100,3 +102,5 @@ Maildir*/
 rpmbuild/
 u_drive
 .mu/
+Screenshot*
+.gem/

@@ -1,1 +1,5 @@
-(if (is (application_name) "Google Chrome") (begin (set_workspace 2) (unshade) ))
+(if (is (application_name) "Google Chrome")
+    (begin
+     (pin)
+     (stick)
+     (unshade)))
