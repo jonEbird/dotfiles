@@ -181,7 +181,7 @@ location."
 " nil))
     (search-forward-regexp "^> .*
 
-")))
+" nil t)))
 (add-hook 'mu4e-compose-mode-hook 'compose-reply-spacing)
 
 ;; mu4e TODO
