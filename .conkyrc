@@ -74,4 +74,4 @@ ${color grey}Networking:
 Up:$color ${upspeed eth0} ${color grey} - Down:$color ${downspeed eth0}
 $hr
 ${color grey}Qualcomm: $color ${execpi 5 mu find --nocolor flag:unread m:/Qualcomm/INBOX 2>/dev/null | wc -l}
-${color grey}Gmail:    $color ${execpi 5 mu find --nocolor flag:unread m:/Gmail/INBOX 2>/dev/null | wc -l}
+${color grey}Gmail:    $color ${execpi 5 mu find --nocolor flag:unread m:/Gmail/INBOX AND NOT list 2>/dev/null | wc -l} (${execpi 5 mu find --nocolor flag:unread m:/Gmail/INBOX AND list 2>/dev/null | wc -l} in groups)
