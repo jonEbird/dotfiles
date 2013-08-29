@@ -113,10 +113,10 @@
   "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
   (interactive)
   (if (member (symbol-name major-mode) delete-trailing-whitespace-modes)
-      (delete-trailing-whitespace)))
+      (delete-trailing-whitespace)
+    ; For all else, at least show trailing whitespace
+    (setq show-trailing-whitespace t)))
 (add-hook 'before-save-hook 'delete-trailing-whitespace-inmodes)
-; For all else, at least show trailing whitespace
-(setq show-trailing-whitespace t)
 
 ; Bookmarks support
 ; See http://emacs-fu.blogspot.com/2009/11/bookmarks.html
@@ -220,6 +220,9 @@
 
 ;; devilspie *.ds files are s-expressions
 (add-to-list 'auto-mode-alist '("\\.ds$" . emacs-lisp-mode))
+
+;; zsh files are to be treated as shell scripts
+(add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
 
 ;; Install yaml-mode via the ELPA repository and associate file types
 (require 'yaml-mode)

@@ -58,7 +58,8 @@
       '(("/Qualcomm/INBOX"      .  ?q)
         ("/Qualcomm/Root Mail"  .  ?r)
         ("/Qualcomm/Sent Items" .  ?s)
-        ("/GMail/INBOX"         .  ?g)))
+        ("/GMail/INBOX"         .  ?g)
+        ("/GMail/Sent Items"    .  ?S)))
 
 ;; Here you can use the full power of a "mu find" command. Try playing
 ;; around with the CLI version and then incorporate that search as a

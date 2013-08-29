@@ -2,16 +2,17 @@
 
 ;;; Linux Configuration
 
-;; --------------------------------------------------
-;; Non-trivial Setups
-;; --------------------------------------------------
+(defun toggle-night-color-theme ()
+  "Switch to/from night color scheme, including shell theme, for presentation mode"
+  (interactive)
+  (require 'color-theme)
+  (if (eq (frame-parameter (next-frame) 'background-mode) 'light)
+      (progn
+        (load-theme 'solarized-dark nil nil)
+        (shell-command "~/gnome-terminal-colors-solarized/set_dark.sh" nil nil))
+    (load-theme 'solarized-light nil nil)
+    (shell-command "~/gnome-terminal-colors-solarized/set_light.sh" nil nil)))
 
-;; Thanks URLs
-;; http://www.emacswiki.org/emacs/BrowseUrl
-
-;; --------------------------------------------------
-;; Now actually set the variables and more complicated setups
-;; --------------------------------------------------
 (when (eq system-type 'gnu/linux)
   (message "Setting up specific settings for Linux")
   (setq browse-url-generic-program "google-chrome"
@@ -25,6 +26,6 @@
   ;; (eval-after-load "magit"
   ;;   '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
   (load-theme 'solarized-dark nil nil)
-  ; And when we are switching between GUI and TUI I need to keep re-setting this
-  (global-set-key (kbd "<f7>") '(lambda () (interactive) (load-theme 'solarized-dark nil nil)))
+  ; Toggle between light and dark themes with F7
+  (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
   )

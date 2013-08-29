@@ -16,7 +16,7 @@
 ;; confluence support
 ; Downloaded and extracted from http://confluence-el.googlecode.com/files/confluence-el-1.5.tar.gz
 (defun confluence-support-setup()
-  (setq load-path (cons (expand-file-name "~/.emacs.d/confluence-el/") load-path))
+  ; (setq load-path (cons (expand-file-name "~/.emacs.d/confluence-el/") load-path))
   (require 'confluence)
   (custom-set-variables
    '(confluence-url "https://confluence.qualcomm.com/confluence/rpc/xmlrpc")
