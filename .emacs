@@ -148,25 +148,6 @@
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (ido-mode 1)
 
-;; Enable transposing of windows to be much easier
-;; Thanks to http://emacswiki.org/emacs/TransposeWindows
-(defun transpose-windows (arg)
-  "Transpose the buffers shown in two windows."
-  (interactive "p")
-  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-    (while (/= arg 0)
-      (let ((this-win (window-buffer))
-            (next-win (window-buffer (funcall selector))))
-        (set-window-buffer (selected-window) next-win)
-        (set-window-buffer (funcall selector) this-win)
-        (select-window (funcall selector)))
-      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
-(define-key ctl-x-4-map (kbd "t") 'transpose-windows)
-
-;; Using ace-jump
-(require 'ace-jump-mode)
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-
 ;; Leave this here for whenever I use M-x customize-variable.
 ;;  when related to a major config, I may move it manually.
 ;;  until I move it, this will be a dropping zone
@@ -180,7 +161,7 @@
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
- '(safe-local-variable-values (quote ((Encoding . utf-8) (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
+ '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t) (Encoding . utf-8) (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
@@ -342,6 +323,7 @@
 			"windows_config"
 			"erc_config"
                         "email_config"
+                        "efficiency_config"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))

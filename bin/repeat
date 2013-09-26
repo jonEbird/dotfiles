@@ -24,4 +24,5 @@ while :; do
     echo "\"${COMMAND_FULL}\" - #${N}"
     eval $COMMAND_FULL
     N=$((N+1))
+    sleep 1
 done
