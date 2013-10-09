@@ -11,6 +11,7 @@
 ; Logging the sessions
 (setq erc-log-channels-directory "~/.erc/logs/"
       erc-save-buffer-on-part t
+      erc-hide-list '("JOIN" "PART" "QUIT")
       jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc" t)
       )
 

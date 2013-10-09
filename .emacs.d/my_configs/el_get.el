@@ -3,12 +3,21 @@
 ; Basic Setup
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
 
+;; (unless (require 'el-get nil 'noerror)
+;;   (with-current-buffer
+;;       (url-retrieve-synchronously
+;;        "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
+;;     (goto-char (point-max))
+;;     (eval-print-last-sexp)))
+
+;; Use the master branch
 (unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.github.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
+  (url-retrieve
+   "https://raw.github.com/dimitri/el-get/master/el-get-install.el"
+   (lambda (s)
+     (let (el-get-master-branch)
+       (goto-char (point-max))
+       (eval-print-last-sexp)))))
 
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 
@@ -35,7 +44,8 @@
       (append
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized lua-mode
               etags-select etags-table markdown-mode cups cl-lib magit htmlize
-              xml-rpc ldap-mode url-dav org-caldav confluence-el expand-region) ; org2blog
+              xml-rpc ldap-mode url-dav org-caldav confluence-el expand-region
+              iedit jedi) ; org2blog
 
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
 

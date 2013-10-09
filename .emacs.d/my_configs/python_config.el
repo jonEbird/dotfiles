@@ -12,3 +12,6 @@
 ;;   (add-to-list 'flymake-allowed-file-name-masks
 ;; 	       '("\\.py\\'" flymake-pyflakes-init)))
 ;;(add-hook 'find-file-hook 'flymake-find-file-hook)
+
+(if (require 'jedi nil 'noerror)
+  (add-hook 'python-mode-hook 'auto-complete-mode 'append))
