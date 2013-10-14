@@ -19,12 +19,12 @@ normal-screen() {
             # Gnome or AwesomeWM ?
             if ! ps --no-headers -e -o comm | egrep '^awesome$' >/dev/null 2>&1; then
                 screen -dmr normal -X screen -t devilspie 15 repeat /usr/bin/devilspie
-                if [ -x /usr/bin/cairo-clock ]; then
-                    screen -dmr normal -X screen -t wallclock 12 repeat -p 120 /usr/bin/cairo-clock -t radium --width=200 --height=200 -d -i
-                elif [ -x /usr/bin/oclock ]; then
-                    echo "FYI: Missing cairo-clock but settling for oclock"; sleep .25
-                    screen -dmr normal -X screen -t wallclock 12 /usr/bin/oclock -transparent -minute darkblue
-                fi
+                #if [ -x /usr/bin/cairo-clock ]; then
+                #    screen -dmr normal -X screen -t wallclock 12 repeat -p 120 /usr/bin/cairo-clock -t radium --width=200 --height=200 -d -i
+                #elif [ -x /usr/bin/oclock ]; then
+                #    echo "FYI: Missing cairo-clock but settling for oclock"; sleep .25
+                #    screen -dmr normal -X screen -t wallclock 12 /usr/bin/oclock -transparent -minute darkblue
+                #fi
             fi
         fi
         screen -dmr normal -X select 0

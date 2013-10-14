@@ -29,6 +29,10 @@
           :type elpa)
    (:name cl-lib
           :type elpa)
+   (:name etags-table
+          :type elpa)
+   (:name xml-rpc
+          :type elpa)
    (:name magit
           :type elpa
           :after (progn ()
@@ -43,8 +47,8 @@
 (setq jsm-packages
       (append
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized lua-mode
-              etags-select etags-table markdown-mode cups cl-lib magit htmlize
-              xml-rpc ldap-mode url-dav org-caldav confluence-el expand-region
+              etags-select markdown-mode cups cl-lib magit htmlize
+              ldap-mode url-dav org-caldav confluence-el expand-region
               iedit jedi) ; org2blog
 
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))

@@ -13,5 +13,9 @@
 ;; 	       '("\\.py\\'" flymake-pyflakes-init)))
 ;;(add-hook 'find-file-hook 'flymake-find-file-hook)
 
+; Jedi auto completion support
 (if (require 'jedi nil 'noerror)
-  (add-hook 'python-mode-hook 'auto-complete-mode 'append))
+  ; (add-hook 'python-mode-hook 'auto-complete-mode 'append)
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:setup-keys t
+        jedi:complete-on-dot t))

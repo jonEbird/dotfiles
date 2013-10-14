@@ -256,3 +256,8 @@ API
 sysrq
 SysRq
 hostname
+wpa
+hostapd
+sshd
+initramfs
+crypto
