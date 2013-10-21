@@ -41,15 +41,14 @@
           :type elpa)
    ))
 
-; (el-get 'sync)
+(el-get 'sync)
 
 ; Finally my list of packages wanting to be installed
 (setq jsm-packages
       (append
-       '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized lua-mode
-              etags-select markdown-mode cups cl-lib magit htmlize
-              ldap-mode url-dav org-caldav confluence-el expand-region
-              iedit jedi) ; org2blog
+       '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
+              lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
+              org-caldav confluence-el expand-region iedit jedi mu4e)
 
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
 
