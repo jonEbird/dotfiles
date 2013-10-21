@@ -261,3 +261,17 @@ hostapd
 sshd
 initramfs
 crypto
+vmlinuz
+bootable
+epc
+usb
+ue
+kickstarted
+yumdownloader
+enablerepo
+Makefiles
+Compat
+kickstarts
+GPG
+SSSD
+PCI

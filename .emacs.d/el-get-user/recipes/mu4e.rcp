@@ -1,9 +1,10 @@
 (:name mu4e
-       :description "mu4e (mu-for-emacs) is an e-mail client built on top of the mu1 e-mail search engine. mu4e is optimized for fast handling of large amounts of e-mail."
+       :description "mu4e (mu-for-emacs) is an e-mail client built on top of the mu e-mail search engine. mu4e is optimized for fast handling of large amounts of e-mail."
        :website "http://www.djcbsoftware.nl/code/mu/"
        :type git
        :url "git://github.com/djcb/mu.git"
-       :load-path ("./emacs")
-       ; :build ("autoreconf -i" "./configure --prefix=/usr" "make" )
-       :build ("autoreconf -i" "./configure" "make")
-       :build/gnu/kfreebsd ("autoreconf -i" "./configure" "gmake"))
+       :load-path ("./mu4e")
+       :build (("autoreconf -i") ("./configure") ("make"))
+       :build/gnu/kfreebsd (("autoreconf -i" "./configure" "gmake"))
+       :after (progn ()
+                     (setq mu4e-mu-binary "~/.emacs.d/el-get/mu4e/mu/mu")))
