@@ -59,6 +59,15 @@
     (shr-insert-document dom)
     (goto-char (point-min))))
 
+(defun jsm:shr-browse-url ()
+  "For mu4e messages, browse the URL under point or advance the message"
+  (interactive)
+  (let ((url (get-text-property (point) 'shr-url)))
+    (if (not url)
+        (mu4e-scroll-up)
+      (shr-browse-url))))
+(define-key mu4e-view-mode-map (kbd "RET") 'jsm:shr-browse-url)
+
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions
              '("ViewInBrowser" . mu4e-action-view-in-browser) t)
