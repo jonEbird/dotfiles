@@ -40,14 +40,24 @@
  mu4e-view-image-max-width        800            ;; Limit too big photos
  mu4e-view-prefer-html            t              ;; I get a lot of HTML emails
  mu4e-compose-dont-reply-to-self  t              ;; Do not include myself in replies
- mu4e-html2text-command "w3m -dump -S -cols 100 -T text/html" ;; Good text representation
+ ;mu4e-html2text-command "w3m -dump -S -cols 100 -T text/html" ;; Good text representation
  ;mu4e-html2text-command "html2text -utf8 -width 72"
+ mu4e-html2text-command           'html2text
  org-mu4e-convert-to-html         t              ;; Oh yeah, exactly what I wanted
  mu4e-attachment-dir              "~/Downloads"  ;; Match browser default
  mu4e-headers-skip-duplicates     t              ;; Eliminate Gmail dups
  mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
  )
 ;; mu4e-hide-index-messages - set once you've updated mu4e
+
+;; https://groups.google.com/forum/#!topic/mu-discuss/xlZegBifdaA
+(defun html2text ()
+  "Replacement for standard html2text using shr."
+  (interactive)
+  (let ((dom (libxml-parse-html-region (point-min) (point-max))))
+    (erase-buffer)
+    (shr-insert-document dom)
+    (goto-char (point-min))))
 
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions

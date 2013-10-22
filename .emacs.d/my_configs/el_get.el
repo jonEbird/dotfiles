@@ -41,7 +41,7 @@
           :type elpa)
    ))
 
-(el-get 'sync)
+; (el-get 'sync)
 
 ; Finally my list of packages wanting to be installed
 (setq jsm-packages
