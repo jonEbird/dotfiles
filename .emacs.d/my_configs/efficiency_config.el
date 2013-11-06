@@ -29,3 +29,10 @@
         (select-window (funcall selector)))
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 (define-key ctl-x-4-map (kbd "t") 'transpose-windows)
+
+;; Improved IDO match support
+;; flx installed via el-get
+(require 'flx-ido)
+(flx-ido-mode 1)
+;; disable ido faces to see flx highlights.
+(setq ido-use-faces nil)
