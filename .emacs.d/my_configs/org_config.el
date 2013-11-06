@@ -262,6 +262,12 @@
 
 ;; Presentations via S5 for your org file
 (load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
+;; Find further S5 themes:
+;;   Official Site   - http://meyerweb.com/eric/tools/s5/themes/
+;;   Nice Collection - http://atuan.com/s5/
+;; Extract these into your ~/org/ui/ directory since that is where you store org files
+(setq org-s5-theme "mitaine") ; dark and slighty odd
+(setq org-s5-theme "yatil")   ; clean and bright
 
 ;; A near direct copy of org-export-as-html-and-open from org-html.el
 (defun org-export-as-s5-and-open (arg)
