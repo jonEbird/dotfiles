@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# markallread by Andrew Oakley www.aoakley.com Public Domain 2009-01-11
+# A script to mark all maildir mail as read, including folders
+# Assumptions:
+# * Your maildir folder is ~/.maildir
+# * Folders use Dovecot IMAP . prefix eg. ~/.maildir/.foldername
+# * Folder names do not contain spaces
+
+usage() {
+    echo "Usage: $(basename $0) <maildir>" 1>&2
+    [ -n "$1" ] && echo "       $@" 1>&2
+}
+
+MAILDIR="$1"
+if [ ! -d "$MAILDIR" ]; then
+    usage
+    exit 1
+elif [ ! -d "$MAILDIR/new" -o ! -d "$MAILDIR/cur" ]; then
+    usage "$1 does not appears to be a Maildir"
+    exit 2
+fi
+
+for i in $(ls -1 "${MAILDIR}/new/"); do
+    # Move from /new/ to /cur/
+    # Also add status "seen" to message by appending :2,S to filename
+    # as per http://cr.yp.to/proto/maildir.html
+    #echo mv "${MAILDIR}/new/$i" "${MAILDIR}/new/"$(echo $i | sed -r 's|^(.*)/new/(.*)$|\1/cur/\2:2,S|g')
+    if [ ${i#${i%???}} == ":2," ]; then
+        mv "${MAILDIR}/new/$i" "${MAILDIR}/cur/${i}S"
+    else
+        mv "${MAILDIR}/new/$i" "${MAILDIR}/cur/${i}:2,S"
+    fi
+    #exit 0
+done
+
+exit 0
+# Loop through ~/.maildir/.foldername/cur/ folders
+# Required in case new mail has been moved to a cur dir without reading
+# Note how these already have :2, at the end of the filename
+for i in `ls -1 ~/.maildir/.*/cur/*:2, 2>/dev/null`
+do
+  # Add status "seen" to message by appending S to filename
+  mv $i `echo $i | sed -r "s/^(.*)$/\1S/"`
+done

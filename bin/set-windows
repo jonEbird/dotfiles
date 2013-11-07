@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Commands generated from /home/jsmiller/bin/wmctrl.py
+
+wmctrl -i -r 0x01a00006 -e 0,1600,114,1352,722 # gnome-terminal
+wmctrl -i -r 0x02400047 -e 0,1679,2,1827,1007 # emacs
+wmctrl -i -r 0x01a00181 -e 0,1600,268,1352,722 # gnome-terminal
+wmctrl -i -r 0x02c00037 -e 0,3347,-68,1831,1037 # chrome
+wmctrl -i -r 0x0340007f -e 0,1737,96,1598,840 # firefox

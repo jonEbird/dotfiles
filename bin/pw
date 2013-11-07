@@ -1,0 +1,27 @@
+#!/usr/bin/expect -f
+# -*- tcl -*-
+
+if {$argc==0} {
+    send_user "Usage: $argv0 <command to be wrapped by sending your password>\n"
+    exit
+}
+
+stty -echo
+send_user -- "Password: "
+expect_user -re "(.*)\n"
+send_user "\n"
+stty echo
+set pass $expect_out(1,string)
+
+spawn [lindex $argv 0] [lindex $argv 1] [lindex $argv 2] [lindex $argv 3] [lindex $argv 4] [lindex $argv 5] [lindex $argv 6] [lindex $argv 7] [lindex $argv 8] [lindex $argv 9]
+
+set timeout -1
+match_max 100000
+
+while { true } {
+    expect {
+    "assword: " { send -- "$pass\r" }
+    "Are you sure you want to continue connecting" { send -- "yes\r" }
+    eof { send_user "That is all she wrote.\n"; exit }
+    }
+}
