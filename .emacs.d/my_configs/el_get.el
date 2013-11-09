@@ -46,11 +46,11 @@
 ; Finally my list of packages wanting to be installed
 (setq jsm-packages
       (append
+       (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
+
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
               lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
               org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
-              flx)
-
-       (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))))
+              flx)))
 
 (el-get 'sync jsm-packages)
