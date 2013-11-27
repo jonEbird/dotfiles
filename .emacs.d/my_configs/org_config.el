@@ -83,6 +83,7 @@
 			   ("javascript" . js)
 			   ("c" . c)
 			   ("sql" . sql)
+                           ("scheme" . scheme)
 			   )))
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t)
@@ -102,7 +103,8 @@
          (ledger . t)
          (org . t)
          (plantuml . t)
-         (latex . t))))
+         (latex . t)
+         (scheme . t))))
 
 (setq org-ditaa-jar-path "/usr/share/java/ditaa.jar")
 (setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
@@ -127,7 +129,7 @@
 ;; (setq org-refile-targets (quote ((nil :maxlevel . 2))))
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
 				 ("~/org/info.org" :maxlevel . 2)
-				 ("~/org/projects.org" :maxlevel . 2)
+				 ("~/org/projects.org" :maxlevel . 3)
 				 ("~/org/personal.org" :maxlevel . 2)
 				 )))
 

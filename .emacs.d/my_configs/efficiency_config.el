@@ -36,3 +36,9 @@
 (flx-ido-mode 1)
 ;; disable ido faces to see flx highlights.
 (setq ido-use-faces nil)
+
+; Configuring ido-vertical-mode
+(ido-vertical-mode)
+
+;; Setup Multple Cursors
+; FIXME

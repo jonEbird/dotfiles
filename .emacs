@@ -312,6 +312,7 @@
       )))
 ; load my configuration files
 (jsm:load-config-file '("el_get"
+                        "scheme_config"
                         "php_config"
 			"org_config"
 			"c_config"

@@ -1,0 +1,156 @@
+#!/bin/bash
+
+PATH="/bin:/usr/bin:/usr/sbin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin"
+REL_DIR=$(dirname $0)
+TMP="/tmp/.$(basename $0)$$_"
+LOG="${HOME}/trylogs/$(basename $0).$(date +%m%d%Y_%H%M%S).log"
+[ ! -d ${HOME}/trylogs ] && mkdir -p 0755 ${HOME}/trylogs
+
+title() {
+    echo -e "]0;$1"
+}
+
+emailme() {
+    whoami=$(who am i | awk '{ print $1 }')
+    echo "Message from script $0 being ran on $(uname -n) at $(date)" | mailx -s "$1" ${whoami}@nationwide.com
+}
+
+cleanup() {
+    rm $TMP* 2>/dev/null
+    title "$(uname -n) $(echo $SSH_TTY | sed 's|/dev/||g')" # reset title
+    [ -s "$LOG" ] && echo "See logfile $LOG for any reviews necessary."
+}
+trap cleanup EXIT
+touch $LOG
+
+usage() {
+    cat <<EOF >&2
+Usage: $(basename $0) [-s] [-h hostlist] [-x extrafile] copyfile [copyfile2...]
+        -s   Run script with sudo
+        -h   Specify a file with a list of hosts. Also can be a single host.
+             Will use \$HOSTS env var when not specified
+        -x   Extra supplementary file to copy to host(s)
+        -t   Perform a telnet test to port after operations are done.
+EOF
+}
+
+while getopts :h:sx:t:c: OPT; do
+    case $OPT in
+	h)
+	    SRVLIST="$OPTARG"
+	    if [ ! -r $SRVLIST ]; then
+		# perhaps it is a just a hostname?
+		getent hosts $SRVLIST 1>/dev/null
+		if [ $? -eq 0 ]; then
+		    echo $SRVLIST >> ${TMP}hostlist
+		else
+		    echo "Error: Can not read hostlist file \"${SRVLIST}\". Nor is it a resolvable hostname." >&2
+		    usage
+		    exit 2
+		fi
+	    else
+		cat $SRVLIST >> ${TMP}hostlist
+	    fi
+	    ;;
+	x)
+	    if [ ! -r $OPTARG ]; then
+		echo "Error: Can not read extra file \"${OPTARG}\"" >&2
+		usage
+		exit 2
+	    fi
+	    EXTRAFILES="$EXTRAFILES $OPTARG"
+	    ;;
+	s)
+	    NEED_SUDO="yes"
+	    ;;
+	t)
+	    TELNETTEST_PORT="$OPTARG"
+	    ;;
+	c)
+	    CMD="$OPTARG"
+	    ;;
+	*)
+	    usage
+	    exit 1
+    esac
+done
+shift $(( OPTIND - 1 ))
+OPTIND=1
+#--prepare-our-gameplan-based-on-arguments-used------------------------
+if [ -n "${CMD}" ]; then
+    # command supplied via the '-c' option
+    FILESCOPIED="$EXTRAFILES"
+else
+    # command executed by $1
+    # first some sanity checks
+    if [ -z "${1}" ]; then
+	usage
+	exit 1
+    elif [ ! -x "$1" ]; then
+	echo "Error: Command \"$1\" must be executable." >&2
+	exit 3
+    fi
+
+    FILESCOPIED="$1 $EXTRAFILES"
+    CMD="./$(basename $1)"; shift
+fi
+ARGS="$@"
+if [ "$NEED_SUDO" == "yes" ]; then
+    CMD="sudo $CMD"
+fi
+# extra files
+for file in ${FILESCOPIED}; do
+    if [ ! -r $file ]; then
+	echo "Error: Can not read ${FILESCOPIED} to be copied and ran." >&2
+	usage
+	exit 2
+    fi
+done
+# which hosts are we going to hit?
+touch ${TMP}hostlist
+if [ ! -s ${TMP}hostlist ]; then
+    echo $HOSTS > ${TMP}hostlist
+    # cleanup non hostname characters
+    # sed 's/[^a-zA-Z0-9]/ /g' ${TMP}hostlist > ${TMP}temp
+    # cat ${TMP}temp > ${TMP}hostlist
+fi
+
+cat <<EOF | tee -a $LOG
+Invoking the following command: $CMD $ARGS
+First will copy following files: $FILESCOPIED
+Server list includes: $(cat ${TMP}hostlist | xargs)
+EOF
+#exit
+
+N=0
+total=$(wc -w ${TMP}hostlist | awk '{ print $1 }')
+for host in $(cat ${TMP}hostlist); do
+    N=$(($N + 1)); title "${N}/${total} ${CMD}"
+    egrep -s "^${host}$" ~/nologin.list >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+	echo "Skip host \"$2\" since I myself do not have an account." | tee -a $LOG
+	return 0
+    fi
+    if [ -n "${FILESCOPIED}" ]; then
+	echo -n "** Server ${host}: Copying \"$(echo ${FILESCOPIED} | xargs)\"." | tee -a $LOG
+	scp -qp ${FILESCOPIED} ${host}: 2>&1 | tee -a $LOG
+        #echo "DEBUG: scp -qp ${FILESCOPIED} ${host}:" 2>&1 | tee -a $LOG
+	echo " Now running." | tee -a $LOG
+    else
+	echo "** Server ${host}: Now running." | tee -a $LOG
+    fi
+    ssh -qt $host "$CMD $ARGS" 2>&1 | tee -a $LOG # need a 'sudo' call here ala "sudo $1"
+    if [ -n "$TELNETTEST_PORT" ]; then
+	echo -n "Conducting telnet test to $host on port $TELNETTEST_PORT: " | tee -a $LOG
+	/webdata/scripts/telnet_test.py $host $TELNETTEST_PORT 1>&- 2>&-
+	if [ $? -eq 0 ]; then
+	    echo "Good." | tee -a $LOG
+	else
+	    echo "Bad. Sending email alert." | tee -a $LOG
+	    emailme "Port $TELNETTEST_PORT not listening on ${host} after executing: $CMD $ARGS"
+	fi
+    fi
+done
+
+cleanup
+exit 0

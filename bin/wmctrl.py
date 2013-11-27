@@ -101,32 +101,40 @@ class Wmctrl(object):
         self.__calibrated = True
         self.__refresh_wininfo()
 
-    def gen_shellscript(self):
+    def commands(self):
         """ Produce commands which can be used to reset windows to their
         current location and geometry """
         self.calibrate()
-        commands = []
+        cmds = []
         for w_id, desktop, pid, x_offset, y_offset, width, height, host, title in self.win_info:
             cmd = 'wmctrl -i -r %s -e 0,%s,%s,%s,%s # %s' % (w_id, x_offset, y_offset, width, height, pid2name(pid))
-            commands.append(cmd)
-        return commands
+            cmds.append(cmd)
+        return cmds
 
 if __name__ == '__main__':
 
-    from optparse import OptionParser, OptionGroup
+    from optparse import OptionParser
     parser = OptionParser()
     parser.add_option("-s", "--script", dest="script", action="store_true", default=False,
                       help="Generate wmctrl commands to place windows back to where they are now")
-    parser.add_option("--info", dest="info", action="store_true", default=False,
+    parser.add_option("-O", "--output", dest="output", default="-",
+                      help="File to send output to. Defaults to stdout")
+    parser.add_option("-v", "--verbose", dest="verbose", action="store_true", default=False,
                       help="Show additional information")
     (options, args) = parser.parse_args()
 
     W = Wmctrl()
+    if options.output == "-":
+        out_fh = sys.stdout
+    else:
+        try:
+            out_fh = open(options.output, 'w')
+        except (OSError, IOError), e:
+            print >> sys.stderr, 'Problem opening file "%s" for output: %s' % (options.output, str(e))
 
-    if options.info:
+    if options.verbose:
         W.calibrate()
         print '# Calibrated offset to be (%d, %d)' % (W.wm_xoffset, W.wm_yoffset)
 
     if options.script:
-        print '#!/bin/bash\n\n# Commands generated from %s\n' % (sys.argv[0])
-        print '\n'.join(W.gen_shellscript())
+        out_fh.write('#!/bin/bash\n\n# Commands generated from %s\n\n%s\n' % (sys.argv[0], '\n'.join(W.commands())))

@@ -98,6 +98,7 @@ iMacros
 .icedtea
 .erc/logs/
 .offlineimap/
+trylogs/
 Maildir*/
 rpmbuild/
 u_drive

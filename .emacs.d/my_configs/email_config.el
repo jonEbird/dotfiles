@@ -34,7 +34,7 @@
 
 (setq
  mu4e-get-mail-command            "offlineimap"  ;; calling offlineimap separately
- mu4e-update-interval             300            ;; Not needed with offlineimap hooks
+ mu4e-update-interval             60             ;; Not needed with offlineimap hooks
  mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
  mu4e-view-show-images            t              ;; Show images inline
  mu4e-view-image-max-width        800            ;; Limit too big photos
@@ -47,8 +47,17 @@
  mu4e-attachment-dir              "~/Downloads"  ;; Match browser default
  mu4e-headers-skip-duplicates     t              ;; Eliminate Gmail dups
  mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
+ mu4e-hide-index-messages         t              ;; No messages in mini-buffer about updates
  )
 ;; mu4e-hide-index-messages - set once you've updated mu4e
+
+(setq mu4e-headers-fields
+      '( (:human-date    .  13)
+         (:flags         .   6)
+         (:maildir       .  30)
+         (:from-or-to    .  22)
+         (:subject       .  nil)))
+;          (:mailing-list  .  15)
 
 ;; https://groups.google.com/forum/#!topic/mu-discuss/xlZegBifdaA
 (defun html2text ()
@@ -67,6 +76,32 @@
         (mu4e-scroll-up)
       (shr-browse-url))))
 (define-key mu4e-view-mode-map (kbd "RET") 'jsm:shr-browse-url)
+
+(defun jsm:narrow-to-unread-mail ()
+  "Narrow my mu4e-headers view to the unread mail and enable the threaded view"
+  (interactive)
+  (setq mu4e-headers-fields
+        '( (:human-date    .  13)
+           (:flags         .   6)
+           (:mailing-list  .  30)
+           (:from-or-to    .  22)
+           (:subject       .  nil)))
+  (mu4e-headers-search-narrow "flag:unread")
+  (mu4e-headers-toggle-threading))
+(defun jsm:unnarrow-mail ()
+  "Opposite of jsm:narrow-to-unread-mail"
+  (interactive)
+  (setq mu4e-headers-fields
+        '( (:human-date    .  13)
+           (:flags         .   6)
+           (:maildir       .  30)
+           (:from-or-to    .  22)
+           (:subject       .  nil)))
+  (mu4e-headers-toggle-threading t)
+  (mu4e-headers-query-prev)
+  (mu4e-headers-query-prev))
+(define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-unread-mail)
+(define-key mu4e-headers-mode-map (kbd "l") 'jsm:unnarrow-mail)
 
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions

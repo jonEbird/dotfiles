@@ -39,6 +39,8 @@
 		   (global-set-key (kbd "C-x C-z") 'magit-status)))
    (:name org2blog
           :type elpa)
+   (:name org-mime
+          :type elpa)
    ))
 
 ; (el-get 'sync)
@@ -51,6 +53,6 @@
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
               lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
               org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
-              flx)))
+              flx paredit ido-vertical-mode multiple-cursors)))
 
 (el-get 'sync jsm-packages)
