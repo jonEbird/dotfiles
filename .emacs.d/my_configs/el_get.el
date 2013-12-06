@@ -41,6 +41,8 @@
           :type elpa)
    (:name org-mime
           :type elpa)
+   (:name guide-key
+          :type elpa)
    ))
 
 ; (el-get 'sync)
@@ -53,6 +55,7 @@
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
               lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
               org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
-              flx paredit ido-vertical-mode multiple-cursors)))
+              flx paredit ido-vertical-mode multiple-cursors popwin guide-key visual-regexp
+              projectile ack-and-a-half)))
 
 (el-get 'sync jsm-packages)

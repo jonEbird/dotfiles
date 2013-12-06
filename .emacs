@@ -48,7 +48,7 @@
   (package-initialize)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
-  (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/"))
+  (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
   )
 
 ;; Extra add-ons - Typcially from git submodules
@@ -189,6 +189,8 @@
 (global-set-key "\C-cu" 'uncomment-region)
 (global-set-key (kbd "<f8>") 'flyspell-check-previous-highlighted-word)
 (global-set-key "\M-1" 'string-insert-rectangle)
+(add-hook 'conf-unix-mode-hook ; keep ace-jump in configs
+          '(lambda () (local-set-key (kbd "C-c SPC") 'ace-jump-mode)))
 
 ; I like C-PGUP for previous-buffer and C-PGDN for next-buffer
 (global-set-key [C-prior] 'previous-buffer)
