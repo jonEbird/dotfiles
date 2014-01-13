@@ -9,9 +9,9 @@
   (if (eq (frame-parameter (next-frame) 'background-mode) 'light)
       (progn
         (load-theme 'solarized-dark nil nil)
-        (shell-command "~/gnome-terminal-colors-solarized/set_dark.sh" nil nil))
+        (shell-command "~/gnome-terminal-colors-solarized/install.sh -s dark -p default" nil nil))
     (load-theme 'solarized-light nil nil)
-    (shell-command "~/gnome-terminal-colors-solarized/set_light.sh" nil nil)))
+    (shell-command "~/gnome-terminal-colors-solarized/install.sh -s light -p default" nil nil)))
 
 (when (eq system-type 'gnu/linux)
   (message "Setting up specific settings for Linux")
@@ -28,4 +28,17 @@
   (load-theme 'solarized-dark nil nil)
   ; Toggle between light and dark themes with F7
   (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
+
+  ;; Printing support!
+  (require 'printing)
+  (pr-update-menus t)
+  ; make sure we use localhost as cups server
+  (setenv "CUPS_SERVER" "localhost")
+  (require 'cups)
+
+  ;; Install yaml-mode via the ELPA repository and associate file types
+  (require 'yaml-mode)
+  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+  (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
+
   )

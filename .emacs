@@ -75,13 +75,6 @@
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
 
-;; Printing support!
-(require 'printing)
-(pr-update-menus t)
-; make sure we use localhost as cups server
-(setenv "CUPS_SERVER" "localhost")
-(require 'cups)
-
 ;; don't iconify from within X
 (when (not (eq nil window-system))
   (global-unset-key "\C-z") ; iconify-or-deiconify-frame (C-x C-z)
@@ -206,11 +199,6 @@
 
 ;; zsh files are to be treated as shell scripts
 (add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
-
-;; Install yaml-mode via the ELPA repository and associate file types
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
 ;; Markdown files
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))

@@ -10,6 +10,6 @@
 [submodule "gnome-terminal-colors-solarized"]
 	path = gnome-terminal-colors-solarized
 	url = git://github.com/sigurdga/gnome-terminal-colors-solarized.git
-[submodule "/home/jsmiller/.emacs.d/geiser"]
-	path = /home/jsmiller/.emacs.d/geiser
+[submodule ".emacs.d/geiser"]
+	path = .emacs.d/geiser
 	url = http://git.sv.gnu.org/r/geiser.git
