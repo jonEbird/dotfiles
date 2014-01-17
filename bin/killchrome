@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PROC_NAMES="chrome Chrome_ProcessL"
+
+for pname in $PROC_NAMES; do
+    N=0
+    SIGNAL="SIGTERM"
+    while pgrep -x $pname >/dev/null; do
+        pkill -x --signal $SIGNAL $pname
+        sleep 1
+        N=$((N+1))
+        if [ $N -eq 5 ]; then
+            echo "Getting the shotgun for $pname"
+            SIGNAL="SIGKILL"
+        fi
+    done
+done
+
