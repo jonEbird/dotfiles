@@ -1,61 +1,98 @@
 #!/bin/bash
 
-MAILDIR="~/Maildir"
+verbose() {
+    if [ -n "$VERBOSE" ]; then
+        echo "debug: $@"
+    fi
+}
 
-#------------------------------
+usage() {
+    cat <<EOF
+Usage: $(basename $0) [options]
+   -m,--maildir=MAILDIR   Will pass "m:" + MAILDIR to "mu find" as filter
+   -l,--non-list          Only show mail that is NOT part of a list
+   -L,--lists             Only show mail that is part of a list
+   -x,--extra=FILTER      Include the extra FILTER to "mu find"
+   --list-breakdown       Provide a one-line summary of which mail is or
+                          not part of a list
+   --mailbox-counts       Show just a count of the mail along with the
+                          maildir name
+   -v,--verbose           Show verbose information such as what is being
+                          passed to "mu find"
+   Examples:
+      $(basename $0) -m /Qualcomm/INBOX
+      $(basename $0) -m '/Qualcomm/*' --mailbox-counts
+      $(basename $0) -m /Gmail/INBOX --list-breakdown
+EOF
+}
+
+# Defaults
 EXTRA_FILTER=""
-SUMMARY="no"
+MODE="simple-count"
+MAILDIR="/"
+VERBOSE=""
 
-while getopts :gGs OPT; do
-    case $OPT in
-        g|+g)
-            EXTRA_FILTER="$EXTRA_FILTER AND NOT list"
+# Process options
+TEMP=$(getopt -o hvlLm:x: -l help,verbose,non-list,lists,list-breakdown,mailbox-counts,maildir:,extra: -n "$(basename -- $0)" -- "$@")
+if [ $? != 0 ] ; then echo "died in getopt"; usage; exit 1; fi
+
+eval set -- "$TEMP"
+
+while true ; do
+    case "$1" in
+        -l|--non-list)
+            EXTRA_FILTER="$EXTRA_FILTER AND NOT list"; shift
             ;;
-        G|+G)
-            EXTRA_FILTER="$EXTRA_FILTER AND list"
+        -L|--lists)
+            EXTRA_FILTER="$EXTRA_FILTER AND list"; shift
             ;;
-        s|+S)
-            SUMMARY="yes"
+        -x|--extra)
+            shift; EXTRA_FILTER="$EXTRA_FILTER $1"; shift
             ;;
-        *)
-            echo "usage: `basename $0` [+-g} [--] ARGS..."
-            exit 2
+        --list-breakdown)
+            MODE="list-breakdown"; shift
+            ;;
+        --mailbox-counts)
+            MODE="mailbox-counts"; shift
+            ;;
+        -m|--maildir)
+            shift; MAILDIR="$1"; shift
+            ;;
+        -v|--verbose)
+            VERBOSE="yes"; shift
+            ;;
+        -h|--help)
+            usage; exit 0
+            ;;
+	--) shift ; break ;;
+	*) echo "Problem parsing option \"$1\"" ; exit 2 ;;
     esac
 done
-shift `expr $OPTIND - 1`
-OPTIND=1
+#echo "DEBUG: REBUILD_METHOD=$REBUILD_METHOD SERVER=$SERVER PROFILE=$PROFILE KEXEC=$KEXEC EXTRA_KOPTS=$EXTRA_KOPTS"; exit 0
+
 
 # Primarilly used for my conky status
-case $1 in
-    *[qQ]ualcomm*)
-        MBOX_QUERY="m:/Qualcomm/INBOX"
+case $MODE in
+    simple-count)
+        verbose "mu find: flag:unread m:$MAILDIR $EXTRA_FILTER"
+        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER 2>/dev/null | wc -l
         ;;
-    *[gG]mail*)
-        MBOX_QUERY="m:/Gmail/INBOX"
-        ;;
-    *)
-        if [ -n "$1" ]; then
-            if [ -d "${MAILDIR}/${1}" ]; then
-                MBOX_QUERY="m:$1"
-            else
-                echo "Unknown Maildir \"${1}\". Ignoring" 1>&2
-                MBOX_QUERY=""
-            fi
+    list-breakdown)
+        # Ignore any EXTRA_FILTER options
+        MSG=""
+        verbose "mu find: Not in list: flag:unread m:$MAILDIR AND NOT list"
+        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT list 2>/dev/null | wc -l)
+        MSG="${non_list}"
+        verbose "mu find: IN list: flag:unread m:$MAILDIR AND list"
+        list=$(mu find --nocolor flag:unread m:$MAILDIR AND list 2>/dev/null | wc -l)
+        if [ $list -gt 0 ]; then
+            MSG="$MSG ($list in groups)"
         fi
+        echo $MSG
+        ;;
+    mailbox-counts)
+        verbose "mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
+        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | \
+            awk '{ M[$0]++ } END { for (m in M) printf("%4s %s\n", M[m], m); }'
+        ;;
 esac
-
-if [ $SUMMARY == "yes" ]; then
-    # Ignore any EXTRA_FILTER options
-    MSG=""
-    non_list=$(mu find --nocolor flag:unread $MBOX_QUERY AND NOT list 2>/dev/null | wc -l)
-    MSG="${non_list}"
-    list=$(mu find --nocolor flag:unread $MBOX_QUERY AND list 2>/dev/null | wc -l)
-    if [ $list -gt 0 ]; then
-        MSG="$MSG ($list in groups)"
-    fi
-    # done
-    echo $MSG
-else
-    #echo DEBUG: mu find --nocolor flag:unread $MBOX_QUERY $EXTRA_FILTER
-    mu find --nocolor flag:unread $MBOX_QUERY $EXTRA_FILTER 2>/dev/null | wc -l
-fi
