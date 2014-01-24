@@ -14,15 +14,17 @@
 ;; Set different methods depending on what system
 (if (eq system-type 'windows-nt)
     (setq
-     backup-by-copying t      ; don't clobber symlinks
-     backup-directory-alist
-     '(("." . "~/.backups"))  ; don't litter my fs tree
-     delete-old-versions t
-     kept-new-versions 6
-     kept-old-versions 2
-     version-control t)       ; use versioned backups
-  (setq make-backup-file-name-function 'my-make-backup-file-name)
-  )
+     backup-by-copying              t  ; don't clobber symlinks
+     backup-directory-alist         '(("." . "~/.backups"))  ; don't litter my fs tree
+     delete-old-versions            t
+     kept-new-versions              6
+     kept-old-versions              2
+     version-control                t  ; use versioned backups
+     )
+  (setq
+   make-backup-file-name-function   'my-make-backup-file-name
+   vc-make-backup-files             t  ;; Backup version controlled files too
+   ))
 
 ;; Do not make backups for GnuPG files
 ;;   Thanks - http://anirudhsasikumar.net/blog/2005.01.21.html

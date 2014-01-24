@@ -171,7 +171,6 @@
 ;; --------------------------------------------------
 ;; Key (re)assignments
 ;; --------------------------------------------------
-
 (global-set-key (kbd "<f2>") 'call-last-kbd-macro)
 (global-set-key (kbd "S-<f2>")  'apply-macro-to-region-lines)
 
@@ -244,6 +243,7 @@
                             (buffer-substring-no-properties b e)))
     (message-send-and-exit)))
 
+; Add unhighlight - hi-lock-unface-buffer ? hi-lock-interactive-patterns
 (defun jsm:highlight-current-word(b e)
   (interactive "r")
   (highlight-phrase
@@ -303,16 +303,16 @@
 ; load my configuration files
 (jsm:load-config-file '("el_get"
                         "scheme_config"
-                        "php_config"
-			"org_config"
-			"c_config"
-                        "c++_config"
+                        "yasnippet_config"
                         "backup_config"
-			"python_config"
-			"tramp_config"
-			"linux_config"
-			"windows_config"
-			"erc_config"
+                        "php_config"
+                        "org_config"
+                        "c-c++_tags_config"
+                        "python_config"
+                        "tramp_config"
+                        "linux_config"
+                        "windows_config"
+                        "erc_config"
                         "email_config"
                         "efficiency_config"
                         ))

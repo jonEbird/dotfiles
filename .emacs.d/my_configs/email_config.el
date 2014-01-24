@@ -119,13 +119,13 @@
 ;; around with the CLI version and then incorporate that search as a
 ;; bookmark.
 (setq mu4e-bookmarks
-      '( ("flag:unread AND NOT flag:trashed"    "Unread messages"           ?u)
-         ("\"Maildir:/Qualcomm/INBOX\""         "Qualcomm Inbox"            ?q)
-         ("Maildir:/Gmail/INBOX AND NOT list"   "Gmail Inbox (no groups)"   ?g)
-         ("Maildir:/Gmail/INBOX AND list"       "Gmail Groups"              ?G)
-         ("date:today..now"                     "Today's messages"          ?t)
-         ("date:7d..now"                        "Last 7 days"               ?w)
-         ("mime:image/*"                        "Messages with images"      ?i)))
+      '( ("flag:unread AND NOT flag:trashed AND m:/Qualcomm/*"    "Unread messages"           ?u)
+         ("\"Maildir:/Qualcomm/INBOX\""                           "Qualcomm Inbox"            ?q)
+         ("Maildir:/Gmail/INBOX AND NOT list"                     "Gmail Inbox (no groups)"   ?g)
+         ("Maildir:/Gmail/INBOX AND list"                         "Gmail Groups"              ?G)
+         ("date:today..now"                                       "Today's messages"          ?t)
+         ("date:7d..now"                                          "Last 7 days"               ?w)
+         ("mime:image/*"                                          "Messages with images"      ?i)))
 
 ; Sending Email - Using msmtp
 (setq message-send-mail-function 'message-send-mail-with-sendmail

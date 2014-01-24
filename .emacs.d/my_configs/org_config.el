@@ -88,6 +88,10 @@
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t)
 
+; Add a new quick template
+(add-to-list 'org-structure-template-alist
+             '("S" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
+
 ; org-babel configuration
 (org-babel-do-load-languages
  (quote org-babel-load-languages)

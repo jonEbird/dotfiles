@@ -138,3 +138,6 @@ if __name__ == '__main__':
 
     if options.script:
         out_fh.write('#!/bin/bash\n\n# Commands generated from %s\n\n%s\n' % (sys.argv[0], '\n'.join(W.commands())))
+        out_fh.write('pkill -x -SIGUSR1 conky\n')
+
+    out_fh.close()

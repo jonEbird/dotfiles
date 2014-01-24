@@ -58,6 +58,7 @@
 ;; Projectile Project Management
 ;; ------------------------------
 (projectile-global-mode)
+; (setq projectile-tags-command "gtags %s") ; Was "ctags -Re %s"
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
