@@ -56,6 +56,7 @@
               lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
               org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
               flx paredit ido-vertical-mode multiple-cursors popwin guide-key visual-regexp
-              projectile ack-and-a-half autopair yasnippet auto-complete-clang auto-complete-etags)))
+              projectile ack-and-a-half autopair yasnippet auto-complete-clang auto-complete-etags
+              gtags multiple-cursors)))
 
 (el-get 'sync jsm-packages)

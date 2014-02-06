@@ -88,5 +88,5 @@ ${color grey}Networking:
 Up:$color ${upspeed eth0} ${color grey} - Down:$color ${downspeed eth0}
 $hr
 ${color grey}Gmail:    $color ${execpi 5 ~/bin/inbox_count.sh -m /Gmail/INBOX --list-breakdown}
-${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX --list-breakdown}
+${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX}
 ${execpi 5 ~/bin/inbox_count.sh -m '/Qualcomm/*' -x "and not m:/Qualcomm/INBOX" --mailbox-counts | sed 's|/Qualcomm/||g'}

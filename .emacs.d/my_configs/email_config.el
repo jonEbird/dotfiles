@@ -34,7 +34,7 @@
 
 (setq
  mu4e-get-mail-command            "offlineimap"  ;; calling offlineimap separately
- mu4e-update-interval             60             ;; Not needed with offlineimap hooks
+ mu4e-update-interval             120            ;; Not needed with offlineimap hooks
  mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
  mu4e-view-show-images            t              ;; Show images inline
  mu4e-view-image-max-width        800            ;; Limit too big photos
@@ -239,6 +239,33 @@ location."
 
 " nil t)))
 (add-hook 'mu4e-compose-mode-hook 'compose-reply-spacing)
+
+; Next two functions are courtesy of sabof https://github.com/djcb/mu/issues/128
+(defun mu4e-headers-mark-all-unread-read ()
+  "Put a ! \(read) mark on all visible unread messages"
+  (interactive)
+  (mu4e-headers-mark-for-each-if
+   (cons 'read nil)
+   (lambda (msg param)
+     (memq 'unread (mu4e-msg-field msg :flags)))))
+
+(defun mu4e-headers-flag-all-read ()
+  "Flag all visible messages as \"read\""
+  (interactive)
+  (mu4e-headers-mark-all-unread-read)
+  (mu4e-mark-execute-all t))
+
+; Use the helper functions to mark all read in annoying maildirs
+(defun jsm:mu4e-mark-noisy-maildirs-all-read ()
+  "Mark all read for some of my noisy maildirs such as Root Email"
+  (interactive)
+  (let ((noisy-maildirs (list "/Qualcomm/Root Mail")))
+    (mapc (lambda (maildir)
+            (save-window-excursion (mu4e~headers-jump-to-maildir maildir)
+                                   (mu4e-headers-flag-all-read)
+                                   (mu4e-headers-query-prev)))
+          noisy-maildirs)))
+(define-key mu4e-headers-mode-map (kbd "A") 'jsm:mu4e-mark-noisy-maildirs-all-read)
 
 ;; mu4e TODO
 ; crypto - http://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Crypto.html#MSGV-Crypto

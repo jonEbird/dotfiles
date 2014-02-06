@@ -68,8 +68,6 @@ while true ; do
 	*) echo "Problem parsing option \"$1\"" ; exit 2 ;;
     esac
 done
-#echo "DEBUG: REBUILD_METHOD=$REBUILD_METHOD SERVER=$SERVER PROFILE=$PROFILE KEXEC=$KEXEC EXTRA_KOPTS=$EXTRA_KOPTS"; exit 0
-
 
 # Primarilly used for my conky status
 case $MODE in

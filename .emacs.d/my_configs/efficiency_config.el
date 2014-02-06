@@ -58,6 +58,13 @@
 ;; Projectile Project Management
 ;; ------------------------------
 (projectile-global-mode)
+(setq projectile-enable-caching t
+      projectile-indexing-method 'native)
+
+; I will periodically do the following to keep my dot-files project from
+; cluttering projectile's caching:
+; sed -n '/^[^#]/s/.*/-&/p' ~/.gitignore > ~/.projectile
+
 ; (setq projectile-tags-command "gtags %s") ; Was "ctags -Re %s"
 
 ;; Ack support with ack-and-a-half
@@ -79,3 +86,12 @@
     (browse-url (concat "file://" html-filename))))
 (add-hook 'markdown-mode-hook
           '(lambda () (define-key markdown-mode-map (kbd "<f12>") 'jsm:markdown-preview)))
+
+;; Multiple-cursors
+;; ------------------------------
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)            ; works on active region
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)           ; "like-this" works when region on keyword
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C--") 'mc/mark-all-like-this)            ; recall you can scroll via M-v / C-v to view all cursors
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)

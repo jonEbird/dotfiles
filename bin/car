@@ -31,6 +31,7 @@ Usage: $(basename $0) [-s] [-h hostlist] [-x extrafile] copyfile [copyfile2...]
              Will use \$HOSTS env var when not specified
         -x   Extra supplementary file to copy to host(s)
         -t   Perform a telnet test to port after operations are done.
+        -c   Execute this command
 EOF
 }
 

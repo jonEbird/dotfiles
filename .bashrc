@@ -88,4 +88,5 @@ fi
 #fi
 
 [ -f ~/.proxy ] && source ~/.proxy
-. ~/.bash_profile.workstation 
+[ -f ~/.bash_profile.workstation  ] && source ~/.bash_profile.workstation
+[ -f ~/.bash_profile.work ] && source ~/.bash_profile.work
