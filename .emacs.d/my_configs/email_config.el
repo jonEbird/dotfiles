@@ -215,12 +215,12 @@
   (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
       (progn
         (window-configuration-to-register ?m nil)
-        (jump-to-register ?e))
+        (unless (ignore-errors (jump-to-register ?e))
+          (find-file (expand-file-name "~/org/projects.org"))))
     (progn
       (window-configuration-to-register ?e nil)
       (delete-other-windows)
-      (if (string= "a window configuration." (describe-register-1 ?m))
-          (jump-to-register ?m)
+      (unless (ignore-errors (jump-to-register ?m))
         (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
 

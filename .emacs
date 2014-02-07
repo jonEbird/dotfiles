@@ -75,6 +75,19 @@
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
 
+;; In addition to flyspell use abbrev to help with my common spelling mistakes
+; Define new abbreviations via: "C-x a i g" for global or "C-x a i l" for
+; local modes and then don't forget to save your abbreviations via M-x
+; write-abbrev-file
+(dolist (hook '(erc-mode-hook
+                emacs-lisp-mode-hook
+                text-mode-hook
+                org-mode-hook
+                mu4e-compose-mode-hook))
+  (add-hook hook (lambda () (abbrev-mode 1))))
+(quietly-read-abbrev-file)
+; (setq save-abbrevs 'silently)
+
 ;; don't iconify from within X
 (when (not (eq nil window-system))
   (global-unset-key "\C-z") ; iconify-or-deiconify-frame (C-x C-z)
