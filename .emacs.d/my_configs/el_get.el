@@ -27,8 +27,6 @@
  '(el-get                   ; self-hosting
    (:name cups
           :type elpa)
-   (:name cl-lib
-          :type elpa)
    (:name etags-table
           :type elpa)
    (:name xml-rpc
@@ -50,9 +48,10 @@
 
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
               lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
-              org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
-              flx paredit ido-vertical-mode multiple-cursors popwin guide-key visual-regexp
-              projectile ack-and-a-half autopair yasnippet auto-complete-clang auto-complete-etags
-              gtags multiple-cursors git-modes magit)))
+              org-caldav confluence-el expand-region iedit jedi mu4e
+              php-mode-improved flx paredit ido-vertical-mode
+              multiple-cursors popwin guide-key visual-regexp projectile
+              ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
+              auto-complete-etags gtags multiple-cursors git-modes magit)))
 
 (el-get 'sync jsm-packages)
