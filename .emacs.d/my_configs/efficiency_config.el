@@ -4,6 +4,9 @@
 ; could be many different things from project navigation, to custom
 ; function with key bindings, etc.
 
+;; Magit support
+(global-set-key (kbd "C-x C-z") 'magit-status)
+
 ;; Using ace-jump
 ;; ------------------------------
 (require 'ace-jump-mode)

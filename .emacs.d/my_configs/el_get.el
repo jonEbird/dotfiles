@@ -33,10 +33,6 @@
           :type elpa)
    (:name xml-rpc
           :type elpa)
-   (:name magit
-          :type elpa
-          :after (progn ()
-		   (global-set-key (kbd "C-x C-z") 'magit-status)))
    (:name org2blog
           :type elpa)
    (:name org-mime
@@ -57,6 +53,6 @@
               org-caldav confluence-el expand-region iedit jedi mu4e php-mode-improved
               flx paredit ido-vertical-mode multiple-cursors popwin guide-key visual-regexp
               projectile ack-and-a-half autopair yasnippet auto-complete-clang auto-complete-etags
-              gtags multiple-cursors)))
+              gtags multiple-cursors git-modes magit)))
 
 (el-get 'sync jsm-packages)

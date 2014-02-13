@@ -59,6 +59,14 @@
       nyan-animate-nyancat 't
       nyan-bar-length 20)
 
+;; Always show columns too
+(column-number-mode)
+
+;; I can never remember which key to split vertically and horizontally as
+;; well as thinking of it the opposite way
+(global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right) (ido-switch-buffer-other-window)))
+(global-set-key (kbd "C-x _") (lambda () (interactive) (split-window-below) (ido-switch-buffer-other-window)))
+
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)

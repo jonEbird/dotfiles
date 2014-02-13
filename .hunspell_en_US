@@ -486,3 +486,8 @@ ns
 btsettree
 btdomain
 BTBLD
+MWC
+BitBake
+MPTCP
+sed
+pietest

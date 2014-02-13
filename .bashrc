@@ -53,6 +53,10 @@ alias grpe='grep '
 alias sudo='sudo '
 alias ls='ls --color=auto -F '
 alias magit='emacsclient -a emacs -e "(magit-status \"$(pwd)\")"'
+function projectile() {
+    local project_dir="${1:-$(pwd)}"
+    emacsclient -a emacs -e "(projectile-add-known-project \"${project_dir%%/}/\")"
+}
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
