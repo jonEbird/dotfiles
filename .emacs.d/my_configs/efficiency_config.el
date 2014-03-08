@@ -11,6 +11,12 @@
 ;; ------------------------------
 (require 'ace-jump-mode)
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
+(global-set-key (kbd "C-0") 'ace-jump-mode)
+
+;; ido-imenu - More navigation help
+;; ------------------------------
+(require 'idomenu)
+(global-set-key (kbd "C-x C-i") 'idomenu)
 
 ;; Expand-region
 ;; ------------------------------
@@ -98,3 +104,44 @@
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C--") 'mc/mark-all-like-this)            ; recall you can scroll via M-v / C-v to view all cursors
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+;; Undo-tree - Try for starters: C-x u
+;; ------------------------------
+(global-undo-tree-mode)
+
+
+;; I like using autopair for all modes
+;; ------------------------------
+(require 'autopair)
+(autopair-global-mode 1)
+(setq autopair-autowrap t)
+
+;; Moved onto using session over desktop.el
+;; ------------------------------
+(setq session-save-file (concat (expand-file-name "~/.emacs.d/.session-") hostname))
+(require 'session)
+(add-hook 'after-init-hook 'session-initialize)
+
+;; Smart-mode-line
+;; ------------------------------
+(require 'smart-mode-line)
+(setq sml/theme 'respectful
+      sml/shorten-modes t)
+(add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
+(setq sml/hidden-modes '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev"))
+
+(sml/setup)
+
+;; gist support
+;; ------------------------------
+; Try setting gh-profile-alist for private, Enterprise github usage
+
+
+;; cmake support - http://www.cmake.org/Wiki/CMake/Editors/Emacs
+;; ------------------------------
+(require 'cmake-mode)
+(setq auto-mode-alist
+      (append
+       '(("CMakeLists\\.txt\\'" . cmake-mode))
+       '(("\\.cmake\\'" . cmake-mode))
+       auto-mode-alist))

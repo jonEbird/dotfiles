@@ -114,8 +114,8 @@
 (setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
 
 ;; Custom HTML exporting
-(setq org-export-html-postamble t)
-(setq org-export-html-postamble-format (quote (("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))))
+(setq org-html-postamble t
+      org-html-postamble-format  '(("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>")))
 ; Update any dblocks before exporting
 ; (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
 ;   (org-update-all-dblocks) -> kills large regions of my text file when region set using "C-c @"

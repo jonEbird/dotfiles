@@ -52,6 +52,7 @@
               php-mode-improved flx paredit ido-vertical-mode
               multiple-cursors popwin guide-key visual-regexp projectile
               ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
-              auto-complete-etags gtags multiple-cursors git-modes magit)))
+              auto-complete-etags gtags multiple-cursors git-modes magit
+              idomenu undo-tree org-mode cmake-mode gist session smart-mode-line)))
 
 (el-get 'sync jsm-packages)

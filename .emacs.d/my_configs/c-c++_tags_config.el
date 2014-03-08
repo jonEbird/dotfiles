@@ -62,7 +62,7 @@
     (make-local-variable 'ac-sources)
     (setq ac-auto-start 2)
     (setq ac-sources '(ac-source-words-in-same-mode-buffers
-                       ac-source-dictionary))
+                       ac-source-dictionary ac-source-gtags))
     ;; (when (require 'auto-complete-etags nil t)
     ;;   (add-to-list 'ac-sources 'ac-source-etags)
     ;;   (setq ac-etags-use-document t))
@@ -71,6 +71,10 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook-func)
 
+; M-. find-tag
+; C-M-. find-tag-regexp
+; M-* pop-tag-mark - Pop back to where M-. was last invoked
+; M-, tags-loop-continue - continues a tags-search or tags-query-replace
 
 ; Auto-complete support for C++
 (require 'auto-complete-clang)
@@ -80,19 +84,31 @@
 ; Source Code Navigation - Aka Tags
 ; ----------------------------------------------------------------------
 ;; I have gtags installed via ELPA package system
+; Lets gtags know that we're okay with their suggestive key bindings
+(setq gtags-suggested-key-mapping t
+      gtags-auto-update t)
+
 (require 'gtags)
 (add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
 ; gtags-find-tag    - goes to function def
 ; gtags-find-rtag   - references to function (caller/callee?)
 ; gtags-find-symbol - locate tokens that are not in the GTAGS file
 
+(add-hook 'gtags-select-mode-hook
+  '(lambda ()
+     (setq hl-line-face 'underline)
+     (hl-line-mode 1)))
+
+; Update the Projectile command for generating tags
+(setq projectile-tags-command "gtags")
+
 ; (gtags-visit-rootdir "/usr/src/linux-2.6.21")
 
 ;; etags-select extensions
 (require 'etags-select)
 (require 'etags-table)
-(global-set-key "\M-?" 'etags-select-find-tag-at-point)
-(global-set-key "\M-." 'etags-select-find-tag)
+;; (global-set-key "\M-?" 'etags-select-find-tag-at-point)
+;; (global-set-key "\M-." 'etags-select-find-tag)
 ; This helps you automatically search and find the TAGS file
 (setq etags-table-search-up-depth 10)
 ; Also nice to be able to explictly remember the interactive function to visit another TAGS file
@@ -110,12 +126,3 @@
     (etags-select-find (ido-completing-read "Tag: " tag-names))))
 ;; Commented out for now. Nice but too slow for huge TAGS files such as for the Linux kernel
 ; (global-set-key (kbd "M-.") 'my-ido-find-tag)
-
-; ----------------------------------------------------------------------
-; Miscellaneous
-; ----------------------------------------------------------------------
-
-; I like using autopair for all modes
-(require 'autopair)
-(autopair-global-mode 1)
-(setq autopair-autowrap t)
