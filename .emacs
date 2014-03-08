@@ -53,11 +53,11 @@
 
 ;; Extra add-ons - Typcially from git submodules
 ; nyan-mode
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
-(require 'nyan-mode)
-(setq nyan-wavy-trail 't
-      nyan-animate-nyancat 't
-      nyan-bar-length 20)
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
+;; (require 'nyan-mode)
+;; (setq nyan-wavy-trail 't
+;;       nyan-animate-nyancat 't
+;;       nyan-bar-length 20)
 
 ;; Always show columns too
 (column-number-mode)
@@ -66,6 +66,11 @@
 ;; well as thinking of it the opposite way
 (global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right) (ido-switch-buffer-other-window)))
 (global-set-key (kbd "C-x _") (lambda () (interactive) (split-window-below) (ido-switch-buffer-other-window)))
+
+;; Support an easier way to remember how to zoom in/out font size
+;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
+(global-set-key (kbd "<M-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
+(global-set-key (kbd "<M-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
@@ -98,8 +103,7 @@
 
 ;; don't iconify from within X
 (when (not (eq nil window-system))
-  (global-unset-key "\C-z") ; iconify-or-deiconify-frame (C-x C-z)
-  (nyan-mode))
+  (global-unset-key "\C-z")) ; iconify-or-deiconify-frame (C-x C-z)
 
 ;; Customized Variables
 (setq inhibit-startup-message t)
@@ -142,9 +146,9 @@
 (setq history-length 250)
 
 ; Desktop support
-(desktop-load-default)
-(setq desktop-enable t)
-(desktop-save-mode 1)
+;; (desktop-load-default)
+;; (setq desktop-enable t)
+;; (desktop-save-mode 1)
 (setq
  desktop-base-file-name (concat (expand-file-name "~/.emacs.desktop.") hostname)
  desktop-base-lock-name (concat (expand-file-name "~/.emacs.desktop.") hostname ".lock")
@@ -323,7 +327,7 @@
       )))
 ; load my configuration files
 (jsm:load-config-file '("el_get"
-                        "scheme_config"
+                        "lisp_config"
                         "yasnippet_config"
                         "backup_config"
                         "php_config"

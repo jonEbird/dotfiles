@@ -16,6 +16,12 @@
  mu4e-trash-folder  "/Trash"      ;; trashed messages
  mu4e-refile-folder "/Archives")  ;; saved messages
 
+(defun file-string (file)
+  "Read the contents of a file and return as a string."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
+
 (defvar my-mu4e-account-alist
   '(("Qualcomm"
      (mu4e-sent-folder "/Qualcomm/Sent Items")
@@ -23,14 +29,15 @@
      (mu4e-trash-folder "/Qualcomm/Deleted Items")
      (mu4e-refile-folder "/Qualcomm/Archives")
      (user-mail-address "jsmiller@qti.qualcomm.com")
-     (message-signature-file "~/.Qualcomm-sig.txt"))
+     (mu4e-compose-signature (file-string "~/.Qualcomm-sig.txt")))
     ("Gmail"
      (mu4e-sent-folder "/Gmail/Sent Items")
      (mu4e-drafts-folder "/Gmail/Drafts")
      (mu4e-trash-folder "/Gmail/Trash")
      (mu4e-refile-folder "/Gmail/Archives")
      (user-mail-address "jonEbird@gmail.com")
-     (message-signature-file "~/.Gmail-sig.txt"))))
+     (mu4e-compose-signature (file-string "~/.Gmail-sig.txt")))
+    ))
 
 (setq
  mu4e-get-mail-command            "offlineimap"  ;; calling offlineimap separately
@@ -102,6 +109,9 @@
   (mu4e-headers-query-prev))
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-unread-mail)
 (define-key mu4e-headers-mode-map (kbd "l") 'jsm:unnarrow-mail)
+
+;; I like being able to use C-Return to also send a message
+(define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
 
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions
@@ -254,18 +264,54 @@ location."
   (interactive)
   (mu4e-headers-mark-all-unread-read)
   (mu4e-mark-execute-all t))
+(defalias 'mark-all-read 'mu4e-headers-flag-all-read)
 
 ; Use the helper functions to mark all read in annoying maildirs
 (defun jsm:mu4e-mark-noisy-maildirs-all-read ()
   "Mark all read for some of my noisy maildirs such as Root Email"
   (interactive)
-  (let ((noisy-maildirs (list "/Qualcomm/Root Mail")))
+  (let ((noisy-maildirs (list "/Qualcomm/Root Mail" "/Qualcomm/Projects.Spacewalk"))
+        (mu4e-headers-leave-behavior 'ask))
     (mapc (lambda (maildir)
             (save-window-excursion (mu4e~headers-jump-to-maildir maildir)
                                    (mu4e-headers-flag-all-read)
+                                   ; (mu4e-mark-handle-when-leaving)
+                                   (mu4e-mark-execute-all t)
+                                   ; (sleep-for 2)
                                    (mu4e-headers-query-prev)))
           noisy-maildirs)))
 (define-key mu4e-headers-mode-map (kbd "A") 'jsm:mu4e-mark-noisy-maildirs-all-read)
+
+;; Abbrev for mu4e composing - Only used once and then used M-x edit-abbrevs
+;; (define-abbrev-table 'mu4e-compose-mode-abbrev-table
+;;   '(
+;;     ("nickname" "\"Lastname, Firstname\" <nickname@nowhere.com>" nil 0)
+;;     ))
+
+; https://groups.google.com/forum/#!topic/mu-discuss/VRt6ZIegrrM
+(defun jmg/ido-select-recipient ()
+  "Inserts a contact from the mu cache. Uses ido to select the
+contact from all those present in the database."
+  (interactive)
+  (insert
+   (ido-completing-read
+    "Recipient: "
+    (mapcar (lambda (contact-string)
+              (let* ((data (split-string contact-string ","))
+                     (name (when (> (length (car data)) 0)
+                             (car data)))
+                     (address (cadr data)))
+                (if name
+                    (format "%s <%s>" name address)
+                  address)))
+            (remove-if (lambda (string) (= 0 (length string)))
+                       (split-string (shell-command-to-string "mu cfind --format=csv") "\n"))))))
+(define-key message-mode-map (kbd "C-c t") 'jmg/ido-select-recipient)
+
+; Notes on using mbsync
+;  Need to set mu4e-change-filenames-when-moving to t
+;  Sample mbsync config(s)
+;   https://groups.google.com/d/msg/mu-discuss/AhgmBAcv-ww/vgWKlBmxXsMJ
 
 ;; mu4e TODO
 ; crypto - http://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Crypto.html#MSGV-Crypto
