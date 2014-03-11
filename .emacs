@@ -62,6 +62,9 @@
 ;; Always show columns too
 (column-number-mode)
 
+;; Issue a shell via F12
+(global-set-key (kbd "<f12>") 'shell)
+
 ;; I can never remember which key to split vertically and horizontally as
 ;; well as thinking of it the opposite way
 (global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right) (ido-switch-buffer-other-window)))
@@ -69,8 +72,8 @@
 
 ;; Support an easier way to remember how to zoom in/out font size
 ;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
-(global-set-key (kbd "<M-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
-(global-set-key (kbd "<M-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
+(global-set-key (kbd "<C-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
+(global-set-key (kbd "<C-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
 
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
@@ -146,7 +149,7 @@
 (setq history-length 250)
 
 ; Desktop support
-;; (desktop-load-default)
+(desktop-load-default)
 ;; (setq desktop-enable t)
 ;; (desktop-save-mode 1)
 (setq

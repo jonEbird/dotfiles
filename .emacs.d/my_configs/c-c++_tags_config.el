@@ -71,11 +71,6 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook-func)
 
-; M-. find-tag
-; C-M-. find-tag-regexp
-; M-* pop-tag-mark - Pop back to where M-. was last invoked
-; M-, tags-loop-continue - continues a tags-search or tags-query-replace
-
 ; Auto-complete support for C++
 (require 'auto-complete-clang)
 (define-key c++-mode-map (kbd "C-M-<return>") 'ac-complete-clang)
@@ -90,9 +85,14 @@
 
 (require 'gtags)
 (add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
-; gtags-find-tag    - goes to function def
-; gtags-find-rtag   - references to function (caller/callee?)
+; gtags-find-tag (C-c t) - goes to function def
+; gtags-find-rtag (C-c r) - references to function (caller/callee?)
 ; gtags-find-symbol - locate tokens that are not in the GTAGS file
+
+; M-. find-tag
+; C-M-. find-tag-regexp
+; M-* pop-tag-mark - Pop back to where M-. was last invoked
+; M-, tags-loop-continue - continues a tags-search or tags-query-replace
 
 (add-hook 'gtags-select-mode-hook
   '(lambda ()

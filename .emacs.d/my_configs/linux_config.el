@@ -1,17 +1,21 @@
 ; -*- emacs-lisp -*-
 
 ;;; Linux Configuration
+(require 'color-theme)
+(require 'smart-mode-line)
 
 (defun toggle-night-color-theme ()
   "Switch to/from night color scheme, including shell theme, for presentation mode"
   (interactive)
-  (require 'color-theme)
   (if (eq (frame-parameter (next-frame) 'background-mode) 'light)
       (progn
         (load-theme 'solarized-dark nil nil)
-        (shell-command "~/gnome-terminal-colors-solarized/install.sh -s dark -p default" nil nil))
+        (shell-command "~/gnome-terminal-colors-solarized/install.sh -s dark -p default" nil nil)
+        (setq sml/theme 'respectful))
     (load-theme 'solarized-light nil nil)
-    (shell-command "~/gnome-terminal-colors-solarized/install.sh -s light -p default" nil nil)))
+    (shell-command "~/gnome-terminal-colors-solarized/install.sh -s light -p default" nil nil)
+    (setq sml/theme 'light))
+  (sml/setup))
 
 (when (eq system-type 'gnu/linux)
   (message "Setting up specific settings for Linux")
