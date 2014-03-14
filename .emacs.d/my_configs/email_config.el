@@ -117,13 +117,27 @@
 (add-to-list 'mu4e-view-actions
              '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
+; My mailing lists
+(setq mu4e-user-mailing-lists
+      '( ("emacs-orgmode.gnu.org"           . "OrgMode")
+         ("mu-discuss.googlegroups.com"     . "Mu Group")
+         ("devel.lists.fedoraproject.org"   . "Fedora Devel")
+         ("colug-432.colug.net"             . "COLUG")
+         ("spacewalk-list.redhat.com"       . "Spacewalk")
+         ("mu.djcb.github.com"              . "Mu Github")
+         ("PythonSD-list.meetup.com"        . "Python SD")
+         ("linux-s390.vger.kernel.org"      . "Linux s390")
+         ("linux-rt-users.vger.kernel.org"  . "Linux RT")))
+
+(setq my-mailing-lists-filter (mapconcat (lambda (x) (concat "list:" (car x))) mu4e-user-mailing-lists " OR "))
+
 ;; When 'j'umping to a Maildir, you can set these shortcuts
 (setq mu4e-maildir-shortcuts
-      '(("/Qualcomm/INBOX"      .  ?q)
-        ("/Qualcomm/Root Mail"  .  ?r)
-        ("/Qualcomm/Sent Items" .  ?s)
-        ("/GMail/INBOX"         .  ?g)
-        ("/GMail/Sent Items"    .  ?S)))
+      '(("/Qualcomm/INBOX"       .  ?q)
+        ("/Qualcomm/Root Mail"   .  ?r)
+        ("/Qualcomm/Sent Items"  .  ?s)
+        ("/GMail/INBOX"          .  ?g)
+        ("/GMail/Sent Items"     .  ?S)))
 
 ;; Here you can use the full power of a "mu find" command. Try playing
 ;; around with the CLI version and then incorporate that search as a
@@ -131,11 +145,11 @@
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed AND m:/Qualcomm/*"    "Unread messages"           ?u)
          ("\"Maildir:/Qualcomm/INBOX\""                           "Qualcomm Inbox"            ?q)
-         ("Maildir:/Gmail/INBOX AND NOT list"                     "Gmail Inbox (no groups)"   ?g)
-         ("Maildir:/Gmail/INBOX AND list"                         "Gmail Groups"              ?G)
          ("date:today..now"                                       "Today's messages"          ?t)
          ("date:7d..now"                                          "Last 7 days"               ?w)
          ("mime:image/*"                                          "Messages with images"      ?i)))
+(add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND NOT (" my-mailing-lists-filter ")") "Gmail Inbox (no groups)" ?g) t)
+(add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND (" my-mailing-lists-filter ")")     "Gmail Groups"            ?G) t)
 
 ; Sending Email - Using msmtp
 (setq message-send-mail-function 'message-send-mail-with-sendmail

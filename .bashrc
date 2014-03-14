@@ -57,6 +57,15 @@ function projectile() {
     local project_dir="${1:-$(pwd)}"
     emacsclient -a emacs -e "(projectile-add-known-project \"${project_dir%%/}/\")"
 }
+org-store-file () {
+    local f fp
+    for f in $*; do
+        cd "$(dirname $f)"
+        fp="file:$(pwd | sed "s|^${HOME}|~|g")/$(basename $f)"
+        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename $f)\"))"
+        cd ~-
+    done
+}
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
