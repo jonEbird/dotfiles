@@ -31,6 +31,7 @@ EXTRA_FILTER=""
 MODE="simple-count"
 MAILDIR="/"
 VERBOSE=""
+LISTS_ORed=$(emacsclient -e '(concat "(" my-mailing-lists-filter ")")')
 
 # Process options
 TEMP=$(getopt -o hvlLm:x: -l help,verbose,non-list,lists,list-breakdown,mailbox-counts,maildir:,extra: -n "$(basename -- $0)" -- "$@")
@@ -41,10 +42,10 @@ eval set -- "$TEMP"
 while true ; do
     case "$1" in
         -l|--non-list)
-            EXTRA_FILTER="$EXTRA_FILTER AND NOT list"; shift
+            EXTRA_FILTER="$EXTRA_FILTER AND NOT ${LISTS_ORed}"; shift
             ;;
         -L|--lists)
-            EXTRA_FILTER="$EXTRA_FILTER AND list"; shift
+            EXTRA_FILTER="$EXTRA_FILTER AND ${LISTS_ORed}"; shift
             ;;
         -x|--extra)
             shift; EXTRA_FILTER="$EXTRA_FILTER $1"; shift
@@ -78,11 +79,11 @@ case $MODE in
     list-breakdown)
         # Ignore any EXTRA_FILTER options
         MSG=""
-        verbose "mu find: Not in list: flag:unread m:$MAILDIR AND NOT list"
-        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT list 2>/dev/null | wc -l)
+        verbose "mu find: Not in list: flag:unread m:$MAILDIR AND NOT ${LISTS_ORed}"
+        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT "${LISTS_ORed}" 2>/dev/null | wc -l)
         MSG="${non_list}"
-        verbose "mu find: IN list: flag:unread m:$MAILDIR AND list"
-        list=$(mu find --nocolor flag:unread m:$MAILDIR AND list 2>/dev/null | wc -l)
+        verbose "mu find: IN list: flag:unread m:$MAILDIR AND ${LISTS_ORed}"
+        list=$(mu find --nocolor flag:unread m:$MAILDIR AND "${LISTS_ORed}" 2>/dev/null | wc -l)
         if [ $list -gt 0 ]; then
             MSG="$MSG ($list in groups)"
         fi
