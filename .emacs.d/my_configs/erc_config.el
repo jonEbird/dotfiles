@@ -1,5 +1,7 @@
 ; -*- emacs-lisp -*-
 
+(require 'erc)
+
 ; Set which modules to load
 (setq erc-modules '( pcomplete autojoin button completion fill
                                irccontrols list log match menu move-to-prompt
@@ -11,9 +13,12 @@
 ; Logging the sessions
 (setq erc-log-channels-directory "~/.erc/logs/"
       erc-save-buffer-on-part t
-      erc-hide-list '("JOIN" "PART" "QUIT")
+      erc-hide-list nil ; '("JOIN" "PART" "QUIT")
       jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc" t)
+      erc-server-flood-margin 1000
       )
+
+(add-hook 'erc-mode-hook 'turn-on-flyspell 'append)
 
 ; Nick notify-send Notification
 ; Modified from http://www.emacswiki.org/emacs/ErcOSD
@@ -46,6 +51,7 @@
       )))
 
 (add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
+(add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
 
 ; Typical connection
 (defun irc-work ()
@@ -58,3 +64,7 @@
   (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
            :password (netrc-get jonebird-irc-creds "password") :nick "jon")
   )
+(defun irc-qualcomm ()
+  (interactive)
+  (erc-tls :server "chat-irc.qualcomm.com" :port 9999 :full-name "Jon Miller"
+           :password "blah" :nick "jsmiller"))
