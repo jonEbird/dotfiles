@@ -95,6 +95,7 @@
            (:subject       .  nil)))
   (mu4e-headers-search-narrow "flag:unread")
   (mu4e-headers-toggle-threading))
+
 (defun jsm:unnarrow-mail ()
   "Opposite of jsm:narrow-to-unread-mail"
   (interactive)
@@ -107,7 +108,33 @@
   (mu4e-headers-toggle-threading t)
   (mu4e-headers-query-prev)
   (mu4e-headers-query-prev))
-(define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-unread-mail)
+
+(defun jsm:narrow-to-mailing-list ()
+  "Filter the list of mail based on current mailing list of
+  message at point"
+  (interactive)
+  (let ((ml (mu4e-message-field-at-point :mailing-list)))
+    (if ml
+        (mu4e-headers-search-narrow ml))))
+
+(defvar jsm:narrowed-ml t
+  "State of mu4e messages being filtered based on mailing-list membership")
+
+(defun jsm:narrow-to-mailing-list ()
+  "Filter the list of mail based on current mailing list of
+  message at point. If already narrowed, remove filter."
+  (interactive)
+  (let ((ml (mu4e-message-field-at-point :mailing-list)))
+    (if ml
+        (if jsm:narrowed-ml
+            (progn
+              (setq jsm:narrowed-ml nil)
+              (mu4e-headers-query-prev))
+          (setq jsm:narrowed-ml t)
+          (mu4e-headers-search-narrow ml)))))
+
+(define-key mu4e-headers-mode-map (kbd "U") 'jsm:narrow-to-unread-mail) ; I don't use mu4e-mark-unmark-all
+(define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-mailing-list)
 (define-key mu4e-headers-mode-map (kbd "l") 'jsm:unnarrow-mail)
 
 ;; I like being able to use C-Return to also send a message
@@ -126,6 +153,7 @@
          ("spacewalk-list.redhat.com"       . "Spacewalk")
          ("mu.djcb.github.com"              . "Mu Github")
          ("PythonSD-list.meetup.com"        . "Python SD")
+         ("kplug-list.kernel-panic.org"     . "KPLUG")
          ("linux-s390.vger.kernel.org"      . "Linux s390")
          ("linux-rt-users.vger.kernel.org"  . "Linux RT")))
 
