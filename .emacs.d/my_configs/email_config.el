@@ -84,58 +84,65 @@
       (shr-browse-url))))
 (define-key mu4e-view-mode-map (kbd "RET") 'jsm:shr-browse-url)
 
-(defun jsm:narrow-to-unread-mail ()
-  "Narrow my mu4e-headers view to the unread mail and enable the threaded view"
-  (interactive)
-  (setq mu4e-headers-fields
-        '( (:human-date    .  13)
-           (:flags         .   6)
-           (:mailing-list  .  30)
-           (:from-or-to    .  22)
-           (:subject       .  nil)))
-  (mu4e-headers-search-narrow "flag:unread")
-  (mu4e-headers-toggle-threading))
+(defun jsm:mailing-list-mode (&optional enable)
+  "Change the headers-fields to include mailing-list and enable
+threading when enabling mailing-list-mode. Go back to
+non-threaded and regular headers when disabling"
+  (interactive "P")
+  (if enable
+      (setq mu4e-headers-fields
+            '( (:human-date    .  13)
+               (:flags         .   6)
+               (:mailing-list  .  30)
+               (:from-or-to    .  22)
+               (:subject       .  nil))
+            mu4e-headers-show-threads t)
+    (setq mu4e-headers-fields
+          '( (:human-date    .  13)
+             (:flags         .   6)
+             (:maildir       .  30)
+             (:from-or-to    .  22)
+             (:subject       .  nil))
+          mu4e-headers-show-threads nil))
+  )
 
-(defun jsm:unnarrow-mail ()
-  "Opposite of jsm:narrow-to-unread-mail"
+(defun jsm:gmail-mailing-lists ()
+  "Toggle between going to my bookmarked Gmail mailing list
+collection while also enabling my mailing-list viewing mode or
+disable my mailing-list viewing mode and returning to previous
+query"
   (interactive)
-  (setq mu4e-headers-fields
-        '( (:human-date    .  13)
-           (:flags         .   6)
-           (:maildir       .  30)
-           (:from-or-to    .  22)
-           (:subject       .  nil)))
-  (mu4e-headers-toggle-threading t)
-  (mu4e-headers-query-prev)
-  (mu4e-headers-query-prev))
+  (if (not (boundp 'jsm:ml-mode)) (setq jsm:ml-mode nil))
+  (if jsm:ml-mode
+      (progn
+        (setq jsm:ml-mode nil)
+        (jsm:mailing-list-mode nil)
+        (mu4e-headers-query-prev))
+    (progn
+      (setq jsm:ml-mode t)
+      (jsm:mailing-list-mode t)
+      (mu4e-headers-search-bookmark "m:/Gmail/INBOX and list:* and flag:unread"))
+    ))
 
-(defun jsm:narrow-to-mailing-list ()
-  "Filter the list of mail based on current mailing list of
-  message at point"
-  (interactive)
-  (let ((ml (mu4e-message-field-at-point :mailing-list)))
-    (if ml
-        (mu4e-headers-search-narrow ml))))
+(define-key mu4e-headers-mode-map (kbd "G") 'jsm:gmail-mailing-lists)
 
-(defvar jsm:narrowed-ml t
-  "State of mu4e messages being filtered based on mailing-list membership")
 
 (defun jsm:narrow-to-mailing-list ()
   "Filter the list of mail based on current mailing list of
   message at point. If already narrowed, remove filter."
   (interactive)
+  (if (not (boundp 'jsm:narrowed-ml)) (setq jsm:narrowed-ml nil))
   (let ((ml (mu4e-message-field-at-point :mailing-list)))
     (if ml
         (if jsm:narrowed-ml
             (progn
               (setq jsm:narrowed-ml nil)
               (mu4e-headers-query-prev))
-          (setq jsm:narrowed-ml t)
-          (mu4e-headers-search-narrow ml)))))
+          (setq jsm:narrowed-ml ml)
+          (mu4e-headers-search-narrow ml)))
+    (message "Message is not a mailing-list email")))
 
-(define-key mu4e-headers-mode-map (kbd "U") 'jsm:narrow-to-unread-mail) ; I don't use mu4e-mark-unmark-all
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-mailing-list)
-(define-key mu4e-headers-mode-map (kbd "l") 'jsm:unnarrow-mail)
 
 ;; I like being able to use C-Return to also send a message
 (define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
@@ -173,11 +180,13 @@
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed AND m:/Qualcomm/*"    "Unread messages"           ?u)
          ("\"Maildir:/Qualcomm/INBOX\""                           "Qualcomm Inbox"            ?q)
+         ("m:/Gmail/INBOX and not list:*"                         "Gmail Inbox (no groups)"   ?g)
+         ("m:/Gmail/INBOX and list:* and flag:unread"             "Gmail Groups"              ?G)
          ("date:today..now"                                       "Today's messages"          ?t)
          ("date:7d..now"                                          "Last 7 days"               ?w)
          ("mime:image/*"                                          "Messages with images"      ?i)))
-(add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND NOT (" my-mailing-lists-filter ")") "Gmail Inbox (no groups)" ?g) t)
-(add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND (" my-mailing-lists-filter ")")     "Gmail Groups"            ?G) t)
+;; (add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND NOT (" my-mailing-lists-filter ")") "Gmail Inbox (no groups)" ?g) t)
+;; (add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND (" my-mailing-lists-filter ")")     "Gmail Groups"            ?G) t)
 
 ; Sending Email - Using msmtp
 (setq message-send-mail-function 'message-send-mail-with-sendmail
