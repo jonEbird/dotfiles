@@ -181,7 +181,7 @@ query"
       '( ("flag:unread AND NOT flag:trashed AND m:/Qualcomm/*"    "Unread messages"           ?u)
          ("\"Maildir:/Qualcomm/INBOX\""                           "Qualcomm Inbox"            ?q)
          ("m:/Gmail/INBOX and not list:*"                         "Gmail Inbox (no groups)"   ?g)
-         ("m:/Gmail/INBOX and list:* and flag:unread"             "Gmail Groups"              ?G)
+         ("m:/Gmail/INBOX and list:*"                             "Gmail Groups"              ?G)
          ("date:today..now"                                       "Today's messages"          ?t)
          ("date:7d..now"                                          "Last 7 days"               ?w)
          ("mime:image/*"                                          "Messages with images"      ?i)))
@@ -332,6 +332,11 @@ location."
                                    (mu4e-headers-query-prev)))
           noisy-maildirs)))
 (define-key mu4e-headers-mode-map (kbd "A") 'jsm:mu4e-mark-noisy-maildirs-all-read)
+
+(if (not (functionp 'delete-all-overlays))
+  (defun delete-all-overlays ()
+    (remove-overlays))
+  )
 
 ;; Abbrev for mu4e composing - Only used once and then used M-x edit-abbrevs
 ;; (define-abbrev-table 'mu4e-compose-mode-abbrev-table

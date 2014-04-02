@@ -145,3 +145,13 @@
        '(("CMakeLists\\.txt\\'" . cmake-mode))
        '(("\\.cmake\\'" . cmake-mode))
        auto-mode-alist))
+
+;; User defined select all
+;; ------------------------------
+;; Just never became a fan of C-x h to select the whole buffer
+(defun select-all ()
+  "Select all text in the buffer"
+  (interactive)
+  (save-excursion
+    (mark-whole-buffer)
+    (kill-ring-save (point-min) (point-max))))

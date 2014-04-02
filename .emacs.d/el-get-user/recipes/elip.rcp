@@ -1,0 +1,11 @@
+(:name elip
+       :website "http://www.gnuvola.org/software/elip/"
+       :description "The Emacs Learning Instruction Program"
+       :type http-tar
+       :options ("xzf")
+       :url "http://www.gnuvola.org/software/elip/elip-0.804.tar.gz"
+       :depends edb
+       :info "doc"
+       :load-path ("source")
+       :build (("./configure --with-edb-installation=../edb/lisp/"
+                "make"))))

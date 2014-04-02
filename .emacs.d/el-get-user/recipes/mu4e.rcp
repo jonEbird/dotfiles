@@ -3,6 +3,9 @@
        :website "http://www.djcbsoftware.nl/code/mu/"
        :type git
        :url "git://github.com/djcb/mu.git"
+       :post-init
+       ;; Add newly build mu binary up front in PATH
+       (el-get-envpath-prepend "PATH" (concat default-directory "/mu"))
        :load-path ("./mu4e")
        :build (("autoreconf -i") ("./configure") ("make"))
        :build/gnu/kfreebsd (("autoreconf -i" "./configure" "gmake"))

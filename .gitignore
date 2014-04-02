@@ -105,3 +105,9 @@ u_drive
 .mu/
 Screenshot*
 .gem/
+.npm/*
+Photos/*
+libpeerconnection.log
+.keybase*/*
+.stackato/*
+.vmware/*

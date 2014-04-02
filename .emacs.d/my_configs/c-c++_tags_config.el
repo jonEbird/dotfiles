@@ -105,14 +105,14 @@
 ; (gtags-visit-rootdir "/usr/src/linux-2.6.21")
 
 ;; etags-select extensions
-(require 'etags-select)
-(require 'etags-table)
-;; (global-set-key "\M-?" 'etags-select-find-tag-at-point)
-;; (global-set-key "\M-." 'etags-select-find-tag)
-; This helps you automatically search and find the TAGS file
-(setq etags-table-search-up-depth 10)
-; Also nice to be able to explictly remember the interactive function to visit another TAGS file
-(defalias 'tags-visit-table 'visit-tags-table)
+;; (require 'etags-select)
+;; (require 'etags-table)
+;; ;; (global-set-key "\M-?" 'etags-select-find-tag-at-point)
+;; ;; (global-set-key "\M-." 'etags-select-find-tag)
+;; ; This helps you automatically search and find the TAGS file
+;; (setq etags-table-search-up-depth 10)
+;; ; Also nice to be able to explictly remember the interactive function to visit another TAGS file
+;; (defalias 'tags-visit-table 'visit-tags-table)
 
 ;; Taken from http://www.emacswiki.org/emacs/EtagsSelect
 (defun my-ido-find-tag ()
