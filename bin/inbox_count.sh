@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Need to fixup PATH since I tend to install 'mu' via an el-get recipe
+if [ -d ~/.emacs.d/el-get/mu4e/mu -a -x ~/.emacs.d/el-get/mu4e/mu/mu ]; then
+    PATH=~/.emacs.d/el-get/mu4e/mu:$PATH
+fi
+
 verbose() {
     if [ -n "$VERBOSE" ]; then
         echo "debug: $@"
@@ -73,24 +78,24 @@ done
 # Primarilly used for my conky status
 case $MODE in
     simple-count)
-        verbose "mu find: flag:unread m:$MAILDIR $EXTRA_FILTER"
+        verbose "Simple count: mu find flag:unread m:$MAILDIR $EXTRA_FILTER"
         mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER 2>/dev/null | wc -l
         ;;
     list-breakdown)
         # Ignore any EXTRA_FILTER options
         MSG=""
-        verbose "mu find: Not in list: flag:unread m:$MAILDIR AND NOT list:*"
+        verbose "Not in list: mu find flag:unread m:$MAILDIR AND NOT list:*"
         non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT "list:*" 2>/dev/null | wc -l)
         MSG="${non_list}"
-        verbose "mu find: IN list: flag:unread m:$MAILDIR AND list:*"
-        list=$(mu find --nocolor flag:unread m:$MAILDIR AND "list:*" 2>/dev/null | wc -l)
+        verbose "IN list: mu find flag:unread and 'list:*' and m:$MAILDIR "
+        list=$(mu find --nocolor flag:unread AND 'list:*' and m:$MAILDIR  2>/dev/null | wc -l)
         if [ $list -gt 0 ]; then
             MSG="$MSG ($list in groups)"
         fi
         echo $MSG
         ;;
     mailbox-counts)
-        verbose "mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
+        verbose "Mailbox count: mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
         mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | \
             awk '{ M[$0]++ } END { for (m in M) printf("%4s %s\n", M[m], m); }'
         ;;
