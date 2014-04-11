@@ -25,6 +25,14 @@ color-echo() {
         -e "s/blue{\([^}]*\)}/\x1b[${colors['blue']}m\1\\x1b[0m/g"
 }
 
+# Support for org-protocol
+if which gconftool-2 >/dev/null 2>&1; then
+    gconftool-2 -s /desktop/gnome/url-handlers/org-protocol/command "$(which emacsclient) %s" --type String
+    gconftool-2 -s /desktop/gnome/url-handlers/org-protocol/enabled --type Boolean true
+else
+    echo "Missing package GConf2. Please install if you'd like org-protocol to be setup correctly" 1>&2
+fi
+
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
 if [ -d ~/.bash_profile.${DOMAIN}.d ]; then

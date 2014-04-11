@@ -1,0 +1,26 @@
+# -*- mode: snippet -*-
+# name: Shell Script Template
+# key: gosh
+# group: sh-mode
+# --
+#!/bin/bash
+
+# Script: ${1:name}
+# Author: `user-mail-address`
+# Date:   `(format-time-string "%Y-%m-%d" (current-time))`
+
+
+PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/sbin:/usr/sbin"
+TMP="/tmp/.${1:$(mapconcat 'capitalize (split-string yas-text) "")}\$\$_"
+
+#-Functions----------------------------------------
+cleanup() { rm -rf \${TMP}*; }
+
+#-Main---------------------------------------------
+trap cleanup SIGINT SIGQUIT SIGTERM SIGSEGV
+
+$0
+
+# Cleanup
+cleanup
+exit 0

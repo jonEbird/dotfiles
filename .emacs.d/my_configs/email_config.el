@@ -338,6 +338,12 @@ location."
     (remove-overlays))
   )
 
+;; Orig: "\\(\\(https?\\://\\|mailto:\\)[-+[:alnum:].?_$%/+&#@!*~,:;=/()]+\\)"
+; https://github.com/djcb/mu/issues/408
+(defconst mu4e~view-url-regexp
+  "\\(\\(https?\\://\\|mailto:\\)[-+\[:alnum:\].?_$%/+&#@!*~,:;=/()]*[-+\[:alnum:\].?_$%/+&#@!*~,:;=/]\\)"
+  "Regexp that matches http:/https:/mailto: URLs; match-string 1 will contain the matched URL, if any.")
+
 ;; Abbrev for mu4e composing - Only used once and then used M-x edit-abbrevs
 ;; (define-abbrev-table 'mu4e-compose-mode-abbrev-table
 ;;   '(
@@ -363,6 +369,26 @@ contact from all those present in the database."
             (remove-if (lambda (string) (= 0 (length string)))
                        (split-string (shell-command-to-string "mu cfind --format=csv") "\n"))))))
 (define-key message-mode-map (kbd "C-c t") 'jmg/ido-select-recipient)
+
+;; Help for attaching buffers and files
+; I find it annoying that I have to move to the end of the email to attach
+; or suffer the recepients getting the 2nd part of my email in a
+; mime-attached generic part
+(defun attach-buffer ()
+  "Call mml-attach-buffer but only after moving to the end of the message"
+  (interactive)
+  (save-excursion
+    (goto-char (point-max))
+    (call-interactively 'mml-attach-buffer)))
+(define-key message-mode-map (kbd "C-c <return> b") 'attach-buffer)
+
+(defun attach-file ()
+  "Call mml-attach-file but only after moving to the end of the message"
+  (interactive)
+  (save-excursion
+    (goto-char (point-max))
+    (call-interactively 'mml-attach-file)))
+(define-key message-mode-map (kbd "C-c <return> f") 'attach-file)
 
 ; Notes on using mbsync
 ;  Need to set mu4e-change-filenames-when-moving to t

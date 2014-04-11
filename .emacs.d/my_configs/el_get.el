@@ -53,6 +53,7 @@
               multiple-cursors popwin guide-key visual-regexp projectile
               ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
               auto-complete-etags gtags multiple-cursors git-modes magit
-              idomenu undo-tree org-mode cmake-mode gist session smart-mode-line)))
+              idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
+              elip rpm-spec-mode)))
 
 (el-get 'sync jsm-packages)
