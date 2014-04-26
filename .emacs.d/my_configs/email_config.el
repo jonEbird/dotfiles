@@ -153,16 +153,17 @@ query"
 
 ; My mailing lists
 (setq mu4e-user-mailing-lists
-      '( ("emacs-orgmode.gnu.org"           . "OrgMode")
-         ("mu-discuss.googlegroups.com"     . "Mu Group")
-         ("devel.lists.fedoraproject.org"   . "Fedora Devel")
-         ("colug-432.colug.net"             . "COLUG")
-         ("spacewalk-list.redhat.com"       . "Spacewalk")
-         ("mu.djcb.github.com"              . "Mu Github")
-         ("PythonSD-list.meetup.com"        . "Python SD")
-         ("kplug-list.kernel-panic.org"     . "KPLUG")
-         ("linux-s390.vger.kernel.org"      . "Linux s390")
-         ("linux-rt-users.vger.kernel.org"  . "Linux RT")))
+      '( ("emacs-orgmode.gnu.org"                . "OrgMode")
+         ("mu-discuss.googlegroups.com"          . "Mu Group")
+         ("devel.lists.fedoraproject.org"        . "Fedora Devel")
+         ("colug-432.colug.net"                  . "COLUG")
+         ("spacewalk-list.redhat.com"            . "Spacewalk")
+         ("mu.djcb.github.com"                   . "Mu Github")
+         ("PythonSD-list.meetup.com"             . "Python SD")
+         ("kplug-list.kernel-panic.org"          . "KPLUG")
+         ("linux-s390.vger.kernel.org"           . "Linux s390")
+         ("linux-rt-users.vger.kernel.org"       . "Linux RT")
+         ("systemd-devel.lists.freedesktop.org"  . "systemd Devel")))
 
 (setq my-mailing-lists-filter (mapconcat (lambda (x) (concat "list:" (car x))) mu4e-user-mailing-lists " OR "))
 

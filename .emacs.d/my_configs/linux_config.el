@@ -17,10 +17,39 @@
     (setq sml/theme 'light))
   (sml/setup))
 
+; Modified from: http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
+(defun flyspell-detect-ispell-args (&optional RUN-TOGETHER)
+  "if RUN-TOGETHER is true, spell check the CamelCase words"
+  (let (args
+        (ispell-program (file-name-nondirectory ispell-program-name)))
+    (cond
+     ((string= ispell-program "aspell")
+      ;; force the English dictionary, support Camel Case spelling check (tested with aspell 0.6)
+      (setq args (list "--sug-mode=ultra" "--lang=en_US"))
+      (if RUN-TOGETHER
+          (setq args (append args '("--run-together" "--run-together-limit=2" "--run-together-min=2")))))
+     ((string= ispell-program "hunspell")
+      (setq args nil)))
+    args
+    ))
+
 (when (eq system-type 'gnu/linux)
   (message "Setting up specific settings for Linux")
   (setq browse-url-generic-program "google-chrome"
 	browse-url-browser-function 'browse-url-generic)
+
+  ; Setup spelling
+  (cond
+   ((executable-find "aspell")
+    (setq ispell-program-name "aspell"
+          ispell-extra-args (flyspell-detect-ispell-args t)))
+   ((executable-find "hunspell")
+    (setq ispell-program-name "hunspell")
+    (setq ispell-local-dictionary "en_US")
+    (setq ispell-local-dictionary-alist
+          '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8))))
+   (t (setq ispell-program-name nil)))
+
   ; FIXME
   (setq org-file-apps '((auto-mode . emacs)
 		      ("\\.mm\\'" . default)

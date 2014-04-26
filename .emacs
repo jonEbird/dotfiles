@@ -24,6 +24,9 @@
 
 ; include buffer name in titlebar
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+(require 'uniquify)
+(setq uniquify-buffer-name-style 'post-forward)
+
 
 ; default to unified diffs
 (setq diff-switches "-u")
@@ -85,8 +88,8 @@
 ;; I may enable flyspell-mode. When I do, let's kill the underline.
 (eval-after-load "flyspell"
   '(progn
-     (set-face-underline-p 'flyspell-incorrect-face nil)
-     (set-face-underline-p 'flyspell-duplicate-face nil)))
+     (if (boundp 'flyspell-incorrect-face) (set-face-underline-p 'flyspell-incorrect-face nil))
+     (if (boundp 'flyspell-duplicate-face) (set-face-underline-p 'flyspell-duplicate-face nil))))
 ; Most of my flyspell hook are located in their own respective config files,
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
@@ -94,7 +97,10 @@
 ;; In addition to flyspell use abbrev to help with my common spelling mistakes
 ; Define new abbreviations via: "C-x a i g" for global or "C-x a i l" for
 ; local modes and then don't forget to save your abbreviations via M-x
-; write-abbrev-file
+; write-abbrev-file. My other workflow is to:
+; 1. Open abbrev-file via M-x list-abbrevs,
+; 2. edit and save via abbrev-edit-save-buffer picking
+;    ~/.emacs.d/abbrev_defs then you can close the buffer.
 (dolist (hook '(erc-mode-hook
                 emacs-lisp-mode-hook
                 text-mode-hook
@@ -169,6 +175,9 @@
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
 (ido-mode 1)
 
+;; Games setup
+(setq tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
+
 ;; Leave this here for whenever I use M-x customize-variable.
 ;;  when related to a major config, I may move it manually.
 ;;  until I move it, this will be a dropping zone
@@ -182,10 +191,12 @@
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
+ '(org-drill-optimal-factor-matrix (quote ((2 (2.2800000000000002 . 2.407) (2.46 . 2.497) (2.6 . 2.588) (2.7 . 2.679)) (1 (2.5 . 4.0) (2.36 . 3.86) (2.6 . 4.14)))))
  '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t) (Encoding . utf-8) (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
+ '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(virtualenv-root (expand-file-name "~/venv/"))
  '(visual-line-mode 1 t))
 ;; Same story for this block. Just leave it here for now.
@@ -194,6 +205,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flyspell-incorrect ((t (:inherit error :foreground "firebrick3"))))
  '(org-level-5 ((t (:inherit outline-5 :foreground "dark orange")))))
 
 ;; --------------------------------------------------
@@ -343,6 +355,7 @@
                         "erc_config"
                         "email_config"
                         "efficiency_config"
+                        "elip_edb"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))
