@@ -191,7 +191,7 @@
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
- '(org-drill-optimal-factor-matrix (quote ((2 (2.2800000000000002 . 2.407) (2.46 . 2.497) (2.6 . 2.588) (2.7 . 2.679)) (1 (2.5 . 4.0) (2.36 . 3.86) (2.6 . 4.14)))))
+ '(org-drill-optimal-factor-matrix (quote ((2 (2.36 . 2.412) (2.5 . 2.5) (1.96 . 2.238) (2.2800000000000002 . 2.407) (2.46 . 2.496) (2.6 . 2.588) (2.7 . 2.679)) (1 (2.1799999999999997 . 3.72) (1.7000000000000002 . 3.44) (2.5 . 4.0) (2.36 . 3.86) (2.6 . 4.14)))))
  '(safe-local-variable-values (quote ((rpm-change-log-uses-utc . t) (Encoding . utf-8) (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
@@ -241,6 +241,9 @@
 
 ;; Markdown files
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+
+;; Systemd unit files
+(add-to-list 'auto-mode-alist '("\\.service" . conf-mode))
 
 ;; Transparency
 (eval-when-compile (require 'cl))

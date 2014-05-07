@@ -1,0 +1,5 @@
+(:name org-drill-table
+       :website "https://github.com/chrisbarrett/org-drill-table"
+       :description "Generate org-drill cards from org tables"
+       :type github
+       :pkgname "chrisbarrett/org-drill-table")
