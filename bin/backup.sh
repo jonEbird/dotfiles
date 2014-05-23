@@ -47,6 +47,7 @@ cd $HOME
 cat <<EOF > ${TMP}home_file_list
 # While it should be committed, back it up anyway
 $(git ls-files)
+.git*
 
 # Personal stuff
 personal
@@ -100,6 +101,7 @@ bin
 .bash*
 .zsh*
 .config
+.mozilla
 .lesshst
 .keybase
 .keybase-installer
@@ -121,6 +123,11 @@ cat <<EOF > ${TMP}system_file_list
 # Network Manager files collected
 /etc/sysconfig/network-scripts/ifcfg-*
 /etc/sysconfig/network-scripts/keys*
+
+# Printers
+/etc/printcap
+/etc/cups/*.conf
+/etc/cups/ppd/*.ppd
 
 EOF
 

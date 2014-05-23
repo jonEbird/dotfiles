@@ -55,8 +55,14 @@
  mu4e-headers-skip-duplicates     t              ;; Eliminate Gmail dups
  mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
  mu4e-hide-index-messages         t              ;; No messages in mini-buffer about updates
+ message-kill-buffer-on-exit      t              ;; Don't keep around messages
  )
-;; mu4e-hide-index-messages - set once you've updated mu4e
+
+(defun jsm:mu4e-fresh-update ()
+  (interactive)
+  (progn
+    (ignore-errors (kill-process "mu4e-update"))
+    (mu4e-update-mail-and-index nil)))
 
 (setq mu4e-headers-fields
       '( (:human-date    .  13)

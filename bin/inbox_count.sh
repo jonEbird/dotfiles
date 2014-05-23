@@ -96,7 +96,7 @@ case $MODE in
         ;;
     mailbox-counts)
         verbose "Mailbox count: mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
-        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | \
+        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m 2>&- | \
             awk '{ M[$0]++ } END { for (m in M) printf("%4s %s\n", M[m], m); }'
         ;;
 esac

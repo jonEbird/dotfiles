@@ -66,6 +66,11 @@ org-store-file () {
         cd ~-
     done
 }
+alias ppjson="python -m json.tool"
+
+# f-u flow control
+stty -ixon
+stty -ixoff
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)

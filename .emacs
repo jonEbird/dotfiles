@@ -27,7 +27,6 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
-
 ; default to unified diffs
 (setq diff-switches "-u")
 
@@ -39,6 +38,7 @@
 
 ; Shorten the yes-or-no question
 (defalias 'yes-or-no-p 'y-or-n-p)
+(defalias 'repl 'ielm "Alias to the elisp REPL")
 
 ; Useful for conditional variables
 (defvar hostname
@@ -48,10 +48,10 @@
 ; ELPA package support
 (when (>= emacs-major-version 24)
   (require 'package)
-  (package-initialize)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
   (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
+  (package-initialize)
   )
 
 ;; Extra add-ons - Typcially from git submodules
@@ -67,11 +67,6 @@
 
 ;; Issue a shell via F12
 (global-set-key (kbd "<f12>") 'shell)
-
-;; I can never remember which key to split vertically and horizontally as
-;; well as thinking of it the opposite way
-(global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right) (ido-switch-buffer-other-window)))
-(global-set-key (kbd "C-x _") (lambda () (interactive) (split-window-below) (ido-switch-buffer-other-window)))
 
 ;; Support an easier way to remember how to zoom in/out font size
 ;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
@@ -164,16 +159,6 @@
  )
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
-
-;; Enabling ido Mode
-; Used http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/ for guidelines.
-(setq ido-enable-flex-matching t
-      ido-everywhere t
-      ido-use-filename-at-point 'guess
-      ido-create-new-buffer 'always
-      ido-save-directory-list-file (concat (expand-file-name "~/.ido.last.") hostname)
-      ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
-(ido-mode 1)
 
 ;; Games setup
 (setq tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
@@ -358,7 +343,7 @@
                         "erc_config"
                         "email_config"
                         "efficiency_config"
-                        "elip_edb"
+                        ; "elip_edb"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))

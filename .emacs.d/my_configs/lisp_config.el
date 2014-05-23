@@ -1,14 +1,24 @@
 ; -*- emacs-lisp -*-
 
+(require 'rainbow-delimiters)
+
+(defun jsm/lisp-modes-hook ()
+  "Hook this single function to the lisp-like modes"
+  (interactive)
+  (progn
+    (paredit-mode)
+    (rainbow-delimiters-mode)))
+
 ;; Paredit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook 'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           'enable-paredit-mode)
-(add-hook 'geiser-repl-mode-hook      'enable-paredit-mode)
+(add-hook 'emacs-lisp-mode-hook                  'jsm/lisp-modes-hook)
+(add-hook 'eval-expression-minibuffer-setup-hook 'jsm/lisp-modes-hook)
+(add-hook 'ielm-mode-hook                        'jsm/lisp-modes-hook)
+(add-hook 'lisp-mode-hook                        'jsm/lisp-modes-hook)
+(add-hook 'lisp-interaction-mode-hook            'jsm/lisp-modes-hook)
+(add-hook 'scheme-mode-hook                      'jsm/lisp-modes-hook)
+(add-hook 'geiser-repl-mode-hook                 'jsm/lisp-modes-hook)
+(add-hook 'clojure-mode-hook                     'jsm/lisp-modes-hook)
 
 ;; Geiser - Scheme development environment
 (load-file "~/.emacs.d/geiser/elisp/geiser.el")
@@ -19,3 +29,11 @@
       geiser-repl-startup-time 1000)
 ; (setq geiser-racket--prompt-regexp "\\(mzscheme\\|racket\\)@[^ ]*> ") ; Original
 (setq geiser-repl-history-filename "~/.emacs.d/geiser-history")
+
+;; Cider config for Clojure
+;; https://github.com/clojure-emacs/cider
+;; ------------------------------
+(eval-after-load "cider"
+  '(progn (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+          (add-hook 'cider-repl-mode-hook 'jsm/lisp-modes-hook)
+          (setq cider-repl-result-prefix ";; => ")))

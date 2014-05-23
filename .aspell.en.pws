@@ -1,4 +1,4 @@
-personal_ws-1.1 en 553 
+personal_ws-1.1 en 564 
 Google
 PyPi
 Ashok's
@@ -21,6 +21,7 @@ eval
 gitlab
 github
 handoffs
+https
 RPMs
 SCONs
 SCons
@@ -39,6 +40,7 @@ DHA
 kthreads
 cli
 offlineimap
+depmod
 dev
 EDB
 Zhang
@@ -167,6 +169,7 @@ sttsmsim
 Duplexing
 decrypted
 sudo
+incentivized
 Wisan
 haskell
 automount
@@ -180,6 +183,7 @@ CMakeLists
 HSDPA
 hogl
 devel
+printk
 metadata
 MBR
 automountkey
@@ -228,6 +232,7 @@ Alamouti
 cpuisol
 MTP
 MWC
+ldsudo
 MTU
 warrentee
 rmdir
@@ -237,9 +242,9 @@ pyplusplus
 auth
 PHP
 UMTS
+VLAN
 ansible
 noquota
-VLAN
 downlink
 Javascript
 OOO
@@ -250,6 +255,7 @@ noarch
 Scalable
 init
 NUM
+iteratively
 erroring
 ota
 sourceforge
@@ -299,6 +305,7 @@ sha
 orbuild
 Cher's
 QRC
+clojure
 vCPUs
 Autofs
 autofs
@@ -349,6 +356,7 @@ VoIP
 sta
 installable
 pagedrain
+TLS
 tmp
 webapp
 SSL
@@ -391,14 +399,17 @@ repoquery
 sysfs
 url
 repo
+ITOC
 Traceback
 ISRP
 Kinecta
 usr
 txt
 journalctl
+VPN
 RHEL
 runlevel
+Mallorca
 Dolter
 gerrit
 tasklets
