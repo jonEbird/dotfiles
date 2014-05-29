@@ -6,8 +6,9 @@
        :post-init
        ;; Add newly build mu binary up front in PATH
        (el-get-envpath-prepend "PATH" (concat default-directory "/mu"))
+       :prepare (message (getenv "PATH"))
        :load-path ("./mu4e")
-       :build (("autoreconf -i") ("./configure") ("make"))
-       :build/gnu/kfreebsd (("autoreconf -i" "./configure" "gmake"))
+       :build (("autoreconf" "-i") "./configure" "make")
+       :build/gnu/kfreebsd (("autoreconf" "-i") "./configure" "gmake")
        :after (progn ()
                      (setq mu4e-mu-binary "~/.emacs.d/el-get/mu4e/mu/mu")))
