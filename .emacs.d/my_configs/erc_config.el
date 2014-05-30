@@ -20,6 +20,15 @@
 
 (add-hook 'erc-mode-hook 'turn-on-flyspell 'append)
 
+;; Improving the display output of text.
+(defun my-erc-ansi-colors ()
+  ; First need to remove some control characters
+  (while (re-search-forward "[]" nil t)
+    (replace-match "" nil nil))
+  (ansi-color-apply-on-region (point-min) (point-max)))
+
+(add-hook 'erc-insert-modify-hook 'my-erc-ansi-colors 'append)
+
 ; Nick notify-send Notification
 ; Modified from http://www.emacswiki.org/emacs/ErcOSD
 (defun jsm/xml-escape (s)
