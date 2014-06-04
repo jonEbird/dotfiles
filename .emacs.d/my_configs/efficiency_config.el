@@ -119,18 +119,21 @@
 
 ; (setq projectile-tags-command "gtags %s") ; Was "ctags -Re %s"
 
-; Launch a unique shell for the particular Projectile project
-(defun jsm/projectile-shell ()
+; Launch a unique shell for the particular session or project
+(defun jsm/unique-shell (&optional directory)
+  "Start or return to a shell session named and started from a particular directory"
   (interactive)
-  (shell (concat "*ProjSH* "
-                 (file-name-nondirectory
-                  (replace-regexp-in-string "/*$" "" (projectile-project-root))))))
+  (let* ((basedir (or directory (read-directory-name "Base Directory: ")))
+         (default-directory basedir))
+    (shell (concat "*ProjSH* "
+                   (file-name-base (replace-regexp-in-string "/*$" "" basedir))))))
+
 (defun jsm/projectile-shell-other-window ()
   (interactive)
-  (split-window-sensibly)
-  (jsm/projectile-shell))
+  (jsm/unique-shell (projectile-project-root)))
+
 (define-key projectile-command-map (kbd "$") 'jsm/projectile-shell-other-window)
-(global-set-key (kbd "C-x 4 s") 'jsm/projectile-shell-other-window)
+(global-set-key (kbd "C-x 4 s") 'jsm/unique-shell)
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
