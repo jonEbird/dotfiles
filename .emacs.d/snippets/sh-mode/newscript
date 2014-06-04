@@ -12,6 +12,7 @@
 
 PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/sbin:/usr/sbin"
 TMP="/tmp/.${1:$(mapconcat 'capitalize (split-string yas-text) "")}\$\$_"
+REL_DIR=\$(dirname \$0)
 
 #-Functions----------------------------------------
 cleanup() { rm -rf \${TMP}*; }

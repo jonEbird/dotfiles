@@ -4,8 +4,33 @@
 ; could be many different things from project navigation, to custom
 ; function with key bindings, etc.
 
-;; Magit support
+;; Git Setup
+;; ------------------------------
+
+;; 1. Magit support
 (global-set-key (kbd "C-x C-z") 'magit-status)
+
+;; 2. Enable the git-gutter
+(setq git-gutter:disabled-modes
+      '(org-mode mu4e-view-mode mu4e-headers-mode))
+
+; (global-git-gutter-mode t)
+(dolist (hook
+         '(python-mode-hook c++-mode-hook c-mode-hook emacs-lisp-mode-hook))
+  (add-hook hook 'git-gutter-mode 'append))
+
+(global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
+(global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
+
+;; Jump to next/previous hunk
+(global-set-key (kbd "C-x v p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-x v n") 'git-gutter:next-hunk)
+
+;; Stage current hunk
+(global-set-key (kbd "C-x v s") 'git-gutter:stage-hunk)
+
+;; Revert current hunk
+(global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
 
 ;; Using ace-jump
 ;; ------------------------------
@@ -23,6 +48,7 @@
       ido-save-directory-list-file (concat (expand-file-name "~/.ido.last.") hostname)
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf")
       ido-ignore-buffers '("\\` " "^*mu4e-"))
+(add-to-list 'ido-ignore-files "\\.emacs\\.desktop")
 (ido-mode 1)
 
 ;; I can never remember which key to split vertically and horizontally as
@@ -92,6 +118,19 @@
 ; sed -n '/^[^#]/s/.*/-&/p' ~/.gitignore > ~/.projectile
 
 ; (setq projectile-tags-command "gtags %s") ; Was "ctags -Re %s"
+
+; Launch a unique shell for the particular Projectile project
+(defun jsm/projectile-shell ()
+  (interactive)
+  (shell (concat "*ProjSH* "
+                 (file-name-nondirectory
+                  (replace-regexp-in-string "/*$" "" (projectile-project-root))))))
+(defun jsm/projectile-shell-other-window ()
+  (interactive)
+  (split-window-sensibly)
+  (jsm/projectile-shell))
+(define-key projectile-command-map (kbd "$") 'jsm/projectile-shell-other-window)
+(global-set-key (kbd "C-x 4 s") 'jsm/projectile-shell-other-window)
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
@@ -187,3 +226,6 @@
   "Track last point before scrolling up the page"
   (push-mark (point) nil)
   ad-do-it)
+
+; Or just set this
+(setq scroll-preserve-screen-position t)

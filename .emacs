@@ -342,6 +342,7 @@
                         "windows_config"
                         "erc_config"
                         "email_config"
+                        "misc_languages"
                         "efficiency_config"
                         ; "elip_edb"
                         ))

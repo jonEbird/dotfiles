@@ -58,10 +58,12 @@
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
  )
 
-(defun jsm:mu4e-fresh-update ()
+(defun jsm/mu4e-fresh-update ()
   (interactive)
   (progn
-    (ignore-errors (kill-process "mu4e-update"))
+    (ignore-errors
+      (kill-process "mu4e-update")
+      (kill-process "mu4e-update"))
     (mu4e-update-mail-and-index nil)))
 
 (setq mu4e-headers-fields
@@ -81,16 +83,16 @@
     (shr-insert-document dom)
     (goto-char (point-min))))
 
-(defun jsm:shr-browse-url ()
+(defun jsm/shr-browse-url ()
   "For mu4e messages, browse the URL under point or advance the message"
   (interactive)
   (let ((url (get-text-property (point) 'shr-url)))
     (if (not url)
         (mu4e-scroll-up)
       (shr-browse-url))))
-(define-key mu4e-view-mode-map (kbd "RET") 'jsm:shr-browse-url)
+(define-key mu4e-view-mode-map (kbd "RET") 'jsm/shr-browse-url)
 
-(defun jsm:mailing-list-mode (&optional enable)
+(defun jsm/mailing-list-mode (&optional enable)
   "Change the headers-fields to include mailing-list and enable
 threading when enabling mailing-list-mode. Go back to
 non-threaded and regular headers when disabling"
@@ -112,43 +114,43 @@ non-threaded and regular headers when disabling"
           mu4e-headers-show-threads nil))
   )
 
-(defun jsm:gmail-mailing-lists ()
+(defun jsm/gmail-mailing-lists ()
   "Toggle between going to my bookmarked Gmail mailing list
 collection while also enabling my mailing-list viewing mode or
 disable my mailing-list viewing mode and returning to previous
 query"
   (interactive)
-  (if (not (boundp 'jsm:ml-mode)) (setq jsm:ml-mode nil))
-  (if jsm:ml-mode
+  (if (not (boundp 'jsm/ml-mode)) (setq jsm/ml-mode nil))
+  (if jsm/ml-mode
       (progn
-        (setq jsm:ml-mode nil)
-        (jsm:mailing-list-mode nil)
+        (setq jsm/ml-mode nil)
+        (jsm/mailing-list-mode nil)
         (mu4e-headers-query-prev))
     (progn
-      (setq jsm:ml-mode t)
-      (jsm:mailing-list-mode t)
+      (setq jsm/ml-mode t)
+      (jsm/mailing-list-mode t)
       (mu4e-headers-search-bookmark "m:/Gmail/INBOX and list:* and flag:unread"))
     ))
 
-(define-key mu4e-headers-mode-map (kbd "G") 'jsm:gmail-mailing-lists)
+(define-key mu4e-headers-mode-map (kbd "G") 'jsm/gmail-mailing-lists)
 
 
-(defun jsm:narrow-to-mailing-list ()
+(defun jsm/narrow-to-mailing-list ()
   "Filter the list of mail based on current mailing list of
   message at point. If already narrowed, remove filter."
   (interactive)
-  (if (not (boundp 'jsm:narrowed-ml)) (setq jsm:narrowed-ml nil))
+  (if (not (boundp 'jsm/narrowed-ml)) (setq jsm/narrowed-ml nil))
   (let ((ml (mu4e-message-field-at-point :mailing-list)))
     (if ml
-        (if jsm:narrowed-ml
+        (if jsm/narrowed-ml
             (progn
-              (setq jsm:narrowed-ml nil)
+              (setq jsm/narrowed-ml nil)
               (mu4e-headers-query-prev))
-          (setq jsm:narrowed-ml ml)
+          (setq jsm/narrowed-ml ml)
           (mu4e-headers-search-narrow ml)))
     (message "Message is not a mailing-list email")))
 
-(define-key mu4e-headers-mode-map (kbd "L") 'jsm:narrow-to-mailing-list)
+(define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
 
 ;; I like being able to use C-Return to also send a message
 (define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
@@ -325,7 +327,7 @@ location."
 (defalias 'mark-all-read 'mu4e-headers-flag-all-read)
 
 ; Use the helper functions to mark all read in annoying maildirs
-(defun jsm:mu4e-mark-noisy-maildirs-all-read ()
+(defun jsm/mu4e-mark-noisy-maildirs-all-read ()
   "Mark all read for some of my noisy maildirs such as Root Email"
   (interactive)
   (let ((noisy-maildirs (list "/Qualcomm/Root Mail" "/Qualcomm/Projects.Spacewalk"))
@@ -338,7 +340,7 @@ location."
                                    ; (sleep-for 2)
                                    (mu4e-headers-query-prev)))
           noisy-maildirs)))
-(define-key mu4e-headers-mode-map (kbd "A") 'jsm:mu4e-mark-noisy-maildirs-all-read)
+(define-key mu4e-headers-mode-map (kbd "A") 'jsm/mu4e-mark-noisy-maildirs-all-read)
 
 (if (not (functionp 'delete-all-overlays))
   (defun delete-all-overlays ()

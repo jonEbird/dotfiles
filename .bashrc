@@ -21,6 +21,10 @@ PATH=$PATH:~/bin
 # Standard PS1
 PS1="[\u@\h \W]\$ "
 
+if [ "$(ps --no-headers -o comm -p $PPID)" == "emacs" ]; then
+    PS1="\W $ "
+fi
+
 gitps1() {
     _git_repo() {
         basename $(git remote -v | awk '/^origin.*(fetch)/{ print $2 }') | sed 's/\.git//g'
