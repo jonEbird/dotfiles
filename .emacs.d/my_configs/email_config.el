@@ -62,9 +62,12 @@
   (interactive)
   (progn
     (ignore-errors
-      (kill-process "mu4e-update")
-      (kill-process "mu4e-update"))
+      ; (kill-process "mu4e-update")
+      (if (processp (get-process "mu4e-update"))
+          (delete-process "mu4e-update")
+        (message "DEBUG: No mu4e-update running")))
     (mu4e-update-mail-and-index nil)))
+(define-key mu4e-headers-mode-map (kbd "U") 'jsm/mu4e-fresh-update)
 
 (setq mu4e-headers-fields
       '( (:human-date    .  13)
@@ -325,6 +328,7 @@ location."
   (mu4e-headers-mark-all-unread-read)
   (mu4e-mark-execute-all t))
 (defalias 'mark-all-read 'mu4e-headers-flag-all-read)
+(define-key mu4e-headers-mode-map (kbd "M") 'mu4e-headers-flag-all-read)
 
 ; Use the helper functions to mark all read in annoying maildirs
 (defun jsm/mu4e-mark-noisy-maildirs-all-read ()

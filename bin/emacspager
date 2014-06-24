@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Script: Emacs Pager
+# Author: jsmiller@qti.qualcomm.com
+# Date:   2014-06-04
+
+PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/sbin:/usr/sbin"
+TMP="/tmp/.EmacsPager$$_"
+REL_DIR=$(dirname $0)
+
+#-Functions----------------------------------------
+cleanup() { rm -rf ${TMP}*; }
+
+#-Main---------------------------------------------
+trap cleanup SIGINT SIGQUIT SIGTERM SIGSEGV
+
+cat > ${TMP}file
+emacsclient -e "(progn (find-file \"${TMP}file\") (ansi-color-buffer) (toggle-read-only))"
+
+# Cleanup
+cleanup
+exit 0

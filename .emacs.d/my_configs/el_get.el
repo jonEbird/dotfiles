@@ -54,7 +54,7 @@
               ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
               gtags multiple-cursors git-modes magit git-gutter
               idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
-              rpm-spec-mode cider rainbow-delimiters elixir elixir-mix)))
+              rpm-spec-mode cider rainbow-delimiters elixir elixir-mix org-reveal)))
 ; auto-complete-etags elip
 
 (el-get 'sync jsm-packages)

@@ -28,7 +28,7 @@ usage() {
 Usage: $(basename $0) [-s] [-h hostlist] [-x extrafile] copyfile [copyfile2...]
         -s   Run script with sudo
         -h   Specify a file with a list of hosts. Also can be a single host.
-             Will use \$HOSTS env var when not specified
+             Will use \$HOSTS or \$SERVERS env var when not specified
         -x   Extra supplementary file to copy to host(s)
         -t   Perform a telnet test to port after operations are done.
         -c   Execute this command
@@ -110,7 +110,11 @@ done
 # which hosts are we going to hit?
 touch ${TMP}hostlist
 if [ ! -s ${TMP}hostlist ]; then
-    echo $HOSTS > ${TMP}hostlist
+    if [ -n "$HOSTS" ]; then
+        echo $HOSTS > ${TMP}hostlist
+    elif [ -n "$SERVERS" ]; then
+        echo $SERVERS > ${TMP}hostlist
+    fi
     # cleanup non hostname characters
     # sed 's/[^a-zA-Z0-9]/ /g' ${TMP}hostlist > ${TMP}temp
     # cat ${TMP}temp > ${TMP}hostlist

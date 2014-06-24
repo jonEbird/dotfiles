@@ -41,11 +41,10 @@ class Wmctrl(object):
     __calibrated = False
 
     def __init__(self):
-        self.__refresh_wininfo()
+        self.refresh_wininfo()
 
-    def __refresh_wininfo(self):
-        """ Refresh win_info with the current state of X11 windows on the
-        machine """
+    def get_wininfo(self):
+        """ Retrive win_info """
         new_winfo = []
         for line in wmctrl('-lGp').split('\n'):
             try:
@@ -60,17 +59,22 @@ class Wmctrl(object):
                     new_winfo.append((w_id, desktop, pid, x_offset, y_offset, width, height, host, title))
             except ValueError, e:
                 print 'Problem parsing line "%s"' % line
-        self.win_info = new_winfo
+        return new_winfo
+
+    def refresh_wininfo(self):
+        """ Refresh win_info with the current state of X11 windows on the
+        machine """
+        self.win_info = self.get_wininfo()
 
     def get_geometry(self, win):
-        self.__refresh_wininfo()
+        self.refresh_wininfo()
         for w_id, desktop, pid, x_offset, y_offset, width, height, host, title in self.win_info:
             if w_id == win:
                 return int(x_offset), int(y_offset), int(width), int(height)
         return 0, 0, 0, 0
 
     def identify(self, name):
-        self.__refresh_wininfo()
+        self.refresh_wininfo()
         for w_id, desktop, pid, x_offset, y_offset, width, height, host, title in self.win_info:
             if str(name).lower() in '%s %s' % (pid2name(pid), title.lower()):
                 return w_id
@@ -83,7 +87,7 @@ class Wmctrl(object):
         y offsets """
         if self.__calibrated:
             return
-        self.__refresh_wininfo()
+        self.refresh_wininfo()
         win = self.win_info[0][0]
         x1, y1, w, h = self.get_geometry(win)
         if not w:
@@ -99,9 +103,9 @@ class Wmctrl(object):
         args = '-i -r %s -e 0,%s,%s,%d,%d' % (win, x1 - self.wm_xoffset, y1 - self.wm_yoffset, w, h)
         wmctrl(*args.split())
         self.__calibrated = True
-        self.__refresh_wininfo()
+        self.refresh_wininfo()
 
-    def commands(self):
+    def get_commands(self):
         """ Produce commands which can be used to reset windows to their
         current location and geometry """
         self.calibrate()
@@ -137,7 +141,7 @@ if __name__ == '__main__':
         print '# Calibrated offset to be (%d, %d)' % (W.wm_xoffset, W.wm_yoffset)
 
     if options.script:
-        out_fh.write('#!/bin/bash\n\n# Commands generated from %s\n\n%s\n' % (sys.argv[0], '\n'.join(W.commands())))
+        out_fh.write('#!/bin/bash\n\n# Commands generated from %s\n\n%s\n' % (sys.argv[0], '\n'.join(W.get_commands())))
         out_fh.write('pkill -x -SIGUSR1 conky\n')
 
     out_fh.close()

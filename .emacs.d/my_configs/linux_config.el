@@ -42,7 +42,7 @@
   (cond
    ((executable-find "aspell")
     (setq ispell-program-name "aspell"
-          ispell-extra-args (flyspell-detect-ispell-args t)))
+          ispell-extra-args (flyspell-detect-ispell-args)))
    ((executable-find "hunspell")
     (setq ispell-program-name "hunspell")
     (setq ispell-local-dictionary "en_US")

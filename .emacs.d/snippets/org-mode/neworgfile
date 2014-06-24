@@ -1,0 +1,17 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: org-mode Template
+# key: orgnew
+# group: org-mode
+# --
+#+TITLE:     ${2:Title}
+#+AUTHOR:    `user-full-name`
+#+EMAIL:     `user-mail-address`
+#+DESCRIPTION: ${3:project description}
+#+TODO: TODO(t) STARTED(s) DELEGATED(d@) WAITING(w@) | DONE(o@) INFO(i) CANCELED(c@)
+#+STARTUP: content noindent hidestars logrefile logredeadline logreschedule
+#+OPTIONS: toc:nil num:nil todo:nil tasks:t pri:nil tags:nil skip:t d:nil ^:{}
+
+* $2
+
+$0
+
