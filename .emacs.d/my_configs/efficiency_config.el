@@ -16,7 +16,7 @@
 
 ; (global-git-gutter-mode t)
 (dolist (hook
-         '(python-mode-hook c++-mode-hook c-mode-hook emacs-lisp-mode-hook))
+         '(python-mode-hook c++-mode-hook c-mode-hook emacs-lisp-mode-hook shell-mode-hook))
   (add-hook hook 'git-gutter-mode 'append))
 
 (global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
@@ -143,17 +143,17 @@
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
-;; Markdown Helper routine
+;; Markdown preview helper
 ;; ------------------------------
-(defun jsm:markdown-preview ()
+(require 'markdown-mode)
+(defun jsm/markdown-preview ()
   "Preview the markdown file in a new browser tab"
   (interactive)
   (let ((my-filename (buffer-file-name))
-        (html-filename (concat (buffer-file-name) ".html")))
-    (shell-command (concat "/usr/bin/markdown_py < " my-filename " > " html-filename) nil nil)
-    (browse-url (concat "file://" html-filename))))
-(add-hook 'markdown-mode-hook
-          '(lambda () (define-key markdown-mode-map (kbd "<f12>") 'jsm:markdown-preview)))
+        (html-filename (format "%s.html" (file-name-base (buffer-file-name)))))
+    (shell-command (format "pandoc -f markdown_github -t html -o %s %s" html-filename my-filename) nil nil)
+    (browse-url (concat "file://" (file-name-directory (buffer-file-name)) html-filename))))
+(define-key markdown-mode-map (kbd "<f12>") 'jsm/markdown-preview)
 
 ;; Multiple-cursors
 ;; ------------------------------

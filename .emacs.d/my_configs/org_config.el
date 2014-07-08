@@ -288,6 +288,12 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
     (kill-buffer (current-buffer))))
 (defalias 'org-present 'org-export-as-s5-and-open)
 
+;; Trying Reveal.js for presentations
+;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
+(require 'ox-reveal)
+; I have cloned reveal as a submodule
+(setq org-reveal-root (concat "file://" (expand-file-name "~/org/reveal/")))
+
 ;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
 ;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then
 ;;  any logical effort within the project would be the 3rd level heading along with other siblings

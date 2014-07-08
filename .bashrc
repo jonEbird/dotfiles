@@ -23,6 +23,7 @@ PS1="[\u@\h \W]\$ "
 
 if [ "$(ps --no-headers -o comm -p $PPID)" == "emacs" ]; then
     PS1="\W $ "
+    export PAGER=emacspager
 fi
 
 gitps1() {
