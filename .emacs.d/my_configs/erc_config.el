@@ -1,6 +1,7 @@
 ; -*- emacs-lisp -*-
 
 (require 'erc)
+(require 'netrc)
 
 ; Set which modules to load
 (setq erc-modules '( pcomplete autojoin button completion fill
@@ -14,9 +15,12 @@
 (setq erc-log-channels-directory "~/.erc/logs/"
       erc-save-buffer-on-part t
       erc-hide-list nil ; '("JOIN" "PART" "QUIT")
-      jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc" t)
+      jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc")
       erc-server-flood-margin 1000
       )
+
+; Assign the common C-x C-s to act as you'd expect in erc mode
+(define-key erc-mode-map (kbd "C-x C-s") 'erc-save-buffer-in-logs)
 
 (add-hook 'erc-mode-hook 'turn-on-flyspell 'append)
 
@@ -59,7 +63,7 @@
 	(jsm/notify-send (format "IRC-%s" from) msg))
       )))
 
-(add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
+; (add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
 (add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)
 
 ; Typical connection

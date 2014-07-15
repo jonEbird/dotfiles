@@ -27,3 +27,4 @@ hook passing the correct yasnippet key"
         (call-interactively 'yas-expand))))
 
 (add-hook 'sh-mode-hook '(lambda () (jsm/new-file-snippet "gosh")))
+(add-hook 'org-mode-hook '(lambda () (jsm/new-file-snippet "orgnew")))

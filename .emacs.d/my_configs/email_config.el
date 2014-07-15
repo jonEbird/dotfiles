@@ -174,7 +174,8 @@ query"
          ("kplug-list.kernel-panic.org"          . "KPLUG")
          ("linux-s390.vger.kernel.org"           . "Linux s390")
          ("linux-rt-users.vger.kernel.org"       . "Linux RT")
-         ("systemd-devel.lists.freedesktop.org"  . "systemd Devel")))
+         ("systemd-devel.lists.freedesktop.org"  . "systemd Devel")
+         ("scons-users.scons.org"                . "SCons")))
 
 (setq my-mailing-lists-filter (mapconcat (lambda (x) (concat "list:" (car x))) mu4e-user-mailing-lists " OR "))
 

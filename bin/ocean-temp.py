@@ -23,7 +23,7 @@ def gen_url(date, station="9410170", units="english"):
 
 def get_ocean_temps(date, station="9410170", units="english"):
     URL = gen_url(date, station, units)
-    fulldata = json.loads(urllib2.urlopen(URL).read())
+    fulldata = json.loads(urllib2.urlopen(URL, timeout=3).read())
     # Filter out non-values
     temps = [ dp for dp in fulldata['data'] if dp[u'v'] ]
     # Ensure the returned data set is sorted by datetime(t)

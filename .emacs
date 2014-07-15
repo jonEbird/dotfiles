@@ -73,6 +73,21 @@
 (global-set-key (kbd "<C-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
 (global-set-key (kbd "<C-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
 
+;; Support a moderate scroll via pgdn (aka [next]) and pgup (aka [prior])
+;; Useful for browsing log output or moderately shifting email for reading
+(global-set-key [next]
+                (lambda ()
+                  (interactive)
+                  (dolist (n '(6 2 1))
+                    (scroll-up n)
+                    (sit-for (/ 1.0 (+ n 20))))))
+(global-set-key [prior]
+                (lambda ()
+                  (interactive)
+                  (dolist (n '(6 2 1))
+                    (scroll-down n)
+                    (sit-for (/ 1.0 (+ n 20))))))
+
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell 1)
 (setq ring-bell-function 'ignore)
