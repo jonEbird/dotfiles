@@ -47,7 +47,7 @@
       ido-create-new-buffer 'always
       ido-save-directory-list-file (concat (expand-file-name "~/.ido.last.") hostname)
       ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf")
-      ido-ignore-buffers '("\\` " "^*mu4e-"))
+      ido-ignore-buffers '("\\` " "^*mu4e-" "Shell "))
 (add-to-list 'ido-ignore-files "\\.emacs\\.desktop")
 (ido-mode 1)
 
@@ -109,6 +109,7 @@
 
 ;; Projectile Project Management
 ;; ------------------------------
+(require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t
       projectile-indexing-method 'native)
@@ -232,3 +233,28 @@
 
 ; Or just set this
 (setq scroll-preserve-screen-position t)
+
+;; Simulate GNU Screen within Emacs using ansi-term
+;; ------------------------------
+(defun my-terminals (&optional N shell)
+  "Create commonly set used of terminals ala GNU screen. Will
+create 8 ansi shells unless passed N"
+  (interactive)
+  (let ((escape-key ""))
+    (global-unset-key escape-key)
+    (global-set-key (kbd (format "%s %s" escape-key escape-key)) 'previous-buffer)
+    (dotimes (n (or N 8))
+      (let* ((shell-name (format "Shell %d" n))
+             (buffer-name (format "*%s*" shell-name))
+             (my-shell (or shell "/bin/bash")))
+        (global-set-key (kbd (format "%s %s" escape-key n))
+                        `(lambda ()
+                           (interactive)
+                           (switch-to-buffer ,buffer-name nil t)))
+        (unless (get-buffer buffer-name)
+          (message (format "Creating %s" shell-name))
+          (save-window-excursion (ansi-term shell shell-name))
+          (with-current-buffer buffer-name
+            (local-unset-key escape-key)))))))
+
+(my-terminals)

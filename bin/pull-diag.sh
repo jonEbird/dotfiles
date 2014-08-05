@@ -20,7 +20,7 @@ org-store-file () {
     for f in $*; do
         cd "$(dirname $f)"
         fp="file:$(pwd | sed "s|^${HOME}|~|g")/$(basename $f)"
-        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename $f)\"))"
+        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename $f)\"))" >/dev/null
         cd ~-
     done
 }
