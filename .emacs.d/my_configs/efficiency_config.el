@@ -246,15 +246,15 @@ create 8 ansi shells unless passed N"
     (dotimes (n (or N 8))
       (let* ((shell-name (format "Shell %d" n))
              (buffer-name (format "*%s*" shell-name))
-             (my-shell (or shell "/bin/bash")))
+             (default-directory (expand-file-name "~/")))
         (global-set-key (kbd (format "%s %s" escape-key n))
                         `(lambda ()
                            (interactive)
                            (switch-to-buffer ,buffer-name nil t)))
         (unless (get-buffer buffer-name)
           (message (format "Creating %s" shell-name))
-          (save-window-excursion (ansi-term shell shell-name))
+          (save-window-excursion (ansi-term (or shell "/bin/bash") shell-name))
           (with-current-buffer buffer-name
             (local-unset-key escape-key)))))))
 
-(my-terminals)
+(my-terminals 10)
