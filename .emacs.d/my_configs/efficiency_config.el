@@ -134,7 +134,7 @@
   (jsm/unique-shell (projectile-project-root)))
 
 (define-key projectile-command-map (kbd "$") 'jsm/projectile-shell-other-window)
-(global-set-key (kbd "C-x 4 s") 'jsm/unique-shell)
+(global-set-key (kbd "C-x 4 $") 'jsm/unique-shell)
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
@@ -236,9 +236,13 @@
 
 ;; Simulate GNU Screen within Emacs using ansi-term
 ;; ------------------------------
-(defun my-terminals (&optional N shell)
-  "Create commonly set used of terminals ala GNU screen. Will
-create 8 ansi shells unless passed N"
+(defun my-terminals (&optional N shell inferior)
+  "Create a set of commonly used terminals ala GNU screen.
+
+Will create 8 ansi shells unless you specific `N`. Can also pass
+which `shell` you would like to use with /bin/bash being the
+default. Finally anything but nil for `inferior` will cause us to
+launch shell (the inferior shell) instead of ansi-term."
   (interactive)
   (let ((escape-key ""))
     (global-unset-key escape-key)
@@ -246,15 +250,19 @@ create 8 ansi shells unless passed N"
     (dotimes (n (or N 8))
       (let* ((shell-name (format "Shell %d" n))
              (buffer-name (format "*%s*" shell-name))
-             (default-directory (expand-file-name "~/")))
+             (default-directory (expand-file-name "~/"))
+             (explicit-shell-file-name (or shell "/bin/bash")))
         (global-set-key (kbd (format "%s %s" escape-key n))
                         `(lambda ()
                            (interactive)
                            (switch-to-buffer ,buffer-name nil t)))
         (unless (get-buffer buffer-name)
           (message (format "Creating %s" shell-name))
-          (save-window-excursion (ansi-term (or shell "/bin/bash") shell-name))
+          (save-window-excursion
+            (if inferior
+                (shell buffer-name)
+              (ansi-term explicit-shell-file-name shell-name)))
           (with-current-buffer buffer-name
             (local-unset-key escape-key)))))))
 
-(my-terminals 10)
+(my-terminals 10 nil t)
