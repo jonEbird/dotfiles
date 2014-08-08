@@ -1,4 +1,4 @@
-personal_ws-1.1 en 620 
+personal_ws-1.1 en 633 
 Google
 PyPi
 Ashok's
@@ -22,10 +22,10 @@ gitlab
 github
 handoffs
 https
-RPM's
 RPMs
-SCons
+RPM's
 SCONs
+SCons
 STDERR
 kthreadd
 DBs
@@ -67,6 +67,7 @@ CRC
 daemonizing
 onboard
 BTS
+profiler
 EIA
 systemtap
 FDD
@@ -74,9 +75,9 @@ CC'ed
 automake
 cpu
 BitBake
-csh
-FEC
 CTC
+FEC
+csh
 Qualcomm's
 Mormor
 unicode
@@ -85,17 +86,20 @@ CSR
 DNS
 enbmsim
 dmz
+kobject
 CSV
 gcc
 boolean
 rsync
 workflow
+debugfs
 cronjobs
 lshw
 tipc
 eNB
 userspace
 Spiderman
+decrement
 DSL
 epc
 rpmbuild
@@ -107,8 +111,8 @@ Env
 virtualenv
 ERC
 tunables
-CMake
 cmake
+CMake
 initramfs
 gid
 DVP
@@ -135,6 +139,7 @@ thunderbird
 tcpdump
 ido
 README
+GPIO
 gpg
 utils
 vncserver
@@ -164,8 +169,8 @@ installables
 hpp
 TODO
 iLO
-SyZyGy
 syzygy
+SyZyGy
 Rotem
 ini
 ngircd
@@ -177,6 +182,7 @@ Cher
 Farmor
 webapps
 lan
+runtime
 updatesd
 sttsmsim
 Duplexing
@@ -221,6 +227,7 @@ Mello
 prepend
 nosetests
 handoff
+accelerometer
 neo
 workspace
 nslcd
@@ -247,8 +254,8 @@ lockless
 namespace
 LVM
 iptables
-PCI
 OID
+PCI
 QLDAP
 pdf
 DHCP
@@ -267,8 +274,8 @@ lockdown
 pyplusplus
 auth
 PHP
-VLAN
 UMTS
+VLAN
 ansible
 noquota
 QCT
@@ -294,8 +301,8 @@ Qualpass
 dropdown
 pietest
 PPD
-QIP
 RCU
+QIP
 Makefile's
 Makefiles
 outliers
@@ -318,8 +325,8 @@ jitter
 TBLFM
 lookup
 taskomatic
-rhn
 sed
+rhn
 html
 cpumask
 scp
@@ -385,6 +392,7 @@ CPack
 cpack
 interworking
 RSS
+SPI
 xymon
 src
 UEs
@@ -466,6 +474,7 @@ SATA
 syslog
 postinstall
 subnet
+Arduino
 struct
 dereference
 Egencia
@@ -477,10 +486,10 @@ centric
 gitflow
 elip
 interoperability
-Fisheye
 FishEye
-sysrq
+Fisheye
 SysRq
+sysrq
 symlink
 proc
 chmod
@@ -526,6 +535,7 @@ xargs
 GV
 dereferences
 uemsim
+structs
 HOWTOs
 Koji
 foundational
@@ -583,6 +593,7 @@ misperforming
 dracut
 openldap
 Nati
+interruptible
 postinst
 AHCI
 bldsvr
@@ -592,12 +603,14 @@ uninterruptable
 Yoshi
 ACK
 multipath
+BeagleBone
 localhost
 subcarrier
 TDMA
 CRAD's
 filesystems
 elisp
+bitmask
 symlinks
 qgroup
 gantt

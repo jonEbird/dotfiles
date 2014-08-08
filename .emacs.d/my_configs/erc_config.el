@@ -27,7 +27,7 @@
 ;; Improving the display output of text.
 (defun my-erc-ansi-colors ()
   ; First need to remove some control characters
-  (while (re-search-forward "[]" nil t)
+  (while (re-search-forward (format "[%s]" (kbd "C-o")) nil t)
     (replace-match "" nil nil))
   (ansi-color-apply-on-region (point-min) (point-max)))
 

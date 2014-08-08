@@ -70,6 +70,10 @@
 ; Finally, with the improved highlighting, it is also nice to view matches vertically
 (ido-vertical-mode)
 
+;; Improved buffer listing - Use ibuffer
+;; ------------------------------
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 ;; Expand-region
 ;; ------------------------------
 (require 'expand-region)
@@ -265,4 +269,4 @@ launch shell (the inferior shell) instead of ansi-term."
           (with-current-buffer buffer-name
             (local-unset-key escape-key)))))))
 
-(my-terminals 10 nil t)
+(my-terminals 10)
