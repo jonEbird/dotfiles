@@ -240,6 +240,32 @@
 
 ;; Simulate GNU Screen within Emacs using ansi-term
 ;; ------------------------------
+(defun term-next ()
+  "Go to the next terminal based on the buffer name. Will extract the
+number from the buffer-name, add 1 and go to a buffer of that name if it
+exists."
+  (interactive)
+  (let ((cur-buffer (buffer-name)))
+    (if (string-match "\\([0-9]+\\)" cur-buffer)
+        (let* ((n (match-string-no-properties 0 cur-buffer))
+               (next (int-to-string (+ (string-to-int n) 1)))
+               (next-buffer (replace-regexp-in-string n next cur-buffer)))
+          (if (get-buffer next-buffer)
+              (switch-to-buffer next-buffer nil t))))))
+
+(defun term-prev ()
+  "Go to the previous terminal based on the buffer name. Will extract the
+number from the buffer-name, subtract 1 and go to a buffer of that name if
+it exists."
+  (interactive)
+  (let ((cur-buffer (buffer-name)))
+    (if (string-match "\\([0-9]+\\)" cur-buffer)
+        (let* ((n (match-string-no-properties 0 cur-buffer))
+               (prev (int-to-string (- (string-to-int n) 1)))
+               (prev-buffer (replace-regexp-in-string n prev cur-buffer)))
+          (if (get-buffer prev-buffer)
+              (switch-to-buffer prev-buffer nil t))))))
+
 (defun my-terminals (&optional N shell inferior)
   "Create a set of commonly used terminals ala GNU screen.
 
@@ -253,18 +279,22 @@ launch shell (the inferior shell) instead of ansi-term."
         (times (or N 8))
         (default-directory (expand-file-name "~/"))
         (explicit-shell-file-name (or shell "/bin/bash")))
+    ; Reset global key bindings around our escape-key
     (global-unset-key escape-key)
     (global-set-key (kbd (format "%s %s" escape-key escape-key)) 'previous-buffer)
+    (global-set-key (kbd (format "%s n" escape-key)) 'term-next)
+    (global-set-key (kbd (format "%s p" escape-key)) 'term-prev)
     (dotimes (n times)
       (let* ((shell-name (format "Shell %d" n))
              (buffer-name (format "*%s*" shell-name)))
+        ; "escape-key N" -> go to terminal N where 0 < N <= times
         (global-set-key (kbd (format "%s %s" escape-key n))
                         `(lambda ()
                            (interactive)
                            (switch-to-buffer ,buffer-name nil t)))
         (unless (get-buffer buffer-name)
           (add-to-list 'started-terms n t)
-          (setenv "EMACS_PS1" (format "(%d) \\W $ " n))
+          (setenv "EMACS_PS1" (format "(\\e[1;32m%d\\e[0m) \\W $ " n))
           (save-window-excursion
             (if inferior
                 (shell buffer-name)
