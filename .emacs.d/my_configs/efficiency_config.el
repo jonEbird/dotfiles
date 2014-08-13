@@ -248,25 +248,33 @@ which `shell` you would like to use with /bin/bash being the
 default. Finally anything but nil for `inferior` will cause us to
 launch shell (the inferior shell) instead of ansi-term."
   (interactive)
-  (let ((escape-key ""))
+  (let ((escape-key (kbd "C-\\"))
+        (started-terms '())
+        (times (or N 8))
+        (default-directory (expand-file-name "~/"))
+        (explicit-shell-file-name (or shell "/bin/bash")))
     (global-unset-key escape-key)
     (global-set-key (kbd (format "%s %s" escape-key escape-key)) 'previous-buffer)
-    (dotimes (n (or N 8))
+    (dotimes (n times)
       (let* ((shell-name (format "Shell %d" n))
-             (buffer-name (format "*%s*" shell-name))
-             (default-directory (expand-file-name "~/"))
-             (explicit-shell-file-name (or shell "/bin/bash")))
+             (buffer-name (format "*%s*" shell-name)))
         (global-set-key (kbd (format "%s %s" escape-key n))
                         `(lambda ()
                            (interactive)
                            (switch-to-buffer ,buffer-name nil t)))
         (unless (get-buffer buffer-name)
-          (message (format "Creating %s" shell-name))
+          (add-to-list 'started-terms n t)
+          (setenv "EMACS_PS1" (format "(%d) \\W $ " n))
           (save-window-excursion
             (if inferior
                 (shell buffer-name)
               (ansi-term explicit-shell-file-name shell-name)))
           (with-current-buffer buffer-name
-            (local-unset-key escape-key)))))))
+            (local-unset-key escape-key)))))
+    ; Cleanup
+    (setenv "EMACS_PS1" "")
+    (if started-terms
+        (message (format "Started shells %s" started-terms))
+      (message "Your %d terms are already started" times))))
 
 (my-terminals 10)
