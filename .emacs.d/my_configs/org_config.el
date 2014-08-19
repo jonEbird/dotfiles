@@ -77,20 +77,24 @@
 			   ("elisp" . emacs-lisp)
 			   ("ditaa" . artist)
 			   ("asymptote" . asy)
-			   ("dot" . fundamental)
+			   ("dot" . graphviz-dot)
 			   ("shell" . sh)
 			   ("python" . python)
 			   ("javascript" . js)
 			   ("c" . c)
 			   ("sql" . sql)
                            ("scheme" . scheme)
-			   )))
+                           ("exlixir" . elixir))))
 (setq org-src-preserve-indentation t
-      org-src-fontify-natively t)
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil)
 
 ; Add a new quick template
 (add-to-list 'org-structure-template-alist
-             '("S" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
+             '("sh" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
+(add-to-list 'org-structure-template-alist
+             '("cj" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"clojure\">\n\n</src>"))
 
 ; org-babel configuration
 (org-babel-do-load-languages
@@ -113,9 +117,44 @@
 (setq org-ditaa-jar-path "/usr/share/java/ditaa.jar")
 (setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
 
+;; Exporting - Extras
+; (require 'ox-taskjuggler)
+
 ;; Custom HTML exporting
 (setq org-html-postamble t
-      org-html-postamble-format  '(("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>")))
+      org-export-with-smart-quotes t
+      org-html-postamble-format  '(("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))
+      org-html-head-extra "
+<style type=\"text/css\">
+  <!--/*--><![CDATA[/*><!--*/
+
+blockquote {
+  font-size: 0.9em;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 50px;
+  padding-left: 15px;
+}
+blockquote:before {
+  color: #ccc;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+.signature {
+  font-family: monospace;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  word-wrap: break-word;
+}
+  /*]]>*/-->
+</style>")
+
 ; Update any dblocks before exporting
 ; (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
 ;   (org-update-all-dblocks) -> kills large regions of my text file when region set using "C-c @"
@@ -191,7 +230,7 @@
 ;; 2. Personal Development items?
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
-	 ((agenda "" ((org-agenda-span 'day)
+	 ((agenda "" ((org-agenda-span 'week)
 		      (org-agenda-files '("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org"))))
 	  (tags-todo "ProjectsFile|TasksFile"
 		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
@@ -232,12 +271,22 @@
 ;; Fold current subtree
 ;;  I like to fold a piece of text right from the middle of it...
 ;;  Manually, it would be: C-c C-p TAB
-(defun org-fold-here()
+(defun jsm/org-fold-here()
   "Fold current subtree"
   (interactive)
   (outline-previous-visible-heading 1)
   (org-cycle))
-(define-key org-mode-map (kbd "C-S-f") 'org-fold-here)
+(define-key org-mode-map (kbd "C-S-f") 'jsm/org-fold-here)
+
+;; Narrow to parent element
+(defun jsm/org-narrow-to-parent (&optional N)
+  (interactive "p")
+  (let ((levelup (or N 1)))
+    (save-excursion
+      (widen)
+      (outline-up-heading levelup)
+      (org-narrow-to-subtree))))
+(define-key org-mode-map (kbd "C-x n p") 'jsm/org-narrow-to-parent)
 
 ;; Thanks norang - Exactly what I like to do
 ;;  http://doc.norang.ca/org-mode.html#sec-15-21

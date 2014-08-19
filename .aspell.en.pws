@@ -1,4 +1,4 @@
-personal_ws-1.1 en 633 
+personal_ws-1.1 en 639 
 Google
 PyPi
 Ashok's
@@ -22,10 +22,10 @@ gitlab
 github
 handoffs
 https
-RPMs
 RPM's
-SCONs
+RPMs
 SCons
+SCONs
 STDERR
 kthreadd
 DBs
@@ -65,9 +65,9 @@ dma
 NICs
 CRC
 daemonizing
+profiler
 onboard
 BTS
-profiler
 EIA
 systemtap
 FDD
@@ -75,9 +75,9 @@ CC'ed
 automake
 cpu
 BitBake
-CTC
-FEC
 csh
+FEC
+CTC
 Qualcomm's
 Mormor
 unicode
@@ -91,8 +91,8 @@ CSV
 gcc
 boolean
 rsync
-workflow
 debugfs
+workflow
 cronjobs
 lshw
 tipc
@@ -111,8 +111,8 @@ Env
 virtualenv
 ERC
 tunables
-cmake
 CMake
+cmake
 initramfs
 gid
 DVP
@@ -159,6 +159,7 @@ stackato
 sshd
 GSM
 APIs
+paster
 wireshark
 tickless
 GSS
@@ -169,8 +170,8 @@ installables
 hpp
 TODO
 iLO
-syzygy
 SyZyGy
+syzygy
 Rotem
 ini
 ngircd
@@ -254,8 +255,8 @@ lockless
 namespace
 LVM
 iptables
-OID
 PCI
+OID
 QLDAP
 pdf
 DHCP
@@ -274,8 +275,8 @@ lockdown
 pyplusplus
 auth
 PHP
-UMTS
 VLAN
+UMTS
 ansible
 noquota
 QCT
@@ -301,8 +302,8 @@ Qualpass
 dropdown
 pietest
 PPD
-RCU
 QIP
+RCU
 Makefile's
 Makefiles
 outliers
@@ -325,8 +326,8 @@ jitter
 TBLFM
 lookup
 taskomatic
-sed
 rhn
+sed
 html
 cpumask
 scp
@@ -384,12 +385,13 @@ Emacsen
 hermes
 bootloader
 specfile
+SPG
 chgrp
 Manfrotto
 SNR
 changelog
-CPack
 cpack
+CPack
 interworking
 RSS
 SPI
@@ -428,6 +430,7 @@ Convolutional
 cpusets
 jsmiller
 svn
+faux
 alexandria
 getent
 Ericsson
@@ -461,6 +464,7 @@ OpenJDK
 journalctl
 VPN
 RHEL
+pastable
 runlevel
 wks
 Mallorca
@@ -486,10 +490,10 @@ centric
 gitflow
 elip
 interoperability
-FishEye
 Fisheye
-SysRq
+FishEye
 sysrq
+SysRq
 symlink
 proc
 chmod
@@ -555,6 +559,7 @@ md
 chroot
 LiftMaster
 nd
+Trifexis
 zsh
 umask
 ZTE
@@ -613,6 +618,7 @@ elisp
 bitmask
 symlinks
 qgroup
+craddocker
 gantt
 ixgbe
 Farfar

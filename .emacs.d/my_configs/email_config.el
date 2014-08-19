@@ -58,6 +58,20 @@
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
  )
 
+; Top-posting outlook sytle replies because that is %99 of the emails I
+; deal with
+;; (setq
+;;  message-yank-prefix         "> "
+;;  message-yank-cited-prefix   "> "
+;;  message-yank-empty-prefix   "> "
+;;  message-indentation-spaces  4
+;;  message-cite-reply-position 'above
+;;  message-citation-line-format
+;;  (concat
+;;   "-----Original Message-----\n"
+;;   "From: %N\n"
+;;   "Sent: %x %X\n\n"))
+
 (defun jsm/mu4e-fresh-update ()
   (interactive)
   (progn
@@ -156,7 +170,7 @@ query"
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
 
 ;; I like being able to use C-Return to also send a message
-(define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
+; (define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
 
 ;; Hit 'a' then 'V' to view the message in an external browser
 (add-to-list 'mu4e-view-actions
@@ -403,6 +417,45 @@ contact from all those present in the database."
     (goto-char (point-max))
     (call-interactively 'mml-attach-file)))
 (define-key message-mode-map (kbd "C-c <return> f") 'attach-file)
+
+;; Sending HTML Emails
+;; http://orgmode.org/worg/org-contrib/org-mime.html
+(require 'org-mime)
+(setq org-mime-library 'mml)
+
+(add-hook 'mu4e-compose-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
+(add-hook 'mu4e-compose-mode-hook message-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key "\C-c\M-o" 'org-mime-org-buffer-htmlize)))
+
+(defun org-mime-html-styling ()
+  "Help add styling to your html elements. Intended to be called via
+`org-mime-html-hook`"
+  (org-mime-change-element-style
+   "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                 "#E6E1DC" "#232323"))
+  (org-mime-change-element-style
+   "blockquote" (concat "font: 14px/22px normal helvetica, sans-serif;"
+                        "margin-top: 10px;"
+                        "margin-bottom: 10px;"
+                        "margin-left: 50px;"
+                        "padding-left: 15px;"
+                        "border-left: 3px solid #ccc;"))
+  (org-mime-change-class-style
+   "signature" (concat "font-family: monospace;"
+                       "white-space: pre-wrap;"
+                       "white-space: -moz-pre-wrap;"
+                       "word-wrap: break-word;"))
+  (org-mime-change-class-style
+   "example" (format "color: %s; background-color: %s; padding: 0.5em;"
+                 "#000000" "#ffffff")))
+
+(add-hook 'org-mime-html-hook 'org-mime-html-styling)
 
 ; Notes on using mbsync
 ;  Need to set mu4e-change-filenames-when-moving to t
