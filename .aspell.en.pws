@@ -1,4 +1,4 @@
-personal_ws-1.1 en 600 
+personal_ws-1.1 en 603 
 Google
 PyPi
 Ashok's
@@ -23,8 +23,8 @@ github
 handoffs
 https
 RPMs
-SCONs
 SCons
+SCONs
 STDERR
 kthreadd
 DBs
@@ -71,9 +71,9 @@ CC'ed
 automake
 cpu
 BitBake
-CTC
-FEC
 csh
+FEC
+CTC
 Qualcomm's
 Mormor
 unicode
@@ -101,12 +101,11 @@ epg
 Huawei
 OFDM
 Env
-ENV
 virtualenv
 ERC
 tunables
-cmake
 CMake
+cmake
 initramfs
 gid
 Hotdogs
@@ -161,8 +160,8 @@ installables
 hpp
 TODO
 iLO
-syzygy
 SyZyGy
+syzygy
 Rotem
 ini
 ngircd
@@ -239,8 +238,8 @@ lockless
 namespace
 LVM
 iptables
-OID
 PCI
+OID
 QLDAP
 pdf
 DHCP
@@ -259,8 +258,8 @@ lockdown
 pyplusplus
 auth
 PHP
-UMTS
 VLAN
+UMTS
 ansible
 noquota
 QCT
@@ -285,8 +284,8 @@ poc
 Qualpass
 dropdown
 pietest
-RCU
 QIP
+RCU
 Makefile's
 Makefiles
 outliers
@@ -309,8 +308,8 @@ jitter
 TBLFM
 lookup
 taskomatic
-sed
 rhn
+sed
 html
 cpumask
 scp
@@ -363,6 +362,7 @@ SoC
 Emacsen
 hermes
 bootloader
+tim
 specfile
 chgrp
 Manfrotto
@@ -413,6 +413,7 @@ cron
 Compat
 FDMA
 reinstall
+g'morning
 yumdownloader
 ISOs
 usb
@@ -462,13 +463,14 @@ centric
 gitflow
 elip
 interoperability
-FishEye
 Fisheye
-SysRq
+FishEye
 sysrq
+SysRq
 symlink
 proc
 chmod
+zach
 Abhi
 Workflows
 RedHat
@@ -587,6 +589,7 @@ Farfar
 uname
 Weblogic
 AFS
+mitchelh
 pypirc
 Subchorionic
 LLVM
