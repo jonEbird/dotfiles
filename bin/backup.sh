@@ -114,7 +114,7 @@ bin
 .stackato
 .vim*
 .vnc
-
+.m2
 EOF
 
 # -Personal-/-Home-directory-items------------------

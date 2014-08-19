@@ -27,7 +27,7 @@
 ;; Improving the display output of text.
 (defun my-erc-ansi-colors ()
   ; First need to remove some control characters
-  (while (re-search-forward "[]" nil t)
+  (while (re-search-forward (format "[%s]" (kbd "C-o")) nil t)
     (replace-match "" nil nil))
   (ansi-color-apply-on-region (point-min) (point-max)))
 
@@ -125,3 +125,10 @@
   (interactive)
   (erc-tls :server "chat-irc.qualcomm.com" :port 9999 :full-name "Jon Miller"
            :password "blah" :nick "jsmiller"))
+
+; https://freenode.net/irc_servers.shtml
+; chat.freenode.net
+(defun irc-freenode ()
+  (interactive)
+  (erc-tls :server "chat.freenode.net" :port 6697 :full-name "Jon Miller"
+           :nick "jonEbird"))

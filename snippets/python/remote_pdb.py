@@ -28,6 +28,10 @@ class Rdb(pdb.Pdb):
     do_c = do_cont = do_continue
 
 # Example usage - connect with 'telnet <hostname> 4444'
+# https://github.com/nblock/pdb-cheatsheet
+#  Things to try:
+#   1. 'where' - shows a call stack
+#   2. 'list' - show current code surrounding point
 if __name__=='__main__':
     def buggy_method():
         x = 3

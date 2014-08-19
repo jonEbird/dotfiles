@@ -18,12 +18,16 @@ done
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
-# Standard PS1
-PS1="[\u@\h \W]\$ "
-
 if [ "$(ps --no-headers -o comm -p $PPID)" == "emacs" ]; then
-    PS1="\W $ "
+    if [ -n "$EMACS_PS1" ]; then
+        PS1="$EMACS_PS1"
+    else
+        PS1="\W $ "
+    fi
     export PAGER=emacspager
+else
+    # Standard PS1
+    PS1="[\u@\h \W]\$ "
 fi
 
 gitps1() {

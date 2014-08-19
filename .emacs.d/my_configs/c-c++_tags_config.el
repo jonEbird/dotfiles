@@ -67,7 +67,9 @@
     ;;   (add-to-list 'ac-sources 'ac-source-etags)
     ;;   (setq ac-etags-use-document t))
     (when (require 'auto-complete-clang nil t)
-      (add-to-list 'ac-sources 'ac-source-clang))))
+      (add-to-list 'ac-sources 'ac-source-clang)))
+  (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+    (gtags-mode 1)))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook-func)
 
@@ -84,7 +86,7 @@
       gtags-auto-update t)
 
 (require 'gtags)
-(add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
+; (add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
 ; gtags-find-tag (C-c t) - goes to function def
 ; gtags-find-rtag (C-c r) - references to function (caller/callee?)
 ; gtags-find-symbol - locate tokens that are not in the GTAGS file

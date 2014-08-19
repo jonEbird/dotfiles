@@ -39,4 +39,7 @@
 (eval-after-load "cider"
   '(progn (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
           (add-hook 'cider-repl-mode-hook 'jsm/lisp-modes-hook)
-          (setq cider-repl-result-prefix ";; => ")))
+          (setq cider-repl-result-prefix ";; => "
+                cider-repl-history-file "~/.emacs.d/cider-repl.history"
+                org-babel-clojure-backend 'cider)))
+; cider-known-endpoints
