@@ -1,4 +1,4 @@
-personal_ws-1.1 en 639 
+personal_ws-1.1 en 633 
 Google
 PyPi
 Ashok's
@@ -24,8 +24,9 @@ handoffs
 https
 RPM's
 RPMs
-SCons
+RPM's
 SCONs
+SCons
 STDERR
 kthreadd
 DBs
@@ -65,9 +66,9 @@ dma
 NICs
 CRC
 daemonizing
-profiler
 onboard
 BTS
+profiler
 EIA
 systemtap
 FDD
@@ -75,9 +76,9 @@ CC'ed
 automake
 cpu
 BitBake
-csh
-FEC
 CTC
+FEC
+csh
 Qualcomm's
 Mormor
 unicode
@@ -91,8 +92,8 @@ CSV
 gcc
 boolean
 rsync
-debugfs
 workflow
+debugfs
 cronjobs
 lshw
 tipc
@@ -108,11 +109,12 @@ epg
 Huawei
 OFDM
 Env
+ENV
 virtualenv
 ERC
 tunables
-CMake
 cmake
+CMake
 initramfs
 gid
 DVP
@@ -170,8 +172,8 @@ installables
 hpp
 TODO
 iLO
-SyZyGy
 syzygy
+SyZyGy
 Rotem
 ini
 ngircd
@@ -255,8 +257,8 @@ lockless
 namespace
 LVM
 iptables
-PCI
 OID
+PCI
 QLDAP
 pdf
 DHCP
@@ -275,8 +277,8 @@ lockdown
 pyplusplus
 auth
 PHP
-VLAN
 UMTS
+VLAN
 ansible
 noquota
 QCT
@@ -302,8 +304,8 @@ Qualpass
 dropdown
 pietest
 PPD
-QIP
 RCU
+QIP
 Makefile's
 Makefiles
 outliers
@@ -326,8 +328,8 @@ jitter
 TBLFM
 lookup
 taskomatic
-rhn
 sed
+rhn
 html
 cpumask
 scp
@@ -384,14 +386,15 @@ SoC
 Emacsen
 hermes
 bootloader
+tim
 specfile
 SPG
 chgrp
 Manfrotto
 SNR
 changelog
-cpack
 CPack
+cpack
 interworking
 RSS
 SPI
@@ -439,6 +442,7 @@ cron
 Compat
 FDMA
 reinstall
+g'morning
 yumdownloader
 ISOs
 usb
@@ -490,13 +494,14 @@ centric
 gitflow
 elip
 interoperability
-Fisheye
 FishEye
-sysrq
+Fisheye
 SysRq
+sysrq
 symlink
 proc
 chmod
+zach
 Abhi
 Workflows
 RedHat
@@ -579,7 +584,6 @@ OFDMA
 py
 precoding
 RO
-th
 Woeckener
 ue
 chown
@@ -625,6 +629,7 @@ Farfar
 uname
 Weblogic
 AFS
+mitchelh
 pypirc
 Subchorionic
 LLVM
