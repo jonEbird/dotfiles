@@ -40,7 +40,7 @@
     ))
 
 (setq
- mu4e-get-mail-command            "offlineimap"  ;; calling offlineimap separately
+ mu4e-get-mail-command            "true"         ;; calling offlineimap separately
  mu4e-update-interval             120            ;; Not needed with offlineimap hooks
  mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
  mu4e-view-show-images            t              ;; Show images inline
