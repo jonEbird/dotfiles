@@ -9,9 +9,10 @@
 import os
 import sys
 import subprocess
-import signal
 import time
-from subprocess import call, PIPE
+import threading
+import traceback
+import shlex
 
 def daemonize():
     """
@@ -43,33 +44,80 @@ def daemonize():
         sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
         sys.exit(1)
 
-def getmail_oneshot(debug=False):
-    """ One time shot of pulling email """
-    cmd = 'time offlineimap -1 -o -l %s' % (os.path.expanduser('~/offlineimap.out'))
-    if debug:
-        cmd += ' -d imap'
-    return call(cmd.split(), stdout=PIPE, stderr=PIPE)
+class Command(object):
+    """
+    Enables to run subprocess commands in a different thread with TIMEOUT option.
+
+    Based on jcollado's solution:
+    http://stackoverflow.com/questions/1191374/subprocess-with-timeout/4825933#4825933
+    """
+    command = None
+    process = None
+    status = None
+    output, error = '', ''
+
+    def __init__(self, command):
+        if isinstance(command, basestring):
+            command = shlex.split(command)
+        self.command = command
+
+    def run(self, timeout=None, hardkill=False, **kwargs):
+        """ Run a command then return: (status, output, error). """
+        def target(**kwargs):
+            try:
+                self.process = subprocess.Popen(self.command, **kwargs)
+                self.output, self.error = self.process.communicate()
+                self.status = self.process.returncode
+            except:
+                self.error = traceback.format_exc()
+                self.status = -1
+        # default stdout and stderr
+        if 'stdout' not in kwargs:
+            kwargs['stdout'] = subprocess.PIPE
+        if 'stderr' not in kwargs:
+            kwargs['stderr'] = subprocess.PIPE
+        # thread
+        thread = threading.Thread(target=target, kwargs=kwargs)
+        thread.start()
+        thread.join(timeout)
+        if thread.is_alive():
+            if hardkill:
+                self.process.kill()
+            else:
+                self.process.terminate()
+            thread.join()
+
 
 if __name__ == '__main__':
 
-    MAIL_INTERVAL = 60 # seconds
+    DEFAULT_INTERVAL = 60
+    DEFAULT_TIMEOUT  = 300
+
     from optparse import OptionParser
     parser = OptionParser(usage="%prog [options]")
-    parser.add_option('-i', '--interval', dest="interval", default=MAIL_INTERVAL,
-                      help="Interval to sleep inbetween mail retrievals. Defaults to %ds" % MAIL_INTERVAL)
+    parser.add_option('-i', '--interval', dest="interval", default=DEFAULT_INTERVAL, type="int",
+                      help="Interval to sleep inbetween mail retrievals. Defaults to %ds" % DEFAULT_INTERVAL)
     parser.add_option('-o', '--oneshot', dest="oneshot", default=False, action="store_true",
                       help="Run once and do not daemonize")
+    parser.add_option('-t', '--timeout', dest="timeout", default=DEFAULT_TIMEOUT, type="int",
+                      help="Time allowed for mail command before terminating. Defaults to %ds" % DEFAULT_TIMEOUT)
     parser.add_option('-v', '--verbose', dest="verbose", default=False, action="store_true",
                       help="Enable debug level logging for the mail retrieval")
     (options, args) = parser.parse_args()
 
+    mail_command = 'offlineimap -1 -o -l %s' % os.path.expanduser('~/offlineimap.out')
+    if options.verbose:
+        mail_command += ' -d imap'
+
+    command = Command(mail_command)
+
     if options.oneshot:
-        getmail_oneshot()
+        command.run(timeout=options.timeout, hardkill=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         sys.exit(0)
 
     print 'Going to daemonize myself and fetch your email every %ds. Chow.' % (options.interval)
     daemonize()
 
     while True:
-        getmail_oneshot()
+        command.run(timeout=options.timeout, hardkill=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(options.interval)
