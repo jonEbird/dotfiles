@@ -137,17 +137,20 @@ collection while also enabling my mailing-list viewing mode or
 disable my mailing-list viewing mode and returning to previous
 query"
   (interactive)
+  ; Initialize our state variable if first time
   (if (not (boundp 'jsm/ml-mode)) (setq jsm/ml-mode nil))
   (if jsm/ml-mode
       (progn
         (setq jsm/ml-mode nil)
         (jsm/mailing-list-mode nil)
-        (mu4e-headers-query-prev))
+        (ignore-errors (mu4e-headers-query-prev)))
     (progn
       (setq jsm/ml-mode t)
       (jsm/mailing-list-mode t)
-      (mu4e-headers-search-bookmark "m:/Gmail/INBOX and list:* and flag:unread"))
-    ))
+      ; Removed the extra "and flag:unread" from the search
+      (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND list:* AND flag:unread")
+      ; (mu4e-headers-search-narrow "flag:unread")
+      )))
 
 (define-key mu4e-headers-mode-map (kbd "G") 'jsm/gmail-mailing-lists)
 
@@ -156,16 +159,20 @@ query"
   "Filter the list of mail based on current mailing list of
   message at point. If already narrowed, remove filter."
   (interactive)
+  ; Initialize our state variable if first time
   (if (not (boundp 'jsm/narrowed-ml)) (setq jsm/narrowed-ml nil))
-  (let ((ml (mu4e-message-field-at-point :mailing-list)))
-    (if ml
-        (if jsm/narrowed-ml
-            (progn
-              (setq jsm/narrowed-ml nil)
-              (mu4e-headers-query-prev))
-          (setq jsm/narrowed-ml ml)
-          (mu4e-headers-search-narrow ml)))
-    (message "Message is not a mailing-list email")))
+  (if jsm/narrowed-ml
+      (progn
+        ; TODO: Need to iterate this query-prev until ml is no longer in
+        ; the current search query
+        (mu4e-headers-query-prev)
+        (setq jsm/narrowed-ml nil))
+    (let ((ml (mu4e-message-field-at-point :mailing-list)))
+      (if ml
+          (progn
+            (mu4e-headers-search-narrow ml)
+            (setq jsm/narrowed-ml ml))
+        (message "Message is not a mailing-list email")))))
 
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
 
@@ -221,6 +228,17 @@ query"
 
 (when (fboundp 'imagemagick-register-types)
   (imagemagick-register-types))
+
+;; Scroll mu4e-header along with next/prev messages
+(defadvice mu4e-view-headers-next (around scroll-down-mu4e-header activate)
+  "Scroll down the mu4e-header window when moving onto next email"
+  (scroll-other-window 1)
+  ad-do-it)
+
+(defadvice mu4e-view-headers-prev (around scroll-up-mu4e-header activate)
+  "Scroll up the mu4e-header window when moving onto prev email"
+  (scroll-other-window -1)
+  ad-do-it)
 
 ;;-Helping-Functions--------------------------------
 
@@ -426,7 +444,7 @@ contact from all those present in the database."
 (add-hook 'mu4e-compose-mode-hook
           (lambda ()
             (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
-(add-hook 'mu4e-compose-mode-hook message-mode-hook
+(add-hook 'mu4e-compose-mode-hook
           (lambda ()
             (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
 (add-hook 'org-mode-hook

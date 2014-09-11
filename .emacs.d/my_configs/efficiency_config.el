@@ -169,6 +169,14 @@
 (global-set-key (kbd "C--") 'mc/mark-all-like-this)            ; recall you can scroll via M-v / C-v to view all cursors
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
+;; Allow isearch functionality with multipl-cursors
+(require 'phi-search)
+(global-set-key (kbd "C-s") 'phi-search)
+(global-set-key (kbd "C-r") 'phi-search-backward)
+(require 'phi-replace)
+(global-set-key (kbd "M-%") 'phi-replace-query)
+(setq phi-search-limit 10000)
+
 ;; Undo-tree - Try for starters: C-x u
 ;; ------------------------------
 (global-undo-tree-mode)
@@ -261,9 +269,38 @@
 ; 50 files ought to be enough.
 (setq recentf-max-saved-items 50)
 
+; Ignore certain files from the exclusive recentf-list
+(add-to-list 'recentf-exclude "^/tmp/.*html$")
+(add-to-list 'recentf-exclude (expand-file-name "~/Maildir"))
+
 (defun ido-recentf-open ()
   "Use `ido-completing-read' to \\[find-file] a recent file"
   (interactive)
   (if (find-file (ido-completing-read "Find recent file: " recentf-list))
       (message "Opening file...")
     (message "Aborting")))
+
+;; Capture my work window configuration and be able to switch back to it easily
+;; ------------------------------
+;; TODO
+
+;; Show me bad whitespace
+;; ------------------------------
+(require 'whitespace)
+(setq whitespace-style '(face tabs trailing indentation space-before-tab space-after-tab))
+(global-whitespace-mode 1)
+; (face tabs spaces trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)
+
+
+;; (setq my-window-config (current-window-configuration))
+;; (set-window-configuration my-window-config)
+
+; 1. Saving current working window config
+; 2. Jumping back to working window config
+; Would be nice to support a ring of window configurations
+; F10         - Cycle through window configs
+; C-u F10     - Add current window config to collection
+; C-u C-u F10 - Remove current window configuration
+
+;; (require 'winring)
+;; (winring-initialize)
