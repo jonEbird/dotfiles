@@ -4,38 +4,74 @@ PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/sbin:/usr/sb
 TMP=/tmp/.events$$_
 
 EVENTS=${TMP}events
+declare -A querytype
+declare -A querytype_help
 
+#-Standard-Functions-------------------------------
 boottime() {
     local seconds_since_boot=$(awk '{ print int($1) }' /proc/uptime)
     echo $(($(date +%s) - $seconds_since_boot))
 }
 
+rpm_installtime() {
+    echo "$(rpm -q --qf="%{installtime}\n" $1) - RPM $item installed" >> $EVENTS
+}
+
+usage() {
+    cat <<EOF
+Usage: $(basename $0) [events [...]]
+
+$(basename $0) helps identify a chronological order of events that occured
+on your system. You can pass a variety of events, in various forms, and
+they will be investigated and printed out in sorted time order. There are
+two "normal" forms which do not require any prefix help and they are
+interpretted as either a filename / directory or a package (RPM). Special
+forms require a "prefix:" where "prefix" is a helper to indicate how to
+query the information with the directive after the colon.
+
+Here is a summary of the Events:
+  - boottime - Last boot time of the machine (Always included)
+  - <filename> - Modification time of file or directory
+  - <package> - Installation time of <package>
+EOF
+for key in "${!querytype[@]}"; do
+    echo "  - ${key}:argument - ${querytype_help[$key]}"
+done
+}
+
+#-Special-Form-Functions---------------------------
 file_mtime() {
     echo "$(stat -c %Y $1) - File $item" >> $EVENTS
 }
+querytype[mtime]=file_mtime
+querytype_help[mtime]="Query the modification time of the file argument"
 
 file_atime() {
     echo "$(stat -c %X $1) - File atime $item" >> $EVENTS
 }
+querytype[atime]=file_atime
+querytype_help[atime]="Query the access/read time of the file argument"
 
 grep_messages() {
     local pat="$1" ldate=""
     # Including /dev/null ensures you get the "file:line excerpt" output
     # from grep when only /var/log/messages exists
-    \ls -tr /var/log/messages* | xargs -i grep $pat /dev/null {} | \
+    \ls -tr /var/log/messages* | xargs -i sudo zgrep $pat /dev/null {} | \
         sed -e 's|^/var/log/||g' -e 's/:/ - /1' | \
     while read line; do
         ldate=$(date --date="$(echo $line | awk '{ print $3 " " $4 " " $5 }')" +%s)
         echo "$ldate - $line" >> $EVENTS
     done
 }
-
-rpm_installtime() {
-    echo "$(rpm -q --qf="%{installtime}\n" $1) - RPM $item installed" >> $EVENTS
-}
-declare -A querytype=( [mtime]=file_mtime [atime]=file_atime [messages]=grep_messages )
+querytype[messages]=grep_messages
+querytype_help[messages]="Grep the /var/log/messages* files for a given pattern"
 
 #--------------------------------------------------
+if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "help" -o -z "$1" ]; then
+    usage
+    exit 1
+fi
+
 echo "$(boottime) - System last boot" >> $EVENTS
 
 for item in "$@"; do
