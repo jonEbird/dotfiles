@@ -39,24 +39,24 @@
 
 ;; Pool of colors to use when coloring IRC nicks.
 (setq erc-colors-list '("green" "blue" "red"
-			"dark gray" "dark orange"
-			"dark magenta" "maroon"
-			"indian red" "black" "forest green"
-			"midnight blue" "dark violet"))
+                        "dark gray" "dark orange"
+                        "dark magenta" "maroon"
+                        "indian red" "black" "forest green"
+                        "midnight blue" "dark violet"))
 
 ;; special colors for some people
 (setq erc-nick-color-alist '(("shuff" . "orange")
-			     ("tim" . "red")
+                             ("tim" . "OrangeRed2")
                              ("mitchelh" . "orange")
-			     ))
+                             ))
 
 (defun erc-get-color-for-nick (nick)
   "Gets a color for NICK. If NICK is in erc-nick-color-alist, use that color, else hash the nick and use a random color from the pool"
   (or (cdr (assoc nick erc-nick-color-alist))
       (nth
        (mod (string-to-number
-	     (substring (md5 (downcase nick)) 0 6) 16)
-	    (length erc-colors-list))
+             (substring (md5 (downcase nick)) 0 6) 16)
+            (length erc-colors-list))
        erc-colors-list)))
 
 (defun erc-put-color-on-nick ()
@@ -98,14 +98,13 @@
   "Hook to add into erc-text-matched-hook in order to remind the user that a message from erc has come their way."
   (when (and (string= matched-type "current-nick") (string-match "\\([^:]*\\).*:\\(.*\\)" msg))
     (let(
-   (text (match-string 2 msg))
-	 (from (erc-extract-nick nick)))
+         (text (match-string 2 msg))
+         (from (erc-extract-nick nick)))
       (when text
-	(let ((maxlength 128))
-	  (if ( > (length msg) maxlength )
-	      (setq msg (concat (substring msg 0 20) ".. *snip* .. " (substring msg (- 30)) "."))))
-	(jsm/notify-send (format "IRC-%s" from) msg))
-      )))
+        (let ((maxlength 128))
+          (if ( > (length msg) maxlength )
+              (setq msg (concat (substring msg 0 20) ".. *snip* .. " (substring msg (- 30)) "."))))
+        (jsm/notify-send (format "IRC-%s" from) msg)))))
 
 ; (add-hook 'erc-text-matched-hook 'jsm/erc-notify-send)
 (add-hook 'erc-insert-post-hook 'erc-save-buffer-in-logs)

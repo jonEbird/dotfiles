@@ -232,12 +232,16 @@ query"
 ;; Scroll mu4e-header along with next/prev messages
 (defadvice mu4e-view-headers-next (around scroll-down-mu4e-header activate)
   "Scroll down the mu4e-header window when moving onto next email"
-  (scroll-other-window 1)
+  (save-excursion
+    (other-window 1)
+    (recenter))
   ad-do-it)
 
 (defadvice mu4e-view-headers-prev (around scroll-up-mu4e-header activate)
   "Scroll up the mu4e-header window when moving onto prev email"
-  (scroll-other-window -1)
+  (save-excursion
+    (other-window 1)
+    (recenter))
   ad-do-it)
 
 ;;-Helping-Functions--------------------------------
@@ -248,17 +252,17 @@ query"
 (defun cg-feed-msmtp ()
   (if (message-mail-p)
       (save-excursion
-	(let* ((from
-		(save-restriction
-		  (message-narrow-to-headers)
-		  (message-fetch-field "from")))
-	       (account
-		(cond
-		 ;; I use email address as account label in ~/.msmtprc
-		 ((string-match "jsmiller@qti.qualcomm.com" from) "qualcomm")
-		 ;; Add more string-match lines for your email accounts
-		 ((string-match "jonEbird@gmail.com" from) "gmail"))))
-	  (setq message-sendmail-extra-arguments (list '"-a" account))))))
+        (let* ((from
+                (save-restriction
+                  (message-narrow-to-headers)
+                  (message-fetch-field "from")))
+               (account
+                (cond
+                 ;; I use email address as account label in ~/.msmtprc
+                 ((string-match "jsmiller@qti.qualcomm.com" from) "qualcomm")
+                 ;; Add more string-match lines for your email accounts
+                 ((string-match "jonEbird@gmail.com" from) "gmail"))))
+          (setq message-sendmail-extra-arguments (list '"-a" account))))))
 
 (setq message-sendmail-envelope-from 'header)
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
@@ -304,10 +308,10 @@ query"
   (let (buffers)
     (save-current-buffer
       (dolist (buffer (buffer-list t))
-	(set-buffer buffer)
-	(when (and (derived-mode-p 'message-mode)
-		(null message-sent-message-via))
-	  (push (buffer-name buffer) buffers))))
+        (set-buffer buffer)
+        (when (and (derived-mode-p 'message-mode)
+                   (null message-sent-message-via))
+          (push (buffer-name buffer) buffers))))
     (nreverse buffers)))
 
 (setq gnus-dired-mail-mode 'mu4e-user-agent)

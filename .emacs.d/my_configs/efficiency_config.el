@@ -171,10 +171,10 @@
 
 ;; Allow isearch functionality with multipl-cursors
 (require 'phi-search)
-(global-set-key (kbd "C-s") 'phi-search)
-(global-set-key (kbd "C-r") 'phi-search-backward)
+; (global-set-key (kbd "C-s") 'phi-search)
+; (global-set-key (kbd "C-r") 'phi-search-backward)
 (require 'phi-replace)
-(global-set-key (kbd "M-%") 'phi-replace-query)
+; (global-set-key (kbd "M-%") 'phi-replace-query)
 (setq phi-search-limit 10000)
 
 ;; Undo-tree - Try for starters: C-x u
@@ -271,6 +271,7 @@
 
 ; Ignore certain files from the exclusive recentf-list
 (add-to-list 'recentf-exclude "^/tmp/.*html$")
+(add-to-list 'recentf-exclude "^/tmp/org")
 (add-to-list 'recentf-exclude (expand-file-name "~/Maildir"))
 
 (defun ido-recentf-open ()

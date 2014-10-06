@@ -18,10 +18,22 @@ file_atime() {
     echo "$(stat -c %X $1) - File atime $item" >> $EVENTS
 }
 
+grep_messages() {
+    local pat="$1" ldate=""
+    # Including /dev/null ensures you get the "file:line excerpt" output
+    # from grep when only /var/log/messages exists
+    \ls -tr /var/log/messages* | xargs -i grep $pat /dev/null {} | \
+        sed -e 's|^/var/log/||g' -e 's/:/ - /1' | \
+    while read line; do
+        ldate=$(date --date="$(echo $line | awk '{ print $3 " " $4 " " $5 }')" +%s)
+        echo "$ldate - $line" >> $EVENTS
+    done
+}
+
 rpm_installtime() {
     echo "$(rpm -q --qf="%{installtime}\n" $1) - RPM $item installed" >> $EVENTS
 }
-declare -A querytype=( [mtime]=file_mtime [atime]=file_atime )
+declare -A querytype=( [mtime]=file_mtime [atime]=file_atime [messages]=grep_messages )
 
 #--------------------------------------------------
 echo "$(boottime) - System last boot" >> $EVENTS

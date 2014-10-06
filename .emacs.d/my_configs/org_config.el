@@ -53,11 +53,14 @@
 ; Speed commands
 (setq org-use-speed-commands t)
 (setq org-speed-commands-user '(("P" . org-property-action)
-				("z" . org-add-note)
-				("N" . org-narrow-to-subtree)
-				("W" . widen)))
+                                ("z" . org-add-note)
+                                ("N" . org-narrow-to-subtree)
+                                ("W" . widen)))
 ; RET follows links
 (setq org-return-follows-link t)
+; Export settings
+(setq org-use-sub-superscripts nil
+      org-export-with-sub-superscripts nil)
 ; Don't remove the highlighting after an occur search (C-c / /)
 (setq org-remove-highlights-with-change nil)
 ; Setup additional colors for the various TODO states
@@ -73,16 +76,16 @@
               ("PHONE" :foreground "forest green" :weight bold))))
 ; language recognition for #+begin_src blocks
 (setq org-src-lang-modes (quote
-			  (("ocaml" . tuareg)
-			   ("elisp" . emacs-lisp)
-			   ("ditaa" . artist)
-			   ("asymptote" . asy)
-			   ("dot" . graphviz-dot)
-			   ("shell" . sh)
-			   ("python" . python)
-			   ("javascript" . js)
-			   ("c" . c)
-			   ("sql" . sql)
+                          (("ocaml" . tuareg)
+                           ("elisp" . emacs-lisp)
+                           ("ditaa" . artist)
+                           ("asymptote" . asy)
+                           ("dot" . graphviz-dot)
+                           ("shell" . sh)
+                           ("python" . python)
+                           ("javascript" . js)
+                           ("c" . c)
+                           ("sql" . sql)
                            ("scheme" . scheme)
                            ("exlixir" . elixir))))
 (setq org-src-preserve-indentation t
@@ -171,10 +174,10 @@ blockquote p {
 (setq org-refile-use-outline-path t)
 ;; (setq org-refile-targets (quote ((nil :maxlevel . 2))))
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
-				 ("~/org/info.org" :maxlevel . 2)
-				 ("~/org/projects.org" :maxlevel . 3)
-				 ("~/org/personal.org" :maxlevel . 2)
-				 )))
+                                 ("~/org/info.org" :maxlevel . 2)
+                                 ("~/org/projects.org" :maxlevel . 3)
+                                 ("~/org/personal.org" :maxlevel . 2)
+                                 )))
 
 ;; --------------------------------------------------
 ;; Customize Capture and Agenda
@@ -230,17 +233,17 @@ blockquote p {
 ;; 2. Personal Development items?
 (setq org-agenda-custom-commands
       '(("w" "All my work-place items"
-	 ((agenda "" ((org-agenda-span 'week)
-		      (org-agenda-files '("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org"))))
-	  (tags-todo "ProjectsFile|TasksFile"
-		     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
-	  (agenda "" ((org-agenda-span 'day)
-		      (org-agenda-files '("~/org/personal.org"))))
-	  (tags "+needsrefile")
-	  (todo "DONE")
-	  ))
-	("W" "Work meeting start of notes" occur-tree "^[[][0-9-]* [A-Za-z]* [0-9:]*[]] /[^/]*/.*$"
-	 ((org-agenda-overriding-header "Sparse tree regexp for start of meeting")))))
+         ((agenda "" ((org-agenda-span 'week)
+                      (org-agenda-files '("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org"))))
+          (tags-todo "ProjectsFile|TasksFile"
+                     ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
+          (agenda "" ((org-agenda-span 'day)
+                      (org-agenda-files '("~/org/personal.org"))))
+          (tags "+needsrefile")
+          (todo "DONE")
+          ))
+        ("W" "Work meeting start of notes" occur-tree "^[[][0-9-]* [A-Za-z]* [0-9:]*[]] /[^/]*/.*$"
+         ((org-agenda-overriding-header "Sparse tree regexp for start of meeting")))))
 
 ; Controlling how the windows are setup during Agenda views
 (setq org-agenda-window-setup "other-window" ; Defaults to "reorganize-frame"
@@ -255,10 +258,10 @@ blockquote p {
 (setq blog (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebird" t))
 (setq org2blog/wp-blog-alist
       '(("jonebird.com"
-	 :url "https://jonebird.com/xmlrpc.php"
-	 :username (netrc-get blog "login")
-	 :password (netrc-get blog "password")
-	 :tags-as-categories t)))
+         :url "https://jonebird.com/xmlrpc.php"
+         :username (netrc-get blog "login")
+         :password (netrc-get blog "password")
+         :tags-as-categories t)))
 ; (org2blog/wp-login)
 ; (setq org-insert-heading-hook nil) ; messes up org2blog
 ; Preview: M-x org2blog/wp-post-subtree
@@ -353,10 +356,10 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 followed by italicized meeting heading which is specified by the user"
   (interactive)
   (let ((prefix "\n")
-	(cur-sentence (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
-	(meeting-title (read-string "Meeting Title [Meeting Notes]: " nil '() "Meeting Notes")))
+        (cur-sentence (buffer-substring-no-properties (point-at-bol) (point-at-eol)))
+        (meeting-title (read-string "Meeting Title [Meeting Notes]: " nil '() "Meeting Notes")))
     (if (equal cur-sentence "")
-	(setq prefix ""))
+        (setq prefix ""))
     (org-end-of-line)
     (org-insert-time-stamp nil t t prefix (concat " /" meeting-title "/\n") nil)))
 (define-key org-mode-map "\M-i" 'jsm/org-insert-meeting-heading)
@@ -372,9 +375,9 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
       (org-goto-marker-or-bmk org-capture-last-stored-marker)
       ;(org-capture-goto-last-stored) ; Aka C-u C-u org-capture
       (let ((project-title (org-get-heading t t)))
-        ;(message (concat "DEBUG: project-title = \"" project-title "\""))
-	(org-set-property "EXPORT_TITLE" project-title)
-	(org-set-property "CATEGORY" project-title)))))
+      ;(message (concat "DEBUG: project-title = \"" project-title "\""))
+        (org-set-property "EXPORT_TITLE" project-title)
+        (org-set-property "CATEGORY" project-title)))))
 ;(add-hook 'org-capture-before-finalize-hook 'jsm/org-project-properties)
 ;(add-hook 'org-capture-after-finalize-hook 'jsm/org-project-properties)
 
@@ -406,6 +409,11 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
     (org-mark-subtree)
     (org-export-as-html-and-open 3)))
 (define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
+;; (?o "As HTML file and open"
+;;     (lambda (a s v b)
+;;       (if a (org-html-export-to-html t s v b)
+;;     (org-open-file (org-html-export-to-html nil s v b)))))))
+
 
 (defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)
   (interactive "P")
