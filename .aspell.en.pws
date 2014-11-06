@@ -1,4 +1,4 @@
-personal_ws-1.1 en 681 
+personal_ws-1.1 en 701 
 Google
 PyPi
 Ashok's
@@ -57,11 +57,13 @@ syspart
 cgroup
 Gradle
 kexec
+dimmable
 runnable
 wordpress
 startup
 udev
 whereever
+BSP
 dir
 refactoring
 moab
@@ -87,8 +89,10 @@ CTC
 Qualcomm's
 Mormor
 unicode
+Zinq
 DMV
 CSR
+Suresh
 DNS
 enbmsim
 dmz
@@ -106,6 +110,7 @@ eNB
 userspace
 Spiderman
 decrement
+linaro
 DSL
 epc
 rpmbuild
@@ -155,6 +160,7 @@ vncserver
 Lucent
 workqueues
 Klocwork
+operationalize
 GPS
 vocoder
 HOA
@@ -187,8 +193,8 @@ ini
 ngircd
 Makefile
 GPRS
-IPI
 GYN
+IPI
 Cher
 Farmor
 webapps
@@ -203,6 +209,7 @@ incentivized
 IPv
 Wisan
 ish
+that'll
 haskell
 IRQ
 automount
@@ -278,6 +285,8 @@ pdf
 DHCP
 LWN
 crontab
+OpenAFS
+openafs
 Alamouti
 cpuisol
 TSNC
@@ -314,6 +323,7 @@ NUM
 iteratively
 cgroups
 erroring
+Gradle's
 ota
 sourceforge
 Trackable
@@ -352,6 +362,7 @@ rhn
 sed
 html
 cpumask
+SDK
 scp
 AttributeError
 TTUN
@@ -428,6 +439,7 @@ DNAT
 bootable
 submodule
 uid
+SSD
 VoIP
 sta
 ltrace
@@ -439,6 +451,7 @@ tmp
 webapp
 SSL
 wlan
+SSN
 errored
 uio
 Krasnyanskiy
@@ -464,6 +477,7 @@ kworkers
 getent
 Ericsson
 systemctl
+TSN
 cron
 Compat
 FDMA
@@ -483,12 +497,14 @@ REPL
 repoquery
 sysfs
 url
+DPDK
 repo
 ITOC
 Traceback
 ISRP
 Kinecta
 usr
+kworker
 txt
 OpenJDK
 journalctl
@@ -501,6 +517,7 @@ wks
 Mallorca
 Dolter
 xsltproc
+sdcard
 gerrit
 macstub
 tasklets
@@ -575,6 +592,7 @@ GV
 dereferences
 uemsim
 structs
+xilinx
 HOWTOs
 Koji
 foundational
@@ -595,6 +613,7 @@ chroot
 LiftMaster
 nd
 Trifexis
+refactor
 zsh
 umask
 ZTE
@@ -621,6 +640,7 @@ chown
 WCDMA
 UI
 LocalWords
+NAPI
 cpuset
 un
 vm

@@ -1,5 +1,6 @@
 (require 'mu4e)
 (require 'org-mu4e)
+(require 'mu4e-contrib)
 
 ; Not specifically needed for mu4e but helpful to set
 (setq
@@ -29,15 +30,19 @@
      (mu4e-trash-folder "/Qualcomm/Deleted Items")
      (mu4e-refile-folder "/Qualcomm/Archives")
      (user-mail-address "jsmiller@qti.qualcomm.com")
-     (mu4e-compose-signature (file-string "~/.Qualcomm-sig.txt")))
+     (mu4e-compose-signature (file-string "~/.Qualcomm-sig.txt"))
+     (message-signature-file "~/.Qualcomm-sig.txt"))
     ("Gmail"
      (mu4e-sent-folder "/Gmail/Sent Items")
      (mu4e-drafts-folder "/Gmail/Drafts")
      (mu4e-trash-folder "/Gmail/Trash")
      (mu4e-refile-folder "/Gmail/Archives")
      (user-mail-address "jonEbird@gmail.com")
-     (mu4e-compose-signature (file-string "~/.Gmail-sig.txt")))
+     (mu4e-compose-signature (file-string "~/.Gmail-sig.txt"))
+     (message-signature-file "~/.Gmail-sig.txt"))
     ))
+
+; (setq mu4e-html2text-command 'mu4e-shr2text) ; TODO: enable this with mu4e update
 
 (setq
  mu4e-get-mail-command            "true"         ;; calling offlineimap separately
@@ -448,9 +453,6 @@ contact from all those present in the database."
 (add-hook 'mu4e-compose-mode-hook
           (lambda ()
             (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
-(add-hook 'mu4e-compose-mode-hook
-          (lambda ()
-            (local-set-key "\C-c\M-o" 'org-mime-htmlize)))
 (add-hook 'org-mode-hook
           (lambda ()
             (local-set-key "\C-c\M-o" 'org-mime-org-buffer-htmlize)))
@@ -458,26 +460,43 @@ contact from all those present in the database."
 (defun org-mime-html-styling ()
   "Help add styling to your html elements. Intended to be called via
 `org-mime-html-hook`"
-  (org-mime-change-element-style
-   "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
-                 "#E6E1DC" "#232323"))
-  (org-mime-change-element-style
-   "blockquote" (concat "font: 14px/22px normal helvetica, sans-serif;"
-                        "margin-top: 10px;"
-                        "margin-bottom: 10px;"
-                        "margin-left: 50px;"
-                        "padding-left: 15px;"
-                        "border-left: 3px solid #ccc;"))
-  (org-mime-change-class-style
-   "signature" (concat "font-family: monospace;"
-                       "white-space: pre-wrap;"
-                       "white-space: -moz-pre-wrap;"
-                       "word-wrap: break-word;"))
-  (org-mime-change-class-style
-   "example" (format "color: %s; background-color: %s; padding: 0.5em;"
-                 "#000000" "#ffffff")))
+  (save-excursion
+    (beginning-of-buffer)
+    (org-mime-change-element-style
+     "pre" (concat "padding: 0.5em;")))
+  (save-excursion
+    (beginning-of-buffer)
+    (org-mime-change-element-style
+     "blockquote" (concat "font: 14px/22px normal helvetica, sans-serif;"
+                          "margin-top: 10px;"
+                          "margin-bottom: 10px;"
+                          "margin-left: 50px;"
+                          "padding-left: 15px;"
+                          "border-left: 3px solid #ccc;")))
+  (save-excursion
+    (beginning-of-buffer)
+    (org-mime-change-class-style
+     "example" (concat "padding: 0.5em;")))
+  (save-excursion
+    (beginning-of-buffer)
+    (org-mime-change-element-style
+     "p" (concat "padding-bottom: 15px;"))))
 
 (add-hook 'org-mime-html-hook 'org-mime-html-styling)
+
+(defun jsm/html-compose ()
+  (interactive)
+  (let ((my-sig
+         (with-temp-buffer
+           (message-insert-signature)
+           (buffer-substring-no-properties (point-min) (point-max)))))
+    (save-excursion
+      (while (re-search-forward my-sig nil t)
+        (replace-match (format "#+BEGIN_EXAMPLE\n%s#+END_EXAMPLE\n" my-sig))))
+    ; (org-mu4e-compose-org-mode)
+    ; (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
+    ))
+(define-key message-mode-map (kbd "<f12>") 'jsm/html-compose)
 
 ; Notes on using mbsync
 ;  Need to set mu4e-change-filenames-when-moving to t

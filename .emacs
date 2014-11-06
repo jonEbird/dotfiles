@@ -6,7 +6,7 @@
 ;; --------------------------------------------------
 
 ;; Extra load path
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+; (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
 
 ; turn off the toolbar and menu bar
 (tool-bar-mode -1)
@@ -64,9 +64,6 @@
 
 ;; Always show columns too
 (column-number-mode)
-
-;; Issue a shell via F12
-(global-set-key (kbd "<f12>") 'shell)
 
 ;; Support an easier way to remember how to zoom in/out font size
 ;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
@@ -145,7 +142,7 @@
 (server-start nil)
 
 ;; Kill trailing whitespace but only in certain modes
-(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode" "emacs-lisp-mode"))
+(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode")) ; "emacs-lisp-mode"
 (defun delete-trailing-whitespace-inmodes ()
   "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
   (interactive)
@@ -264,6 +261,10 @@
 (setq epa-armor 't)
 (require 'epa-file)
 (epa-file-enable)
+
+;; Emacs 24.4 features
+(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
+(setq load-prefer-newer t)
 
 ;; --------------------------------------------------
 ;; Extra stuff not significant enough to be in own file. Aka. Hacks

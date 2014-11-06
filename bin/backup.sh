@@ -67,6 +67,7 @@ Documents
 
 # Email / Desktop stuff
 .msmtp.log
+.mailrc
 iMacros
 Maildir
 bin

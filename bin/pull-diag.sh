@@ -31,6 +31,7 @@ Usage: $(basename $0) [options] host [nexthost|..]
        -p|--project  - Specify which project to associate collected data with
        -b|--basedir  - Base directory where data is centrally kept
        -d|--datetime - A specific instance identifier typically in YYYMMDD_HHMM form
+       -x|--extra    - Extra files to copy from host. Can repeat multiple times.
        -h|--help     - Show this help
        -l|--list     - (TODO) list collected data
 
@@ -57,6 +58,7 @@ trap cleanup SIGINT SIGQUIT SIGTERM SIGSEGV
 BASEDIR="~/Documents/clientlogs"
 PROJECT="common"
 DATETIME=$(date +%Y%m%d_%H%M)
+EXTRA_FILES=""
 
 # Local config overrides?
 CONFIG_LOC=~/.config/jonEbird/pull-diag
@@ -66,7 +68,7 @@ CONFIG_LOC=~/.config/jonEbird/pull-diag
 GET_LOGFILE_CMD=""
 
 #-Process-options----------------------------------
-TEMP=$(getopt -o p:b:d:vlh -l project:,basedir:,datetime:,list,help -n "$(basename -- $0)" -- "$@")
+TEMP=$(getopt -o p:b:d:vlhx: -l project:,basedir:,datetime:,list,help,extra: -n "$(basename -- $0)" -- "$@")
 if [ $? != 0 ] ; then echo "died in getopt"; usage; exit 1; fi
 
 eval set -- "$TEMP"
@@ -85,6 +87,9 @@ while true ; do
             ;;
         -d|--datetime)
             shift; DATETIME=$(date --date="$1" +%Y%m%d_%H%M); shift
+            ;;
+        -x|--extra)
+            shift; EXTRA_FILES="$EXTRA_FILES $1"; shift
             ;;
         -h|--help)
             usage; exit 0
@@ -109,6 +114,16 @@ for host in "$@"; do
     echo "Going to pull messages from \"$host\" -> $TGT"
     scp root@${host}:/var/log/messages $TGT
     org-store-file $TGT
+
+    if [ -n "$EXTRA_FILES" ]; then
+        printf "Pulling extra files: "
+        for pat in "$EXTRA_FILES"; do
+            printf "$pat "
+            scp "root@${host}:${pat}" ${LOGDIR}/
+            org-store-file "${LOGDIR}/${pat}"
+        done
+        echo
+    fi
 done
 
 # Cleanup

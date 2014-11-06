@@ -148,12 +148,19 @@ blockquote:before {
 }
 blockquote p {
   display: inline;
+  padding-bottom: 15px;
 }
 .signature {
   font-family: monospace;
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
   word-wrap: break-word;
+}
+a {
+	color: #666;
+}
+a:visited {
+	color: #666;
 }
   /*]]>*/-->
 </style>")
@@ -249,6 +256,31 @@ blockquote p {
 (setq org-agenda-window-setup "other-window" ; Defaults to "reorganize-frame"
       org-agenda-restore-windows-after-quit t)
 
+;; --------------------------------------------------
+;; Publishing
+;; --------------------------------------------------
+(setq org-publish-project-alist
+      '(("org"
+         :auto-sitemap t
+         :sitemap-title "Notes Index"
+         :base-directory "~/org/"
+         :publishing-directory "~/u_drive/public_html"
+         :publishing-function org-html-publish-to-html
+         :section-numbers nil
+         :exclude "tasks.org"
+         :with-toc nil
+         :html-head "<link rel=\"stylesheet\"
+                    href=\"../other/mystyle.css\"
+                    type=\"text/css\"/>")
+        ("images"
+         :base-directory "~/org/"
+         :base-extension "jpg\\|gif\\|png"
+         :publishing-directory "~/u_drive/public_html"
+         :publishing-function org-publish-attachment)))
+
+;; --------------------------------------------------
+;; Blogging
+;; --------------------------------------------------
 ;; Setting up org2blog
 ; Installed via ELPA
 (require 'org2blog-autoloads)
@@ -447,7 +479,36 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
                (0 (progn (compose-region (match-beginning 0) (match-end 0)
                                          "☑") ; ✔ ☐ ☑
                          nil)))
-	      ("\\[ \\]"
+              ("\\[ \\]"
                (0 (progn (compose-region (match-beginning 0) (match-end 0)
                                          "☐")
                          nil)))))
+
+; Allow linking to manual pages
+(require 'org-man)
+
+; org-protocol setup
+(require 'org-protocol)
+
+; org-drill support
+(require 'org-drill)
+
+;; Calendaring support with org-caldav. I created an el-get recipe to
+;; ensure this package is installed.
+;; (require 'org-caldav)
+;; (setq
+;;  org-caldav-url "http://localhost:1080/users/jsmiller@qti.qualcomm.com/calendar"
+;;  org-caldav-calendar-id ""
+;;  org-icalendar-timezone "America/Los_Angeles"
+;;  org-caldav-inbox "~/org/qualcal.org"
+;;  org-caldav-files '("~/org/appointments.org")    ; list of org files to sync
+;;  org-icalendar-alarm-time  15                    ; minutes before alarm
+;;  )
+; Run M-x org-caldav-sync to start the sync
+
+;; Org-drill hacking
+; org-drill-card-type-alist
+
+;; TODO
+; org-screen -- http://orgmode.org/w/?p=org-mode.git;a=blob_plain;f=contrib/lisp/org-screen.el;hb=HEAD
+; ox-confluence -- http://orgmode.org/w/?p=org-mode.git;a=blob_plain;f=contrib/lisp/ox-confluence.el;hb=HEAD

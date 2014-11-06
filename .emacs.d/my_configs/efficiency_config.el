@@ -133,11 +133,6 @@
     (shell (concat "*ProjSH* "
                    (file-name-base (replace-regexp-in-string "/*$" "" basedir))))))
 
-(defun jsm/projectile-shell-other-window ()
-  (interactive)
-  (jsm/unique-shell (projectile-project-root)))
-
-(define-key projectile-command-map (kbd "$") 'jsm/projectile-shell-other-window)
 (global-set-key (kbd "C-x 4 $") 'jsm/unique-shell)
 
 ;; Ack support with ack-and-a-half
@@ -169,18 +164,25 @@
 (global-set-key (kbd "C--") 'mc/mark-all-like-this)            ; recall you can scroll via M-v / C-v to view all cursors
 (global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click)
 
-;; Allow isearch functionality with multipl-cursors
+;; Allow isearch functionality with multiple-cursors
 (require 'phi-search)
-; (global-set-key (kbd "C-s") 'phi-search)
-; (global-set-key (kbd "C-r") 'phi-search-backward)
-(require 'phi-replace)
-; (global-set-key (kbd "M-%") 'phi-replace-query)
 (setq phi-search-limit 10000)
+(add-hook 'multiple-cursors-mode-enabled-hook
+          (lambda ()
+                 (interactive)
+                 (global-set-key (kbd "C-s") 'phi-search)
+                 (global-set-key (kbd "C-r") 'phi-search-backward)))
+(add-hook 'multiple-cursors-mode-disabled-hook
+          (lambda ()
+                 (interactive)
+                 (global-set-key (kbd "C-s") 'isearch-forward)
+                 (global-set-key (kbd "C-r") 'isearch-backward)))
+; (require 'phi-replace)
+; (global-set-key (kbd "M-%") 'phi-replace-query)
 
 ;; Undo-tree - Try for starters: C-x u
 ;; ------------------------------
 (global-undo-tree-mode)
-
 
 ;; I like using autopair for all modes
 ;; ------------------------------
@@ -250,12 +252,25 @@
 (add-to-list 'load-path (expand-file-name "~/repos/faux-screen/"))
 (setq faux-screen-num-terminals 10
       faux-screen-keymap-prefix (kbd "C-\\")
-      faux-screen-terminal-ps1 "(\\[\\e[1;36m\\]%d\\[\\e[0m\\]) \\W $ ")
+      faux-screen-terminal-ps1 "(\\[\\e[1;36m\\]%s\\[\\e[0m\\]) \\W $ ")
 (require 'faux-screen)
 (faux-screen-global-mode)
 (global-set-key [C-next]  'faux-screen-next-dwim)
 (global-set-key [C-prior] 'faux-screen-prev-dwim)
 (faux-screen-terminals)
+
+; Setup a utility terminal to be used in ad-hoc situations using the
+; currnet default-directory location
+(global-set-key (kbd "<f12>")
+                (lambda ()
+                  (interactive)
+                  (funcall (faux-screen-utility-terminal "Utility") default-directory)))
+
+; integrate with projectile
+(defun jsm/projectile-shell ()
+  (interactive)
+  (funcall (faux-screen-utility-terminal "prj") (projectile-project-root)))
+(define-key projectile-command-map (kbd "$") 'jsm/projectile-shell)
 
 ;; Recentf Support
 ;; ------------------------------
@@ -288,7 +303,8 @@
 ;; Show me bad whitespace
 ;; ------------------------------
 (require 'whitespace)
-(setq whitespace-style '(face tabs trailing indentation space-before-tab space-after-tab))
+(setq whitespace-style '(face tabs trailing indentation space-before-tab space-after-tab)
+      whitespace-global-modes '(python-mode c-mode c++-mode))
 (global-whitespace-mode 1)
 ; (face tabs spaces trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)
 
