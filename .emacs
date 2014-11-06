@@ -264,7 +264,8 @@
 
 ;; Emacs 24.4 features
 (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-(setq load-prefer-newer t)
+(setq load-prefer-newer t
+      initial-buffer-choice 'remember-notes)
 
 ;; --------------------------------------------------
 ;; Extra stuff not significant enough to be in own file. Aka. Hacks
