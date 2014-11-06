@@ -13,6 +13,20 @@ import time
 import threading
 import traceback
 import shlex
+import getpass
+import re
+try:
+    import gnupg
+except ImportError, e:
+    print >> sys.stderr, "Need the gnupg module. Try: sudo pip install python-gnupg"
+    sys.exit(1)
+try:
+    import gnomekeyring as gk
+except ImportError:
+    print >> sys.stderr, """Unable to import gnome keyring module
+On Debian like systems you probably need: python-gnomekeyring
+Or on Feodara systems, you want: gnome-python2-gnomekeyring"""
+    sys.exit(1)
 
 def daemonize():
     """
@@ -43,6 +57,83 @@ def daemonize():
     except OSError, e:
         sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
         sys.exit(1)
+
+def get_netrc(retries=3):
+    """ Reads my GPG encrypted ~/.netrc.gpg file and returns list of tuples
+    of (machine, login, password) """
+    netrc_data = []
+    gpg = gnupg.GPG()
+    while not netrc_data and retries:
+        passphrase = getpass.getpass('GPG Passphrase: ')
+        d = gpg.decrypt_file(open(os.path.expanduser("~/.netrc.gpg"), "rb"),
+                             passphrase=passphrase)
+        if d.ok:
+            netrc_data = re.findall('^machine (.*?) login "?(.*?)"? password ?(.*)$',
+                                    d.data, re.M)
+            break
+        else:
+            print 'Bad passphrase. Try again (retries (%d) > 0)' % retries
+            retries = retries - 1
+    return netrc_data
+
+
+class KeyringManager(object):
+
+    def __init__(self, app="msmtp", protocol="smtp"):
+        self.app = app
+        self.protocol = protocol
+        self.valid_hosts = []
+        try:
+            self.keyring = gk.get_default_keyring_sync()
+        except gk.NoKeyringDaemonError:
+            print >> sys.stderr, "Error: Can not open gnome keyring."
+            print >> sys.stderr, "Are you running a GNOME session?"
+            sys.exit(2)
+
+    def __valid_hosts(self, app, protocol):
+        """ Return a valid list of acceptable host names to match against
+        based on 'app' and/or 'protocol' """
+        valid_hosts = []
+        if app == "msmtp":
+            with open(os.path.expanduser("~/.msmtprc"), 'r') as f:
+                data = f.read()
+            smtp_hosts = re.findall("^host\s+(.*)$", data, re.M)
+            valid_hosts += smtp_hosts
+        # Add other elif blocks as needed
+        return valid_hosts
+
+    def put_pass(self, username, password, server):
+        keyring_type = gk.ITEM_NETWORK_PASSWORD
+        display_name = '%s password for %s at %s' % (self.app.upper(), username, server)
+        usr_attrs = {'user': username, 'server': server, 'protocol': self.protocol}
+        id = gk.item_create_sync(self.keyring, keyring_type,
+                                 display_name, usr_attrs, password, False)
+        return id is not None
+
+    def get_pass(self, username, server):
+        """ Return the password from the keyring. """
+        try:
+            results = gk.find_network_password_sync(user=username, server=server,
+                                                    protocol=self.protocol)
+            return results[0]["password"]
+        except gk.NoMatchError:
+            print >> sys.stderr, "No password set for user '%s' in server '%s'" % \
+                (username, server)
+            return ''
+
+    def populate_keyring(self, app="msmtp", protocol="smtp"):
+        """Populate keyring with all of my email netrc passwords """
+        self.valid_hosts = self.__valid_hosts(app, protocol)
+
+        for machine, login, password in get_netrc():
+            if machine in self.valid_hosts:
+                self.put_pass(login, password, machine)
+
+
+def get_password(username, server):
+    """ Retrieve password from KeyringManager """
+    km = KeyringManager()
+    return km.get_pass(username, server)
 
 class Command(object):
     """
@@ -103,7 +194,13 @@ if __name__ == '__main__':
                       help="Time allowed for mail command before terminating. Defaults to %ds" % DEFAULT_TIMEOUT)
     parser.add_option('-v', '--verbose', dest="verbose", default=False, action="store_true",
                       help="Enable debug level logging for the mail retrieval")
+    parser.add_option('--nokeyring', dest="nokeyring", default=False, action="store_true",
+                      help="Bypass populating the Gnome keyring with passwords")
     (options, args) = parser.parse_args()
+
+    if not options.nokeyring:
+        km = KeyringManager()
+        km.populate_keyring()
 
     mail_command = 'offlineimap -1 -o -l %s' % os.path.expanduser('~/offlineimap.out')
     if options.verbose:
@@ -112,12 +209,14 @@ if __name__ == '__main__':
     command = Command(mail_command)
 
     if options.oneshot:
-        command.run(timeout=options.timeout, hardkill=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        command.run(timeout=options.timeout, hardkill=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         sys.exit(0)
 
     print 'Going to daemonize myself and fetch your email every %ds. Chow.' % (options.interval)
     daemonize()
 
     while True:
-        command.run(timeout=options.timeout, hardkill=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        command.run(timeout=options.timeout, hardkill=True,
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(options.interval)

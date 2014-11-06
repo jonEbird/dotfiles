@@ -1,0 +1,85 @@
+# -*- conf -*-
+[general]
+ui = ttyui
+accounts = Qualcomm, Gmail
+maxsyncaccounts = 2
+pythonfile = ~/bin/getmail.py
+fsync = False
+
+[Account Qualcomm]
+localrepository = LocalQualcomm
+remoterepository = QualcommIMAP
+#autorefresh = 5
+#postsynchook = mu index
+status_backend = sqlite
+
+[Account Gmail]
+localrepository = LocalGmail
+remoterepository = GMAIL
+#autorefresh = 5
+#postsynchook = mu index
+status_backend = sqlite
+
+[Repository LocalQualcomm]
+type = Maildir
+localfolders = ~/Maildir/Qualcomm
+status_backend = sqlite
+
+[Repository LocalGmail]
+type = Maildir
+localfolders = ~/Maildir/Gmail
+status_backend = sqlite
+
+[Repository LocalIMAP]
+type = IMAP
+preauthtunnel = MAIL=maildir:$HOME/Maildir /usr/lib/dovecot/imap
+holdconnectionopen = yes
+status_backend = sqlite
+
+[Repository QualcommIMAP]
+type = IMAP
+remotehost = qcmail1.qualcomm.com
+remoteport = 993
+remoteuser = jsmiller
+# remotepass = oldhardcodedpassword
+remotepasseval = get_password('jsmiller', 'qcmail1.qualcomm.com')
+status_backend = sqlite
+ssl = yes
+sslcacertfile = /etc/pki/tls/certs/ca-bundle.crt
+nametrans = lambda name: re.sub('^INBOX.', '', name)
+# folderfilter = lambda name: name in [ 'INBOX.important', 'INBOX.work' ]
+folderfilter = lambda name: not (name in [ 'Calendar', 'Contacts' ])
+# holdconnectionopen = yes
+maxconnections = 1
+# was 5 maxconnections
+# foldersort = lld_cmp
+
+[Repository GMAIL]
+type = Gmail
+remoteuser = jonEbird@gmail.com
+# remotepass = olduniquegmailpassword
+remotepasseval = get_password('jonEbird@gmail.com', 'smtp.gmail.com')
+status_backend = sqlite
+ssl = yes
+sslcacertfile = /etc/pki/tls/certs/ca-bundle.crt
+# cert_fingerprint = 22b4c96075592f0e0e20134ae008ae4a5f0177a6
+# cert_fingerprint = bc9fb09aeb065316c9561d0d91c68ae822261601
+# cert_fingerprint = 22b4c96075592f0e0e20134ae008ae4a5f0177a6
+maxage = 90
+maxconnections = 1
+# was 8 maxconnections
+folderfilter = lambda name: name in [ 'BuckeyePredictions',  'FB', 'Family',
+                                      'INBOX', 'Jott', 'Nationwide',
+                                      'Netflix', 'PyCon', 'Spacewalk', 'TechCols',
+                                      'YouMail', 'colug', 'jonEbird', 'linux-s390']
+# folderfilter = lambda name: name in [ 'BuckeyePredictions', 'COhPy', 'FB', 'Family',
+#                                       'Google+', 'Hadoop', 'INBOX', 'Jott', 'Nationwide',
+#                                       'Netflix', 'PyCon', 'Spacewalk', 'TechCols',
+#                                       'YouMail', 'colug', 'jonEbird', 'linux-s390',
+#                                       'orgmode', 'pam mailinglist', 'pythonmagazine',
+#                                       'sqlalchemy', 'Trash']
+# nametrans = lambda foldername: re.sub ('^\[gmail\]', 'bak',
+#                                re.sub ('sent_mail', 'sent',
+#                                re.sub ('starred', 'flagged',
+#                                re.sub (' ', '_', foldername.lower()))))
+
