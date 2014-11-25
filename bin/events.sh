@@ -74,7 +74,6 @@ grep_general() {
     files=$(echo "$1" | cut -d: -f2-)
     # Now use echo to expand the potential globbing pattern
     files=$(echo $files)
-    echo "DEBUG: Looking for \"$pat\" in files: $files"
     for file in $files; do
         # FIXME: Should ideally look for valid datetime patterns in each line
         ldate=$(stat -c %Y $file)
@@ -103,7 +102,6 @@ for item in "$@"; do
 
         fun=${querytype[$qtype]}
         item=$(echo $item | cut -d: -f2-)
-        echo DEBUG: eval $fun "$item"
         eval $fun "$item"
 
     # 2. files
