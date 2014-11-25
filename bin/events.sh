@@ -33,6 +33,8 @@ Here is a summary of the Events:
   - boottime - Last boot time of the machine (Always included)
   - <filename> - Modification time of file or directory
   - <package> - Installation time of <package>
+  - datetime:message - Manual entry to be included. "datetime" part should
+                       be parsable by date.
 EOF
 for key in "${!querytype[@]}"; do
     echo "  - ${key}:argument - ${querytype_help[$key]}"
@@ -56,7 +58,7 @@ grep_messages() {
     local pat="$1" ldate=""
     # Including /dev/null ensures you get the "file:line excerpt" output
     # from grep when only /var/log/messages exists
-    \ls -tr /var/log/messages* | xargs -i sudo zgrep $pat /dev/null {} | \
+    \ls -tr /var/log/messages* | xargs -i sudo zgrep "$pat" /dev/null {} | \
         sed -e 's|^/var/log/||g' -e 's/:/ - /1' | \
     while read line; do
         ldate=$(date --date="$(echo $line | awk '{ print $3 " " $4 " " $5 }')" +%s)
@@ -66,6 +68,23 @@ grep_messages() {
 querytype[messages]=grep_messages
 querytype_help[messages]="Grep the /var/log/messages* files for a given pattern"
 
+grep_general() {
+    local pat files file ldate
+    pat=$(echo "$1" | cut -d: -f1)
+    files=$(echo "$1" | cut -d: -f2-)
+    # Now use echo to expand the potential globbing pattern
+    files=$(echo $files)
+    echo "DEBUG: Looking for \"$pat\" in files: $files"
+    for file in $files; do
+        # FIXME: Should ideally look for valid datetime patterns in each line
+        ldate=$(stat -c %Y $file)
+        zgrep "$pat" "$file" | \
+            awk -v D=$ldate -v F=$file '{ print D " - " F ":" $0 }' >> $EVENTS
+    done
+}
+querytype[grep]=grep_general
+querytype_help[grep]="General Grep. argument should be \"pattern:fileglob\""
+
 #--------------------------------------------------
 if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "help" -o -z "$1" ]; then
     usage
@@ -73,6 +92,7 @@ if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "help" -o -z "$1" ]; then
 fi
 
 echo "$(boottime) - System last boot" >> $EVENTS
+echo "$(date +%s) - NOW"              >> $EVENTS
 
 for item in "$@"; do
 
@@ -82,16 +102,22 @@ for item in "$@"; do
     if [ -n "${querytype[$qtype]}" ]; then
 
         fun=${querytype[$qtype]}
-        item=$(echo $item | awk -F: '{ print $2 }')
-        eval $fun $item
+        item=$(echo $item | cut -d: -f2-)
+        echo DEBUG: eval $fun "$item"
+        eval $fun "$item"
 
     # 2. files
-    elif [ -f $item ]; then
+    elif [ -f "$item" ]; then
         file_mtime $item
 
     # 3. RPM installation time
-    elif rpm -q $item >/dev/null 2>&1; then
+    elif rpm -q "$item" >/dev/null 2>&1; then
         rpm_installtime $item
+
+    # 4. Could be a manual message to be included
+    elif date --date="$qtype" >/dev/null 2>&1; then
+        msg_part="$(echo $item | cut -d: -f2-)"
+        echo $(date --date="$qtype" +%s) "- $msg_part" >> $EVENTS
 
     else
         echo "Warning: Do not know how to handle \"${item}\"" 1>&2
