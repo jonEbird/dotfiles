@@ -164,11 +164,13 @@
 ; Be smart about inserting signature for either cite-reply-position used
 (defun insert-signature ()
   "Insert signature where you are replying"
-  (if (eq message-cite-reply-position 'below)
-      (goto-char (point-max))
-    (message-goto-body))
-  (insert-file-contents message-signature-file)
-  (save-excursion (insert "\n-- \n")))
+  ; Do not insert if already done - needed when switching modes back/forth
+  (unless (save-excursion (message-goto-signature)) 
+    (if (eq message-cite-reply-position 'below)
+        (goto-char (point-max))
+      (message-goto-body))
+    (insert-file-contents message-signature-file)
+    (save-excursion (insert "\n-- \n"))))
 
 (add-hook 'mu4e-compose-mode-hook 'insert-signature)
 
@@ -499,9 +501,3 @@ the body."
 ; Tweak citation - http://www.djcbsoftware.nl/code/mu/mu4e/Citations-with-mu_002dcite.html#Citations-with-mu_002dcite
 ; DONE - Calendaring - http://doughellmann.com/2007/10/working-with-imap-and-icalendar-2.html - doesn't work with our Exchange server
 ; RPM packaging - http://pastebin.com/5Ja8SJsB
-
-
-
-
-
-
