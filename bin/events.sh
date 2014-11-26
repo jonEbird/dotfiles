@@ -13,6 +13,14 @@ boottime() {
     echo $(($(date +%s) - $seconds_since_boot))
 }
 
+reboots() {
+    local ldate
+    last reboot | egrep '^reboot' | while read line; do
+        ldate=$(date --date="$(echo $line | awk '{ print $5 " " $6 " " $7 " " $8 }')" +%s)
+        echo "$ldate - $line"
+    done
+}
+
 rpm_installtime() {
     echo "$(rpm -q --qf="%{installtime}\n" $1) - RPM $item installed" >> $EVENTS
 }
@@ -91,6 +99,7 @@ if [ "$1" == "--help" -o "$1" == "-h" -o "$1" == "help" -o -z "$1" ]; then
 fi
 
 echo "$(boottime) - System last boot" >> $EVENTS
+reboots                               >> $EVENTS
 echo "$(date +%s) - NOW"              >> $EVENTS
 
 for item in "$@"; do
