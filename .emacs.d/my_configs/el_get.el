@@ -55,7 +55,7 @@
               gtags multiple-cursors git-modes magit git-gutter
               idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
               rpm-spec-mode cider rainbow-delimiters elixir elixir-mix org-reveal
-              graphviz-dot-mode term+ term+ki term+mux phi-search)))
+              graphviz-dot-mode term+ term+ki term+mux phi-search smex)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip
 
