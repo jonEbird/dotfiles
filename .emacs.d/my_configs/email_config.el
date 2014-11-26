@@ -165,12 +165,13 @@
 (defun insert-signature ()
   "Insert signature where you are replying"
   ; Do not insert if already done - needed when switching modes back/forth
-  (unless (save-excursion (message-goto-signature)) 
-    (if (eq message-cite-reply-position 'below)
-        (goto-char (point-max))
-      (message-goto-body))
-    (insert-file-contents message-signature-file)
-    (save-excursion (insert "\n-- \n"))))
+  (unless (save-excursion (message-goto-signature))
+    (save-excursion
+      (if (eq message-cite-reply-position 'below)
+          (goto-char (point-max))
+        (message-goto-body))
+      (insert-file-contents message-signature-file)
+      (save-excursion (insert "\n-- \n")))))
 
 (add-hook 'mu4e-compose-mode-hook 'insert-signature)
 
