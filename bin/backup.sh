@@ -93,6 +93,7 @@ bin
 # Emacs stuff
 .emacs.d/eshell
 .emacs.d/abbrev_defs
+.emacs.d/smex-items
 .emacs.d/projectile*
 .emacs.d/el-get-user
 .emacs.d/my_configs
