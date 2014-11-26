@@ -2,49 +2,41 @@
 (require 'org-mu4e)
 (require 'mu4e-contrib)
 
-; Not specifically needed for mu4e but helpful to set
-(setq
- user-mail-address  "jsmiller@qti.qualcomm.com"
- user-full-name     "Jon Miller"
- mail-user-agent    'mu4e-user-agent
- mu4e-user-mail-address-list '("jsmiller@qti.qualcomm.com" "jonEbird@gmail.com"))
-
-;; These are actually the defaults
-(setq
- mu4e-maildir       "~/Maildir"   ;; top-level Maildir
- mu4e-sent-folder   "/Sent"       ;; folder for sent messages
- mu4e-drafts-folder "/Drafts"     ;; unfinished messages
- mu4e-trash-folder  "/Trash"      ;; trashed messages
- mu4e-refile-folder "/Archives")  ;; saved messages
-
-(defun file-string (file)
-  "Read the contents of a file and return as a string."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (buffer-string)))
+; Main email configuration is all keyed off this alist of account information
+;  First account values are automatically set and then you are prompted to
+;  select other accounts when composing
 
 (defvar my-mu4e-account-alist
   '(("Qualcomm"
+     (msmtp-account "qualcomm")
      (mu4e-sent-folder "/Qualcomm/Sent Items")
      (mu4e-drafts-folder "/Qualcomm/Drafts")
      (mu4e-trash-folder "/Qualcomm/Deleted Items")
      (mu4e-refile-folder "/Qualcomm/Archives")
      (user-mail-address "jsmiller@qti.qualcomm.com")
-     (mu4e-compose-signature (file-string "~/.Qualcomm-sig.txt"))
-     (message-signature-file "~/.Qualcomm-sig.txt"))
+     (user-full-name "Jon Miller")
+     (mu4e-compose-signature-auto-include nil)
+     (message-signature-file "~/.Qualcomm-sig.txt")
+     (message-cite-reply-position above)
+     (message-cite-style message-cite-style-outlook))
     ("Gmail"
+     (msmtp-account "gmail")
      (mu4e-sent-folder "/Gmail/Sent Items")
      (mu4e-drafts-folder "/Gmail/Drafts")
      (mu4e-trash-folder "/Gmail/Trash")
      (mu4e-refile-folder "/Gmail/Archives")
      (user-mail-address "jonEbird@gmail.com")
-     (mu4e-compose-signature (file-string "~/.Gmail-sig.txt"))
-     (message-signature-file "~/.Gmail-sig.txt"))
+     (user-full-name "Jon Miller")
+     (mu4e-compose-signature-auto-include nil)
+     (message-signature-file "~/.Gmail-sig.txt")
+     (message-cite-reply-position below)
+     (message-cite-style message-cite-style-gmail))
     ))
 
 ; (setq mu4e-html2text-command 'mu4e-shr2text) ; TODO: enable this with mu4e update
 
 (setq
+ mu4e-maildir                     "~/Maildir"    ;; top-level Maildir
  mu4e-get-mail-command            "true"         ;; calling offlineimap separately
  mu4e-update-interval             120            ;; Not needed with offlineimap hooks
  mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
@@ -61,149 +53,16 @@
  mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
  mu4e-hide-index-messages         t              ;; No messages in mini-buffer about updates
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
+ message-sendmail-envelope-from   'header
  )
 
-; Top-posting outlook sytle replies because that is %99 of the emails I
-; deal with
-;; (setq
-;;  message-yank-prefix         "> "
-;;  message-yank-cited-prefix   "> "
-;;  message-yank-empty-prefix   "> "
-;;  message-indentation-spaces  4
-;;  message-cite-reply-position 'above
-;;  message-citation-line-format
-;;  (concat
-;;   "-----Original Message-----\n"
-;;   "From: %N\n"
-;;   "Sent: %x %X\n\n"))
-
-(defun jsm/mu4e-fresh-update ()
-  (interactive)
-  (progn
-    (ignore-errors
-      ; (kill-process "mu4e-update")
-      (if (processp (get-process "mu4e-update"))
-          (delete-process "mu4e-update")
-        (message "DEBUG: No mu4e-update running")))
-    (mu4e-update-mail-and-index nil)))
-(define-key mu4e-headers-mode-map (kbd "U") 'jsm/mu4e-fresh-update)
-
+; Default headers used in normal mode
 (setq mu4e-headers-fields
       '( (:human-date    .  13)
          (:flags         .   6)
          (:maildir       .  30)
          (:from-or-to    .  22)
          (:subject       .  nil)))
-;          (:mailing-list  .  15)
-
-;; https://groups.google.com/forum/#!topic/mu-discuss/xlZegBifdaA
-(defun html2text ()
-  "Replacement for standard html2text using shr."
-  (interactive)
-  (let ((dom (libxml-parse-html-region (point-min) (point-max))))
-    (erase-buffer)
-    (shr-insert-document dom)
-    (goto-char (point-min))))
-
-(defun jsm/shr-browse-url ()
-  "For mu4e messages, browse the URL under point or advance the message"
-  (interactive)
-  (let ((url (get-text-property (point) 'shr-url)))
-    (if (not url)
-        (mu4e-scroll-up)
-      (shr-browse-url))))
-(define-key mu4e-view-mode-map (kbd "RET") 'jsm/shr-browse-url)
-
-(defun jsm/mailing-list-mode (&optional enable)
-  "Change the headers-fields to include mailing-list and enable
-threading when enabling mailing-list-mode. Go back to
-non-threaded and regular headers when disabling"
-  (interactive "P")
-  (if enable
-      (setq mu4e-headers-fields
-            '( (:human-date    .  13)
-               (:flags         .   6)
-               (:mailing-list  .  30)
-               (:from-or-to    .  22)
-               (:subject       .  nil))
-            mu4e-headers-show-threads t)
-    (setq mu4e-headers-fields
-          '( (:human-date    .  13)
-             (:flags         .   6)
-             (:maildir       .  30)
-             (:from-or-to    .  22)
-             (:subject       .  nil))
-          mu4e-headers-show-threads nil))
-  )
-
-(defun jsm/gmail-mailing-lists ()
-  "Toggle between going to my bookmarked Gmail mailing list
-collection while also enabling my mailing-list viewing mode or
-disable my mailing-list viewing mode and returning to previous
-query"
-  (interactive)
-  ; Initialize our state variable if first time
-  (if (not (boundp 'jsm/ml-mode)) (setq jsm/ml-mode nil))
-  (if jsm/ml-mode
-      (progn
-        (setq jsm/ml-mode nil)
-        (jsm/mailing-list-mode nil)
-        (ignore-errors (mu4e-headers-query-prev)))
-    (progn
-      (setq jsm/ml-mode t)
-      (jsm/mailing-list-mode t)
-      ; Removed the extra "and flag:unread" from the search
-      (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND list:* AND flag:unread")
-      ; (mu4e-headers-search-narrow "flag:unread")
-      )))
-
-(define-key mu4e-headers-mode-map (kbd "G") 'jsm/gmail-mailing-lists)
-
-
-(defun jsm/narrow-to-mailing-list ()
-  "Filter the list of mail based on current mailing list of
-  message at point. If already narrowed, remove filter."
-  (interactive)
-  ; Initialize our state variable if first time
-  (if (not (boundp 'jsm/narrowed-ml)) (setq jsm/narrowed-ml nil))
-  (if jsm/narrowed-ml
-      (progn
-        ; TODO: Need to iterate this query-prev until ml is no longer in
-        ; the current search query
-        (mu4e-headers-query-prev)
-        (setq jsm/narrowed-ml nil))
-    (let ((ml (mu4e-message-field-at-point :mailing-list)))
-      (if ml
-          (progn
-            (mu4e-headers-search-narrow ml)
-            (setq jsm/narrowed-ml ml))
-        (message "Message is not a mailing-list email")))))
-
-(define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
-
-;; I like being able to use C-Return to also send a message
-; (define-key mu4e-compose-mode-map [C-return] 'message-send-and-exit)
-
-;; Hit 'a' then 'V' to view the message in an external browser
-(add-to-list 'mu4e-view-actions
-             '("ViewInBrowser" . mu4e-action-view-in-browser) t)
-
-; My mailing lists
-(setq mu4e-user-mailing-lists
-      '( ("emacs-orgmode.gnu.org"                . "OrgMode")
-         ("mu-discuss.googlegroups.com"          . "Mu Group")
-         ("devel.lists.fedoraproject.org"        . "Fedora Devel")
-         ("colug-432.colug.net"                  . "COLUG")
-         ("spacewalk-list.redhat.com"            . "Spacewalk")
-         ("mu.djcb.github.com"                   . "Mu Github")
-         ("PythonSD-list.meetup.com"             . "Python SD")
-         ("kplug-list.kernel-panic.org"          . "KPLUG")
-         ("linux-s390.vger.kernel.org"           . "Linux s390")
-         ("linux-rt-users.vger.kernel.org"       . "Linux RT")
-         ("systemd-devel.lists.freedesktop.org"  . "systemd Devel")
-         ("scons-users.scons.org"                . "SCons")))
-
-(setq my-mailing-lists-filter (mapconcat (lambda (x) (concat "list:" (car x))) mu4e-user-mailing-lists " OR "))
 
 ;; When 'j'umping to a Maildir, you can set these shortcuts
 (setq mu4e-maildir-shortcuts
@@ -227,50 +86,44 @@ query"
 ;; (add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND NOT (" my-mailing-lists-filter ")") "Gmail Inbox (no groups)" ?g) t)
 ;; (add-to-list 'mu4e-bookmarks (list (concat "Maildir:/Gmail/INBOX AND (" my-mailing-lists-filter ")")     "Gmail Groups"            ?G) t)
 
+; Support imagemagick types
+(when (fboundp 'imagemagick-register-types)
+  (imagemagick-register-types))
+
+;; Hit 'a' then 'V' to view the message in an external browser
+(add-to-list 'mu4e-view-actions
+             '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+
 ; Sending Email - Using msmtp
 (setq message-send-mail-function 'message-send-mail-with-sendmail
       sendmail-program "msmtp")
 
-(when (fboundp 'imagemagick-register-types)
-  (imagemagick-register-types))
+; By default, set the values for the first account specified in `my-mu4e-account-alist'
+(mapc #'(lambda (var)
+          (set (car var) (cadr var)))
+      (cdar my-mu4e-account-alist))
 
-;; Scroll mu4e-header along with next/prev messages
-(defadvice mu4e-view-headers-next (around scroll-down-mu4e-header activate)
-  "Scroll down the mu4e-header window when moving onto next email"
-  (save-excursion
-    (other-window 1)
-    (recenter))
-  ad-do-it)
+(setq mu4e-user-mail-address-list
+      (mapcar (lambda (account) (cadr (assq 'user-mail-address account))) my-mu4e-account-alist))
 
-(defadvice mu4e-view-headers-prev (around scroll-up-mu4e-header activate)
-  "Scroll up the mu4e-header window when moving onto prev email"
-  (save-excursion
-    (other-window 1)
-    (recenter))
-  ad-do-it)
+;-Viewing-Email------------------------------------
 
-;;-Helping-Functions--------------------------------
+;; https://groups.google.com/forum/#!topic/mu-discuss/xlZegBifdaA
+(defun html2text ()
+  "Replacement for standard html2text using shr."
+  (interactive)
+  (let ((dom (libxml-parse-html-region (point-min) (point-max))))
+    (erase-buffer)
+    (shr-insert-document dom)
+    (goto-char (point-min))))
 
-;; Choose account label to feed msmtp -a option based on From header in Message buffer;
-;; This function must be added to message-send-mail-hook for on-the-fly change of From address
-;; before sending message since message-send-mail-hook is processed right before sending message.
-(defun cg-feed-msmtp ()
-  (if (message-mail-p)
-      (save-excursion
-        (let* ((from
-                (save-restriction
-                  (message-narrow-to-headers)
-                  (message-fetch-field "from")))
-               (account
-                (cond
-                 ;; I use email address as account label in ~/.msmtprc
-                 ((string-match "jsmiller@qti.qualcomm.com" from) "qualcomm")
-                 ;; Add more string-match lines for your email accounts
-                 ((string-match "jonEbird@gmail.com" from) "gmail"))))
-          (setq message-sendmail-extra-arguments (list '"-a" account))))))
+;; Orig: "\\(\\(https?\\://\\|mailto:\\)[-+[:alnum:].?_$%/+&#@!*~,:;=/()]+\\)"
+; https://github.com/djcb/mu/issues/408
+(defconst mu4e~view-url-regexp
+  "\\(\\(https?\\://\\|mailto:\\)[-+\[:alnum:\].?_$%/+&#@!*~,:;=/()]*[-+\[:alnum:\].?_$%/+&#@!*~,:;=/]\\)"
+  "Regexp that matches http:/https:/mailto: URLs; match-string 1 will contain the matched URL, if any.")
 
-(setq message-sendmail-envelope-from 'header)
-(add-hook 'message-send-mail-hook 'cg-feed-msmtp)
+;-Composing-Email----------------------------------
 
 ;; Select the correct account based on email message and prompt for which
 ;; account to use when composing a new message
@@ -291,15 +144,150 @@ query"
                   (set (car var) (cadr var)))
               account-vars)
       (error "No email account found"))))
+
 (add-hook 'mu4e-compose-pre-hook 'my-mu4e-set-account)
 
+
+; Used to use a much larger function but it used hard coded email addresses
+; in there. Instead have introduced a variable `msmtp-account' to track the
+; specific msmtp account name to use when sending an email.
+(defun cg-feed-msmtp ()
+  (if (message-mail-p)
+      (setq message-sendmail-extra-arguments (list "-a" msmtp-account))))
+
+(add-hook 'message-send-mail-hook 'cg-feed-msmtp)
+
+
+; Be smart about inserting signature for either cite-reply-position used
+(defun insert-signature ()
+  "Insert signature where you are replying"
+  (if (eq message-cite-reply-position 'below)
+      (goto-char (point-max))
+    (message-goto-body))
+  (insert-file-contents message-signature-file)
+  (save-excursion (insert "\n-- \n")))
+
+(add-hook 'mu4e-compose-mode-hook 'insert-signature)
+
+
+; Final custom function for any other customization
 (defun my-mu4e-compose-settings ()
   "Set some custom variables when composing an email"
-  (progn
-    (setq
-     fill-column 77) ; Was set to 99 before
-    ))
+  (setq fill-column 77))
+
 (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-settings)
+
+
+;-Mailing-Lists------------------------------------
+
+; My mailing lists
+(setq mu4e-user-mailing-lists
+      '( ("emacs-orgmode.gnu.org"                . "OrgMode")
+         ("mu-discuss.googlegroups.com"          . "Mu Group")
+         ("devel.lists.fedoraproject.org"        . "Fedora Devel")
+         ("colug-432.colug.net"                  . "COLUG")
+         ("spacewalk-list.redhat.com"            . "Spacewalk")
+         ("mu.djcb.github.com"                   . "Mu Github")
+         ("PythonSD-list.meetup.com"             . "Python SD")
+         ("kplug-list.kernel-panic.org"          . "KPLUG")
+         ("linux-s390.vger.kernel.org"           . "Linux s390")
+         ("linux-rt-users.vger.kernel.org"       . "Linux RT")
+         ("systemd-devel.lists.freedesktop.org"  . "systemd Devel")
+         ("scons-users.scons.org"                . "SCons")))
+
+(setq my-mailing-lists-filter (mapconcat (lambda (x) (concat "list:" (car x))) mu4e-user-mailing-lists " OR "))
+
+(defun jsm/toggle-mailing-list-headers-fields (&optional enable)
+  "Change the headers-fields to include mailing-list and enable
+threading when enabling mailing-list-mode. Go back to
+non-threaded and regular headers when disabling"
+  (interactive "P")
+  (if enable
+      (setq mu4e-headers-fields
+            '( (:human-date    .  13)
+               (:flags         .   6)
+               (:mailing-list  .  30)
+               (:from-or-to    .  22)
+               (:subject       .  nil))
+            mu4e-headers-show-threads t)
+    (setq mu4e-headers-fields
+          '( (:human-date    .  13)
+             (:flags         .   6)
+             (:maildir       .  30)
+             (:from-or-to    .  22)
+             (:subject       .  nil))
+          mu4e-headers-show-threads nil)))
+
+(defun jsm/toggle-view-mailing-lists ()
+  "Toggle between going to my bookmarked Gmail mailing list
+collection while also enabling my mailing-list viewing mode or
+disable my mailing-list viewing mode and returning to previous
+query"
+  (interactive)
+  ; Initialize our state variable if first time
+  (if (not (boundp 'jsm/ml-mode)) (setq jsm/ml-mode nil))
+  (if jsm/ml-mode
+      (progn
+        (setq jsm/ml-mode nil)
+        (jsm/toggle-mailing-list-headers-fields nil)
+        (ignore-errors (mu4e-headers-query-prev)))
+    (progn
+      (setq jsm/ml-mode t)
+      (jsm/toggle-mailing-list-headers-fields t)
+      ; Removed the extra "and flag:unread" from the search
+      (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND list:* AND flag:unread")
+      ; (mu4e-headers-search-narrow "flag:unread")
+      )))
+
+(define-key mu4e-headers-mode-map (kbd "G") 'jsm/toggle-view-mailing-lists)
+
+; Support narrowing to just a select set mailing list
+(defun jsm/narrow-to-mailing-list ()
+  "Filter the list of mail based on current mailing list of
+  message at point. If already narrowed, remove filter."
+  (interactive)
+  ; Initialize our state variable if first time
+  (if (not (boundp 'jsm/narrowed-ml)) (setq jsm/narrowed-ml nil))
+  (if jsm/narrowed-ml
+      (progn
+        ; TODO: Need to iterate this query-prev until ml is no longer in
+        ; the current search query
+        (mu4e-headers-query-prev)
+        (setq jsm/narrowed-ml nil))
+    (let ((ml (mu4e-message-field-at-point :mailing-list)))
+      (if ml
+          (progn
+            (mu4e-headers-search-narrow ml)
+            (setq jsm/narrowed-ml ml))
+        (message "Message is not a mailing-list email")))))
+
+(define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
+
+;-Helping-Functions--------------------------------
+
+(defun jsm/shr-browse-url ()
+  "For mu4e messages, browse the URL under point or advance the message"
+  (interactive)
+  (let ((url (get-text-property (point) 'shr-url)))
+    (if (not url)
+        (mu4e-scroll-up)
+      (shr-browse-url))))
+(define-key mu4e-view-mode-map (kbd "RET") 'jsm/shr-browse-url)
+
+;; Scroll mu4e-header along with next/prev messages
+(defadvice mu4e-view-headers-next (around scroll-down-mu4e-header activate)
+  "Scroll down the mu4e-header window when moving onto next email"
+  (save-excursion
+    (other-window 1)
+    (recenter))
+  ad-do-it)
+
+(defadvice mu4e-view-headers-prev (around scroll-up-mu4e-header activate)
+  "Scroll up the mu4e-header window when moving onto prev email"
+  (save-excursion
+    (other-window 1)
+    (recenter))
+  ad-do-it)
 
 ;; Awesome way to mark & attach files to a new email message. Mark the
 ;; file(s) in dired you would like to attach and press C-c RET C-a, and
@@ -327,7 +315,8 @@ query"
   "Either switch to mu4e or return to previous window configuration"
   (interactive)
   ; They all start with "mu4e": mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
-  (if (string= "mu4e" (substring (symbol-name major-mode) 0 4))
+  (if (or (string= "mu4e" (substring (symbol-name major-mode) 0 4))
+          (string-match (expand-file-name "~/Maildir") (or buffer-file-name "")))
       (progn
         (window-configuration-to-register ?m nil)
         (unless (ignore-errors (jump-to-register ?e))
@@ -338,22 +327,6 @@ query"
       (unless (ignore-errors (jump-to-register ?m))
         (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
-
-(defun compose-reply-spacing ()
-  "Create two newlines worth of spacing for replying to emails in
-internet style formatting. Also move cursor to the first reply
-location."
-  (interactive)
-  (progn
-    (save-excursion
-      (replace-regexp "^\\(> .*
-> .*
-\\)>>" "\\1
-" nil))
-    (search-forward-regexp "^> .*
-
-" nil t)))
-(add-hook 'mu4e-compose-mode-hook 'compose-reply-spacing)
 
 ; Next two functions are courtesy of sabof https://github.com/djcb/mu/issues/128
 (defun mu4e-headers-mark-all-unread-read ()
@@ -373,6 +346,7 @@ location."
 (define-key mu4e-headers-mode-map (kbd "M") 'mu4e-headers-flag-all-read)
 
 ; Use the helper functions to mark all read in annoying maildirs
+; FIXME: Timing issue when switching between queries
 (defun jsm/mu4e-mark-noisy-maildirs-all-read ()
   "Mark all read for some of my noisy maildirs such as Root Email"
   (interactive)
@@ -390,20 +364,7 @@ location."
 
 (if (not (functionp 'delete-all-overlays))
   (defun delete-all-overlays ()
-    (remove-overlays))
-  )
-
-;; Orig: "\\(\\(https?\\://\\|mailto:\\)[-+[:alnum:].?_$%/+&#@!*~,:;=/()]+\\)"
-; https://github.com/djcb/mu/issues/408
-(defconst mu4e~view-url-regexp
-  "\\(\\(https?\\://\\|mailto:\\)[-+\[:alnum:\].?_$%/+&#@!*~,:;=/()]*[-+\[:alnum:\].?_$%/+&#@!*~,:;=/]\\)"
-  "Regexp that matches http:/https:/mailto: URLs; match-string 1 will contain the matched URL, if any.")
-
-;; Abbrev for mu4e composing - Only used once and then used M-x edit-abbrevs
-;; (define-abbrev-table 'mu4e-compose-mode-abbrev-table
-;;   '(
-;;     ("nickname" "\"Lastname, Firstname\" <nickname@nowhere.com>" nil 0)
-;;     ))
+    (remove-overlays)))
 
 ; https://groups.google.com/forum/#!topic/mu-discuss/VRt6ZIegrrM
 (defun jmg/ido-select-recipient ()
@@ -445,7 +406,8 @@ contact from all those present in the database."
     (call-interactively 'mml-attach-file)))
 (define-key message-mode-map (kbd "C-c <return> f") 'attach-file)
 
-;; Sending HTML Emails
+;-Sending-HTML-Emails--------------------
+
 ;; http://orgmode.org/worg/org-contrib/org-mime.html
 (require 'org-mime)
 (setq org-mime-library 'mml)
@@ -484,29 +446,59 @@ contact from all those present in the database."
 
 (add-hook 'org-mime-html-hook 'org-mime-html-styling)
 
-(defun jsm/html-compose ()
+(defun jsm/html-compose (&optional key)
+  "Helper function for switching between normal message mode and org-mode
+  composition.
+
+If in message mode, quote your signature in an \"EXAMPLE\" org block and
+switch mode to org-mode. Otherwise switch back to message mode and htmlize
+the body."
   (interactive)
-  (let ((my-sig
+  (let* ((my-sig
          (with-temp-buffer
            (message-insert-signature)
-           (buffer-substring-no-properties (point-min) (point-max)))))
-    (save-excursion
-      (while (re-search-forward my-sig nil t)
-        (replace-match (format "#+BEGIN_EXAMPLE\n%s#+END_EXAMPLE\n" my-sig))))
+           (buffer-substring-no-properties (+ 1 (point-min)) (point-max))))
+         (goback-key (or key (kbd "<f12>"))))
+    ; If in email compose mode, then prep body and switch to org-mode;
+    ; Otherwise, switch back to compose mode and generate the html
+    (if (derived-mode-p 'message-mode)
+        (progn
+          (setq jsm/html-compose-prevmode (symbol-name major-mode))
+          (save-excursion
+            (goto-char (point-min))
+            (while (re-search-forward my-sig nil t)
+              (replace-match (format "#+BEGIN_EXAMPLE\n%s#+END_EXAMPLE\n" my-sig)))
+            (org-mode)
+            (local-set-key goback-key 'jsm/html-compose)))
+      ; Otherwise return to message-mode and htmlize
+      (funcall (intern jsm/html-compose-prevmode))
+      (org-mime-htmlize nil))
     ; (org-mu4e-compose-org-mode)
     ; (add-hook 'message-send-hook 'org~mu4e-mime-convert-to-html-maybe nil t)
     ))
-(define-key message-mode-map (kbd "<f12>") 'jsm/html-compose)
+; Assign the desired key for executing jsm/html-compose and for switching back
+;; (let ((key (kbd "<f12>")))
+;;   `(define-key message-mode-map ,key
+;;      (lambda () (interactive) (jsm/html-compose ,key))))
+(define-key message-mode-map [f12] (lambda () (interactive) (jsm/html-compose [f12])))
+;(lookup-key message-mode-map (kbd "<f12>"))
+
+;-Notes--------------------------------------------
 
 ; Notes on using mbsync
 ;  Need to set mu4e-change-filenames-when-moving to t
 ;  Sample mbsync config(s)
 ;   https://groups.google.com/d/msg/mu-discuss/AhgmBAcv-ww/vgWKlBmxXsMJ
 
-;; mu4e TODO
 ; crypto - http://www.djcbsoftware.nl/code/mu/mu4e/MSGV-Crypto.html#MSGV-Crypto
 ; org-mode emails - http://www.djcbsoftware.nl/code/mu/mu4e/Rich_002dtext-messages-with-org_002dmode.html#Rich_002dtext-messages-with-org_002dmode
 ; notifications - http://www.djcbsoftware.nl/code/mu/mu4e/Getting-new-mail-notifications-with-Sauron.html#Getting-new-mail-notifications-with-Sauron
 ; Tweak citation - http://www.djcbsoftware.nl/code/mu/mu4e/Citations-with-mu_002dcite.html#Citations-with-mu_002dcite
 ; DONE - Calendaring - http://doughellmann.com/2007/10/working-with-imap-and-icalendar-2.html - doesn't work with our Exchange server
 ; RPM packaging - http://pastebin.com/5Ja8SJsB
+
+
+
+
+
+
