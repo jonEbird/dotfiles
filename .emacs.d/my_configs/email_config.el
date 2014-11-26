@@ -125,6 +125,9 @@
 
 ;-Composing-Email----------------------------------
 
+; Reset global C-x m to mu4e variant that will prompt for specifc account
+(global-set-key (kbd "C-x m") 'mu4e-compose-new)
+
 ;; Select the correct account based on email message and prompt for which
 ;; account to use when composing a new message
 (defun my-mu4e-set-account ()
