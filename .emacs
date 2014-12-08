@@ -45,6 +45,19 @@
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
   "hostname of this machine")
 
+; Session Save Support - Desktop and Savehist
+(require 'desktop)
+(require 'savehist)
+(setq
+ desktop-base-file-name (concat (expand-file-name "~/.emacs.desktop.") hostname)
+ desktop-base-lock-name (concat (expand-file-name "~/.emacs.desktop.") hostname ".lock")
+ savehist-file (concat (expand-file-name "~/.emacs.d/history.") hostname)
+ history-length 250)
+(desktop-save-mode 1)
+(savehist-mode 1)
+
+(add-to-list 'desktop-globals-to-save 'file-name-history)
+
 ; ELPA package support
 (when (>= emacs-major-version 24)
   (require 'package)
@@ -108,13 +121,13 @@
 ; 1. Open abbrev-file via M-x list-abbrevs,
 ; 2. edit and save via abbrev-edit-save-buffer picking
 ;    ~/.emacs.d/abbrev_defs then you can close the buffer.
-(dolist (hook '(erc-mode-hook
-                emacs-lisp-mode-hook
-                text-mode-hook
-                org-mode-hook
-                mu4e-compose-mode-hook))
-  (add-hook hook (lambda () (abbrev-mode 1))))
-(quietly-read-abbrev-file)
+;; (dolist (hook '(erc-mode-hook
+;;                 emacs-lisp-mode-hook
+;;                 text-mode-hook
+;;                 org-mode-hook
+;;                 mu4e-compose-mode-hook))
+;;   (add-hook hook (lambda () (abbrev-mode 1))))
+;; (quietly-read-abbrev-file)
 ; (setq save-abbrevs 'silently)
 
 ;; don't iconify from within X
@@ -158,20 +171,6 @@
  bookmark-default-file "~/.emacs.d/bookmarks" ;; keep my ~/ clean
  bookmark-save-flag 1)                        ;; autosave each change)
 
-; Extend the history length
-(setq history-length 250)
-
-; Desktop support
-(desktop-load-default)
-;; (setq desktop-enable t)
-;; (desktop-save-mode 1)
-(setq
- desktop-base-file-name (concat (expand-file-name "~/.emacs.desktop.") hostname)
- desktop-base-lock-name (concat (expand-file-name "~/.emacs.desktop.") hostname ".lock")
- )
-
-(add-to-list 'desktop-globals-to-save 'file-name-history)
-
 ;; Games setup
 (setq tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
 
@@ -183,13 +182,49 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(custom-safe-themes
+   (quote
+    ("e4e97731f52a5237f37ceb2423cb327778c7d3af7dc831788473d4a76bcc9760" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(display-time-mode t)
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
- '(org-drill-optimal-factor-matrix (quote ((2 (2.36 . 2.412) (2.5 . 2.5) (1.96 . 2.238) (2.2800000000000002 . 2.407) (2.46 . 2.496) (2.6 . 2.588) (2.7 . 2.679)) (1 (2.1799999999999997 . 3.72) (1.7000000000000002 . 3.44) (2.5 . 4.0) (2.36 . 3.86) (2.6 . 4.14)))))
- '(safe-local-variable-values (quote ((require-final-newline) (rpm-change-log-uses-utc . t) (Encoding . utf-8) (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook" (add-hook (quote write-contents-functions) (lambda nil (delete-trailing-whitespace) nil)) (require (quote whitespace)) "Sometimes the mode needs to be toggled off and on." (whitespace-mode 0) (whitespace-mode 1)) (whitespace-line-column . 80) (whitespace-style face trailing lines-tail) (require-final-newline . t) (encoding . utf-8))))
+ '(org-drill-optimal-factor-matrix
+   (quote
+    ((2
+      (2.36 . 2.412)
+      (2.5 . 2.5)
+      (1.96 . 2.238)
+      (2.2800000000000002 . 2.407)
+      (2.46 . 2.496)
+      (2.6 . 2.588)
+      (2.7 . 2.679))
+     (1
+      (2.1799999999999997 . 3.72)
+      (1.7000000000000002 . 3.44)
+      (2.5 . 4.0)
+      (2.36 . 3.86)
+      (2.6 . 4.14)))))
+ '(safe-local-variable-values
+   (quote
+    ((require-final-newline)
+     (rpm-change-log-uses-utc . t)
+     (Encoding . utf-8)
+     (eval ignore-errors "Write-contents-functions is a buffer-local alternative to before-save-hook"
+           (add-hook
+            (quote write-contents-functions)
+            (lambda nil
+              (delete-trailing-whitespace)
+              nil))
+           (require
+            (quote whitespace))
+           "Sometimes the mode needs to be toggled off and on."
+           (whitespace-mode 0)
+           (whitespace-mode 1))
+     (whitespace-line-column . 80)
+     (whitespace-style face trailing lines-tail)
+     (require-final-newline . t)
+     (encoding . utf-8))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
@@ -350,20 +385,22 @@
 ; load my configuration files
 (jsm:load-config-file '("el_get"
                         "lisp_config"
-                        "yasnippet_config"
+                        ; "yasnippet_config"
                         "backup_config"
                         "php_config"
                         "org_config"
                         "c-c++_tags_config"
                         "python_config"
                         "tramp_config"
-                        "linux_config"
                         "windows_config"
                         "erc_config"
                         "email_config"
                         "misc_languages"
                         "efficiency_config"
+                        ; "ido_config"
+                        "helm_config"
                         ; "elip_edb"
+                        "linux_config"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))

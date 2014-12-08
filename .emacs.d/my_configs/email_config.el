@@ -60,7 +60,6 @@
 (setq mu4e-headers-fields
       '( (:human-date    .  13)
          (:flags         .   6)
-         (:maildir       .  30)
          (:from-or-to    .  22)
          (:subject       .  nil)))
 
@@ -219,7 +218,6 @@ non-threaded and regular headers when disabling"
     (setq mu4e-headers-fields
           '( (:human-date    .  13)
              (:flags         .   6)
-             (:maildir       .  30)
              (:from-or-to    .  22)
              (:subject       .  nil))
           mu4e-headers-show-threads nil)))

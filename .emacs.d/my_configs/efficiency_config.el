@@ -38,42 +38,6 @@
 (global-set-key (kbd "C-c SPC") 'ace-jump-mode)
 (global-set-key (kbd "C-0") 'ace-jump-mode)
 
-;; Enabling ido Mode
-;; ------------------------------
-; Used http://www.masteringemacs.org/articles/2010/10/10/introduction-to-ido-mode/ for guidelines.
-(setq ido-enable-flex-matching t
-      ido-everywhere t
-      ido-use-filename-at-point 'guess
-      ido-create-new-buffer 'always
-      ido-save-directory-list-file (concat (expand-file-name "~/.ido.last.") hostname)
-      ido-file-extensions-order '(".org" ".txt" ".py" ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf")
-      ido-ignore-buffers '("\\` " "^*mu4e-"))
-(add-to-list 'ido-ignore-files "\\.emacs\\.desktop")
-(ido-mode 1)
-
-;; I can never remember which key to split vertically and horizontally as
-;; well as thinking of it the opposite way
-(global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right) (ido-switch-buffer-other-window)))
-(global-set-key (kbd "C-x _") (lambda () (interactive) (split-window-below) (ido-switch-buffer-other-window)))
-
-;; ido-imenu - More navigation help
-;; ------------------------------
-(require 'idomenu)
-(global-set-key (kbd "C-x C-i") 'idomenu)
-
-;; Improved IDO match support
-;; ------------------------------
-(require 'flx-ido)
-(flx-ido-mode 1)
-;; Disable default ido faces to see flx highlights
-(setq ido-use-faces nil)
-; Finally, with the improved highlighting, it is also nice to view matches vertically
-(ido-vertical-mode)
-
-;; Improved buffer listing - Use ibuffer
-;; ------------------------------
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-
 ;; Expand-region
 ;; ------------------------------
 (require 'expand-region)
@@ -95,15 +59,17 @@
       (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
 (define-key ctl-x-4-map (kbd "t") 'transpose-windows)
 
-;; Setup Multple Cursors
-;; ------------------------------
-; TODO
+
+;; Install yaml-mode via the ELPA repository and associate file types
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
 ;; Guide Key - Woot
 ;; ------------------------------
 (require 'guide-key)
 (guide-key-mode 1)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x 5" "C-c p"))
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x 5" "C-c p" "C-c h"))
 
 ;; Visual Regexp Replacements
 ;; ------------------------------
@@ -197,20 +163,13 @@
 (add-hook 'after-init-hook 'session-initialize)
 (setq desktop-globals-to-save '(desktop-missing-file-warning)) ;; per session.el
 
-;; Smart-mode-line
+;; Improved buffer listing - Use ibuffer
 ;; ------------------------------
-(require 'smart-mode-line)
-(setq sml/theme 'respectful
-      sml/shorten-modes t)
-(add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
-(setq sml/hidden-modes '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev"))
-
-(sml/setup)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
 ;; gist support
 ;; ------------------------------
 ; Try setting gh-profile-alist for private, Enterprise github usage
-
 
 ;; cmake support - http://www.cmake.org/Wiki/CMake/Editors/Emacs
 ;; ------------------------------
@@ -259,6 +218,13 @@
 (global-set-key [C-prior] 'faux-screen-prev-dwim)
 (faux-screen-terminals)
 
+; (faux-screen-new-terminal "jerry" t)
+; (faux-screen-new-terminal 10 t)
+; (setq jon-shell (faux-screen-utility-terminal "jon"))
+; (funcall (faux-screen-utility-terminal "jon"))
+; (global-set-key (kbd "<f6>") (faux-screen-utility-terminal "jon"))
+; (funcall jon-shell "~/repos")
+
 ; Setup a utility terminal to be used in ad-hoc situations using the
 ; currnet default-directory location
 (global-set-key (kbd "<f12>")
@@ -274,10 +240,6 @@
 
 ;; Recentf Support
 ;; ------------------------------
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
-
 ;; enable recent files mode.
 (recentf-mode t)
 
@@ -296,6 +258,11 @@
       (message "Opening file...")
     (message "Aborting")))
 
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+(when ido-mode
+  (global-set-key (kbd "C-x C-r") 'ido-recentf-open))
+
 ;; Capture my work window configuration and be able to switch back to it easily
 ;; ------------------------------
 ;; TODO
@@ -307,14 +274,6 @@
       whitespace-global-modes '(python-mode c-mode c++-mode))
 (global-whitespace-mode 1)
 ; (face tabs spaces trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)
-
-;; Better command issuing
-;; ------------------------------
-(require 'smex)
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-;; This is your old M-x.
-(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 
 ;; (setq my-window-config (current-window-configuration))
 ;; (set-window-configuration my-window-config)

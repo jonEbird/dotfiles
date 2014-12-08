@@ -1,0 +1,4 @@
+(:name helm-mu
+       :description "Helm sources for searching emails and contacts using mu"
+       :type github
+       :pkgname "emacs-helm/helm-mu")

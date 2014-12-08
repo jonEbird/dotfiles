@@ -4,17 +4,24 @@
 (require 'color-theme)
 (require 'smart-mode-line)
 
+;; (setq my-dark-theme 'zenburn
+;;       my-dark-theme-sml 'light)
+(setq my-dark-theme       'solarized-dark
+      my-dark-theme-sml   'respectful
+      my-light-theme      'solarized-light
+      my-light-theme-sml  'light)
+
 (defun toggle-night-color-theme ()
   "Switch to/from night color scheme, including shell theme, for presentation mode"
   (interactive)
   (if (eq (frame-parameter (next-frame) 'background-mode) 'light)
       (progn
-        (load-theme 'solarized-dark nil nil)
+        (load-theme my-dark-theme nil nil)
         (shell-command "~/gnome-terminal-colors-solarized/install.sh -s dark -p default" nil nil)
-        (setq sml/theme 'respectful))
-    (load-theme 'solarized-light nil nil)
+        (setq sml/theme my-dark-theme-sml))
+    (load-theme my-light-theme nil nil)
     (shell-command "~/gnome-terminal-colors-solarized/install.sh -s light -p default" nil nil)
-    (setq sml/theme 'light))
+    (setq sml/theme my-light-theme-sml))
   (sml/setup))
 
 ; Modified from: http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
@@ -58,9 +65,20 @@
   ;; (load-theme 'tango-dark nil nil)
   ;; (eval-after-load "magit"
   ;;   '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
-  (load-theme 'solarized-dark nil nil)
+  (load-theme my-dark-theme nil nil)
+  (when helm-mode
+    (set-face-attribute 'helm-selection nil :background "dark green" :underline t)
+    (set-face-attribute 'helm-source-header nil :background "#073642"))
   ; Toggle between light and dark themes with F7
   (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
+
+  ;; Smart-mode-line
+  ;; ------------------------------
+  (setq sml/theme my-dark-theme-sml
+        sml/shorten-modes t
+        sml/hidden-modes '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter"))
+  (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
+  (sml/setup)
 
   ;; Printing support!
   (require 'printing)
@@ -68,10 +86,5 @@
   ; make sure we use localhost as cups server
   (setenv "CUPS_SERVER" "localhost")
   (require 'cups)
-
-  ;; Install yaml-mode via the ELPA repository and associate file types
-  (require 'yaml-mode)
-  (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-  (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
 
   )
