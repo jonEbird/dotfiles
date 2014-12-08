@@ -410,6 +410,51 @@ contact from all those present in the database."
     (call-interactively 'mml-attach-file)))
 (define-key message-mode-map (kbd "C-c <return> f") 'attach-file)
 
+;-Looking-up-Contacts--------------------
+
+; Inspired from helm-mu
+(defun jsm/mu-contacts-init ()
+  "Retrieves contacts from mu."
+  (let ((cmd (concat
+              "mu cfind --format=mutt-ab"
+              "| sed -n '/@/s/\\([^\t]*\\)\t\\([^\t]*\\).*/\\2 <\\1>/p'"
+              "| egrep -v ' <logwatch@| <buzz|@txt.voice.google|@plus.google.com'")))
+    (cdr (split-string (shell-command-to-string cmd) "\n"))))
+
+(setq jsm/my-contacts (jsm/mu-contacts-init))
+
+(defun jsm/complete-address ()
+  "Complete address at point if possible"
+  (interactive)
+  (let* ((bounds (if (use-region-p)
+                     (cons (region-beginning) (region-end))
+                   (bounds-of-thing-at-point 'symbol)))
+         (eoh ;; end-of-headers
+             (save-excursion
+               (goto-char (point-min))
+               (search-forward-regexp mail-header-separator nil t))))
+    (if (and bounds
+               (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p)))
+      (let* ((text (buffer-substring-no-properties (car bounds) (cdr bounds)))
+             (address (funcall my-address-completion-func jsm/my-contacts text)))
+        (delete-region (car bounds) (cdr bounds))
+        (insert address))
+      (insert "\t"))))
+
+(defun my-ido-email-address-complete (addresses initial)
+  "Wrapping function to call IDO completion on my filtered email addresses"
+  (ido-completing-read "Address: " addresses nil nil initial))
+
+(defun my-helm-email-address-complete (addresses initial)
+  (helm-comp-read "Address: " addresses :initial-input initial))
+
+(cond (helm-mode
+       (setq my-address-completion-func 'my-helm-email-address-complete))
+      (ido-mode
+       (setq my-address-completion-func 'my-ido-email-address-complete)))
+
+(define-key message-mode-map (kbd "<tab>") 'jsm/complete-address)
+
 ;-Sending-HTML-Emails--------------------
 
 ;; http://orgmode.org/worg/org-contrib/org-mime.html

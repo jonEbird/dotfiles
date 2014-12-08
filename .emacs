@@ -394,11 +394,11 @@
                         "tramp_config"
                         "windows_config"
                         "erc_config"
-                        "email_config"
                         "misc_languages"
                         "efficiency_config"
                         ; "ido_config"
                         "helm_config"
+                        "email_config"
                         ; "elip_edb"
                         "linux_config"
                         ))

@@ -68,41 +68,6 @@
 
 (require 'helm-mu)
 
-(defun jsm/helm-mu-contacts-init ()
-  "Retrieves contacts from mu."
-  (let ((cmd (concat
-              "mu cfind --format=mutt-ab"
-              (if helm-mu-contacts-personal " --personal" "")
-              (format
-                " --after=%d"
-                (truncate (float-time (date-to-time helm-mu-contacts-after))))
-              "| sed -n '/@/s/\\([^\t]*\\)\t\\([^\t]*\\).*/\\2 <\\1>/p'"
-              "| egrep -v ' <logwatch@| <buzz|@txt.voice.google|@plus.google.com'")))
-    (cdr (split-string (shell-command-to-string cmd) "\n"))))
-
-(setq jsm/my-contacts (jsm/helm-mu-contacts-init))
-
-(defun jsm/complete-address ()
-  "Complete address at point if possible"
-  (interactive)
-  (let* ((bounds (if (use-region-p)
-                     (cons (region-beginning) (region-end))
-                   (bounds-of-thing-at-point 'symbol)))
-         (eoh ;; end-of-headers
-             (save-excursion
-               (goto-char (point-min))
-               (search-forward-regexp mail-header-separator nil t))))
-    (if (and bounds
-               (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p)))
-      (let* ((text (buffer-substring-no-properties (car bounds) (cdr bounds)))
-             (address (helm-comp-read "Address: " 'jsm/my-contacts
-                                      :initial-input text)))
-        (delete-region (car bounds) (cdr bounds))
-        (insert address))
-      (insert "\t"))))
-
-(define-key message-mode-map (kbd "<tab>") 'jsm/complete-address)
-
 ;; TODO: Find a key to bind helm-mu to for advanced email searching / narrowing
 
 ;; Shell
