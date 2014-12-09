@@ -417,8 +417,9 @@ contact from all those present in the database."
   "Retrieves contacts from mu."
   (let ((cmd (concat
               "mu cfind --format=mutt-ab"
-              "| sed -n '/@/s/\\([^\t]*\\)\t\\([^\t]*\\).*/\\2 <\\1>/p'"
-              "| egrep -v ' <logwatch@| <buzz|@txt.voice.google|@plus.google.com'")))
+              "| sed -n '/@/s/\\([^\t]*\\)\t\\([^\t]*\\).*/\"\\2\" <\\1>/p'"
+              "| sed 's/\"\" //g'"
+              "| egrep -v 'root@| <logwatch@| <buzz|@txt.voice.google|@plus.google.com'")))
     (cdr (split-string (shell-command-to-string cmd) "\n"))))
 
 (setq jsm/my-contacts (jsm/mu-contacts-init))
