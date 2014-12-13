@@ -263,6 +263,9 @@
 (when ido-mode
   (global-set-key (kbd "C-x C-r") 'ido-recentf-open))
 
+;; Enable semantic mode to better support imenu
+(semantic-mode 1)
+
 ;; Capture my work window configuration and be able to switch back to it easily
 ;; ------------------------------
 ;; TODO

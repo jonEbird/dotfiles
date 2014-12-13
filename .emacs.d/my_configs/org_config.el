@@ -56,6 +56,8 @@
                                 ("z" . org-add-note)
                                 ("N" . org-narrow-to-subtree)
                                 ("W" . widen)))
+; Increase the amount of levels available to imenu
+(setq org-imenu-depth 3)
 ; RET follows links
 (setq org-return-follows-link t)
 ; Export settings

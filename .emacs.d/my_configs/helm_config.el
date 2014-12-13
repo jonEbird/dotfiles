@@ -1,4 +1,5 @@
-; Mostly following  http://tuhdo.github.io/helm-intro.html
+;; Mostly following  http://tuhdo.github.io/helm-intro.html
+;; Then took things from https://github.com/thierryvolpiatto/emacs-tv-config/blob/master/init-helm-thierry.el
 
 ;; Cheat sheet for myself
 ;;  C-c h b     - Resume last helm session
@@ -28,25 +29,43 @@
       helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
       helm-split-window-default-side        'below  ; considered right
       helm-ff-file-name-history-use-recentf t
-)
+      helm-quick-update                     t
+      helm-idle-delay                       0.01
+      helm-input-idle-delay                 0.01
+      helm-ff-file-name-history-use-recentf t
+      helm-buffers-fuzzy-matching           t
+      helm-M-x-fuzzy-match                  t
+      helm-move-to-line-cycle-in-source     t
+      ido-use-virtual-buffers               t
+      )
+
+; (add-to-list 'helm-boring-file-regexp-list "")
+(add-to-list 'completion-ignored-extensions ".snapshot/")
 
 ; Global key bindings
-(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-x")       'helm-M-x)
 
-(global-set-key (kbd "M-y") 'helm-show-kill-ring)  ; where have you been all my emacs life
+(global-set-key (kbd "M-y")       'helm-show-kill-ring)  ; where have you been all my emacs life
 
-(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x b")     'helm-mini)
 
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "C-x C-f")   'helm-find-files)
 
-(global-set-key (kbd "C-c h o") 'helm-occur)
+(global-set-key (kbd "C-c h o")   'helm-occur)
 
-(global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)  ; This is ridiculous
+(global-set-key (kbd "C-h SPC")   'helm-all-mark-rings)  ; This is ridiculous
 (global-set-key (kbd "C-c h SPC") 'helm-all-mark-rings)
 
-(global-set-key (kbd "C-c h g") 'helm-google-suggest)  ; More ridiculous
+(global-set-key (kbd "C-c h g")   'helm-google-suggest)  ; More ridiculous
 
 (global-set-key (kbd "C-c h M-:") 'helm-eval-expression-with-eldoc)
+
+(global-set-key (kbd "C-h r")     'helm-info-emacs)
+
+(global-set-key (kbd "C-h d")     'helm-info-at-point)
+
+(global-set-key (kbd "<f1>")      'helm-resume)
+
 
 ;; Issue a C-u C-s while in helm-find-files to perform a recursive grep (or ack)
 (when (executable-find "ack")
@@ -67,8 +86,7 @@
 (setq mu4e-completing-read-function 'completing-read)
 
 (require 'helm-mu)
-
-;; TODO: Find a key to bind helm-mu to for advanced email searching / narrowing
+(define-key mu4e-headers-mode-map (kbd "M-/") 'helm-mu)
 
 ;; Shell
 (require 'helm-eshell)

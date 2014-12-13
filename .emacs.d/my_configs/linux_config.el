@@ -6,10 +6,11 @@
 
 ;; (setq my-dark-theme 'zenburn
 ;;       my-dark-theme-sml 'light)
+;; respectful or automatic or smart-mode-line-powerline
 (setq my-dark-theme       'solarized-dark
       my-dark-theme-sml   'respectful
       my-light-theme      'solarized-light
-      my-light-theme-sml  'light)
+      my-light-theme-sml  'automatic)
 
 (defun toggle-night-color-theme ()
   "Switch to/from night color scheme, including shell theme, for presentation mode"
@@ -65,18 +66,22 @@
   ;; (load-theme 'tango-dark nil nil)
   ;; (eval-after-load "magit"
   ;;   '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
+  ;; Consult Solarized color values at http://ethanschoonover.com/solarized#the-values
   (load-theme my-dark-theme nil nil)
   (when helm-mode
     (set-face-attribute 'helm-selection nil :background "dark green" :underline t)
-    (set-face-attribute 'helm-source-header nil :background "#073642"))
+    (set-face-attribute 'helm-source-header nil :background "#073642")
+    (set-face-attribute 'helm-ff-directory nil :foreground "#d70000" :background "#073642"))
   ; Toggle between light and dark themes with F7
   (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
 
   ;; Smart-mode-line
   ;; ------------------------------
-  (setq sml/theme my-dark-theme-sml
-        sml/shorten-modes t
-        sml/hidden-modes '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter"))
+  (setq sml/theme           my-dark-theme-sml
+        sml/shorten-modes   t
+        sml/mode-width      'full
+        sml/name-width      25
+        sml/hidden-modes    '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter"))
   (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
   (sml/setup)
 
