@@ -82,6 +82,8 @@
 ; ----------------------------------------------------------------------
 ;; I have gtags installed via ELPA package system
 ; Lets gtags know that we're okay with their suggestive key bindings
+(custom-set-variables
+ '(gtags-prefix-key "C-t"))
 (setq gtags-suggested-key-mapping t
       gtags-auto-update t)
 

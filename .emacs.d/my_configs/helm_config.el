@@ -46,6 +46,8 @@
 (global-set-key (kbd "M-x")       'helm-M-x)
 
 (global-set-key (kbd "M-y")       'helm-show-kill-ring)  ; where have you been all my emacs life
+(if (fboundp 'session-yank)
+    (setq session-save-print-spec     '(t nil 40000)))   ; https://github.com/emacs-helm/helm/issues/94
 
 (global-set-key (kbd "C-x b")     'helm-mini)
 
@@ -66,6 +68,7 @@
 
 (global-set-key (kbd "<f1>")      'helm-resume)
 
+(global-set-key (kbd "C-c h i")   'helm-semantic-or-imenu)
 
 ;; Issue a C-u C-s while in helm-find-files to perform a recursive grep (or ack)
 (when (executable-find "ack")
@@ -94,3 +97,34 @@
 (add-hook 'eshell-mode-hook
           #'(lambda ()
               (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)))
+
+;; gtags
+;;--------------------------------------------------
+;; See https://github.com/syohex/emacs-helm-gtags
+
+;; Enable helm-gtags-mode
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
+(add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+;; customize
+(custom-set-variables
+ '(helm-gtags-path-style 'relative)
+ '(helm-gtags-ignore-case t)
+ '(helm-gtags-auto-update t)
+ '(helm-gtags-prefix-key "C-t")
+ '(helm-gtags-suggested-key-mapping t))
+
+;; key bindings
+(eval-after-load "helm-gtags"
+  '(progn
+     (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+     (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+     (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+     (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+     (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+     (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+     (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+     (define-key helm-gtags-mode-map (kbd "C-c h") nil )))
+
+(require 'helm-gtags)
