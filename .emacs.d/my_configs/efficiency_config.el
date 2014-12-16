@@ -89,6 +89,8 @@
 ; sed -n '/^[^#]/s/.*/-&/p' ~/.gitignore > ~/.projectile
 
 ; (setq projectile-tags-command "gtags %s") ; Was "ctags -Re %s"
+(setq projectile-tags-command "gtags ."
+      projectile-tags-file-name "GTAGS")
 
 ; Launch a unique shell for the particular session or project
 (defun jsm/unique-shell (&optional directory)

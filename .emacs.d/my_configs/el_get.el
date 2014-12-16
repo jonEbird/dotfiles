@@ -56,7 +56,8 @@
               idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
               rpm-spec-mode cider rainbow-delimiters elixir org-reveal
               graphviz-dot-mode term+ term+ki term+mux phi-search smex
-              helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode)))
+              helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
+              helm-gtags)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
