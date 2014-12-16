@@ -79,8 +79,8 @@
 ; --------------------------------------------------
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
-(helm-projectile-on)
-;(helm-projectile-on)
+(if (functionp 'helm-projectile-on)
+    (helm-projectile-on))
 
 ;; Fixing mu4e for helm
 (setq mu4e-completing-read-function 'completing-read)
