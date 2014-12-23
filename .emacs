@@ -297,6 +297,10 @@
 (require 'epa-file)
 (epa-file-enable)
 
+;; Dired setup
+(eval-after-load 'dired
+  '(define-key dired-mode-map (kbd "W") 'woman-dired-find-file))
+
 ;; Emacs 24.4 features
 (add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
 (setq load-prefer-newer t
@@ -377,6 +381,7 @@
   (interactive)
   (save-excursion
     (ansi-color-apply-on-region (point-min) (point-max))))
+(defalias 'ascii-unescape-buffer 'ansi-color-buffer)
 
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files
@@ -400,12 +405,8 @@
                         "lisp_config"
                         ; "yasnippet_config"
                         "backup_config"
-                        "php_config"
                         "org_config"
-                        "c-c++_tags_config"
-                        "python_config"
                         "tramp_config"
-                        "windows_config"
                         "erc_config"
                         "misc_languages"
                         "efficiency_config"
@@ -413,7 +414,11 @@
                         "helm_config"
                         "email_config"
                         ; "elip_edb"
+                        "c-c++_tags_config"
+                        "python_config"
+                        "php_config"
                         "linux_config"
+                        "windows_config"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))

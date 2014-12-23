@@ -280,6 +280,23 @@
 (global-whitespace-mode 1)
 ; (face tabs spaces trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)
 
+;; Support for showing key commands
+(require 'command-log-mode)
+(setq command-log-mode-window-size 55
+      command-log-mode-open-log-turns-on-mode t)
+
+;; Default key-binding, once command-log-mode is enabled, is "C-c o"
+(defun log-keys ()
+  "Enable command-log-mode and show keys"
+  (interactive)
+  (command-log-mode 1)
+  (clm/command-log-clear)
+  (clm/open-command-log-buffer))
+
+(defun log-keys-disable ()
+  (interactive)
+  (command-log-mode -1))
+
 ;; (setq my-window-config (current-window-configuration))
 ;; (set-window-configuration my-window-config)
 

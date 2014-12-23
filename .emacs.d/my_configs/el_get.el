@@ -57,7 +57,7 @@
               rpm-spec-mode cider rainbow-delimiters elixir org-reveal
               graphviz-dot-mode term+ term+ki term+mux phi-search smex
               helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
-              helm-gtags)))
+              helm-gtags command-log-mode)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
