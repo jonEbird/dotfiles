@@ -18,6 +18,7 @@ done
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
+# PS1 and related Status
 if [ "$(ps --no-headers -o comm -p $PPID)" == "emacs" ]; then
     if [ -n "$EMACS_PS1" ]; then
         PS1="$EMACS_PS1"
@@ -56,7 +57,7 @@ export WORKON_HOME=~/venv
 xset b off 2>&-
 alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
-alias n='normal-screen '
+alias n='normal-tmux '
 alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '

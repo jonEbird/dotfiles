@@ -31,6 +31,11 @@ if which gconftool-2 >/dev/null 2>&1 && [ -n "$DISPLAY" -a -z "$SSH_CLIENT" ]; t
     gconftool-2 -s /desktop/gnome/url-handlers/org-protocol/enabled --type Boolean true
 fi
 
+# Screen / Tmux setup
+if [ -f /usr/share/doc/tmux/examples/bash_completion_tmux.sh ]; then
+    source /usr/share/doc/tmux/examples/bash_completion_tmux.sh
+fi
+
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)
 if [ -d ~/.bash_profile.${DOMAIN}.d ]; then

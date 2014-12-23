@@ -70,6 +70,7 @@ Documents
 .mailrc
 iMacros
 Maildir
+Downloads
 bin
 .conkyrc
 .erc
@@ -86,6 +87,7 @@ bin
 .Qualcomm-sig.txt
 .Gmail-sig.txt
 .screenrc*
+.tmux.conf
 .ssh
 .subversion
 .thunderbird
@@ -99,6 +101,8 @@ bin
 .emacs.d/my_configs
 
 # Misc but important
+.virtualenvs
+venv
 .backups
 .bash*
 .zsh*
@@ -136,7 +140,7 @@ EOF
 #-Main---------------------------------------------
 trap cleanup SIGINT SIGQUIT SIGTERM SIGSEGV
 
-RSYNC_OPTIONS="-ar"
+RSYNC_OPTIONS="-ar --delete"
 
 while getopts :vn OPT; do
     case $OPT in
@@ -171,6 +175,20 @@ else
 fi
 
 # Make the list more acceptable to rsync
+prep-rsync-filelist ${TMP}system_file_list ${TMP}rsync-list
+
+echo -n "Performing system backup first..."
+START=$SECONDS
+[ -n "$VERBOSE" ] && echo "Rsync system via: sudo rsync $RSYNC_OPTIONS --files-from=${TMP}rsync-list / ${DESTINATION}system/"
+sudo rsync $RSYNC_OPTIONS --files-from=${TMP}rsync-list / "${DESTINATION}system/"
+RC=$?
+if [ $RC -eq 0 ]; then
+    echo "completed in $((SECONDS-START))s"
+else
+    echo "Problem with the backup"
+fi
+
+# Make the list more acceptable to rsync
 prep-rsync-filelist ${TMP}home_file_list ${TMP}rsync-list
 
 echo -n "Performing home backup..."
@@ -184,19 +202,6 @@ else
     echo "Problem with the backup"
 fi
 
-# Make the list more acceptable to rsync
-prep-rsync-filelist ${TMP}system_file_list ${TMP}rsync-list
-
-echo -n "Performing system backup..."
-START=$SECONDS
-[ -n "$VERBOSE" ] && echo "Rsync system via: sudo rsync $RSYNC_OPTIONS --files-from=${TMP}rsync-list . ${DESTINATION}system/"
-sudo rsync $RSYNC_OPTIONS --files-from=${TMP}rsync-list / "${DESTINATION}system/"
-RC=$?
-if [ $RC -eq 0 ]; then
-    echo "completed in $((SECONDS-START))s"
-else
-    echo "Problem with the backup"
-fi
 
 if [ -s ${TMP}left-for-dead ]; then
     echo "Warrning: The following files were not backed up because they don't exist:"
@@ -204,5 +209,5 @@ if [ -s ${TMP}left-for-dead ]; then
 fi
 
 # Cleanup
-cleanup
+# cleanup
 exit $RC

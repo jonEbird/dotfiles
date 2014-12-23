@@ -14,6 +14,11 @@ normal-screen() {
         screen -dmr normal -X screen -t linbird 11 repeat ssh -L6667:localhost:6667 linbird
         # Are we in an X environment? 
         if /bin/xset -b >/dev/null 2>&1; then
+            # other things that need started
+            feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
+            sudo systemctl reload nscd
+            synergyc esp-dev-jsmiller-1
+            conky -d >/dev/null 2>&1
             #screen -dmr normal -X screen -t synergy 20 repeat synergys -a :24800 -d DEBUG -f
             [ -f ~/pithos/bin/pithos ] && screen -dmr normal -X screen -t pithos  21 repeat ~/pithos/bin/pithos
             # Gnome or AwesomeWM ?
@@ -29,5 +34,47 @@ normal-screen() {
         fi
         screen -dmr normal -X select 0
         screen -x normal
+    fi
+}
+
+normal-tmux() {
+    # Start a tmux session
+    if tmux list-sessions -F "#{session_name}" | egrep -q '^normal$'; then
+        echo "Normal session already started"
+        tmux attach -t normal
+    else
+        echo 'Starting tmux session "normal"'
+        # Lets ensure a ssh-agent is started
+        eval $(ssh-agent )
+        ssh-add
+        tmux new-session -d -s normal
+
+        tmux new-window -t normal:11 "repeat ssh -L6667:localhost:6667 linbird"
+        tmux set-window-option -t normal:11 monitor-activity off
+
+        # Are we in an X environment?
+        if /bin/xset -b >/dev/null 2>&1; then
+            # other things that need started
+            feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
+            sudo systemctl condreload nscd >/dev/null 2>&1
+            synergyc esp-dev-jsmiller-1
+            conky -d >/dev/null 2>&1
+            if [ -f ~/pithos/bin/pithos ]; then
+                tmux new-window -t normal:21 "repeat ~/pithos/bin/pithos"
+                tmux set-window-option -t normal:21 monitor-activity off
+            fi
+            # Gnome or AwesomeWM ?
+            if ! ps --no-headers -e -o comm | egrep '^awesome$' >/dev/null 2>&1; then
+                tmux new-window -t normal:15 "repeat /usr/bin/devilspie"
+                tmux set-window-option -t normal:15 monitor-activity off
+            fi
+        fi
+        # Fire up my normal set of 5 shells
+        tmux new-window -t normal -n shell1
+        tmux new-window -t normal -n shell2
+        tmux new-window -t normal -n shell3
+        tmux new-window -t normal -n shell4
+        tmux new-window -t normal -n shell5
+        tmux attach -t normal:0
     fi
 }
