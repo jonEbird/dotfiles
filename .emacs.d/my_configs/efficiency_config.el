@@ -238,7 +238,8 @@
 (defun jsm/projectile-shell ()
   (interactive)
   (funcall (faux-screen-utility-terminal "prj") (projectile-project-root)))
-(define-key projectile-command-map (kbd "$") 'jsm/projectile-shell)
+(define-key projectile-mode-map (kbd "$") 'jsm/projectile-shell)
+
 
 ;; Recentf Support
 ;; ------------------------------

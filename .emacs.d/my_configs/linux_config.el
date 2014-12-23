@@ -67,7 +67,8 @@
   ;; (eval-after-load "magit"
   ;;   '(set-face-attribute 'magit-item-highlight nil :foreground "#ffffff" :background "#3f4747"))
   ;; Consult Solarized color values at http://ethanschoonover.com/solarized#the-values
-  (load-theme my-dark-theme nil nil)
+  (ignore-errors
+    (load-theme my-dark-theme nil nil))
   (when helm-mode
     (set-face-attribute 'helm-selection nil :background "dark green" :underline t)
     (set-face-attribute 'helm-source-header nil :background "#073642")
