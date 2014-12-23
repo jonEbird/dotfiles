@@ -424,6 +424,18 @@ contact from all those present in the database."
 
 (setq jsm/my-contacts (jsm/mu-contacts-init))
 
+;; Now add mailrc alias entries as well (inspired from mailabbrev.el)
+(with-temp-buffer
+  (insert-file-contents (or mail-personal-alias-file "~/.mailrc"))
+  (while (re-search-forward
+          "^a\\(lias\\)?[ \t]+" nil t)
+    (beginning-of-line)
+    (re-search-forward "[ \t]+\\([^ \t\n]+\\)")
+    (let ((name (buffer-substring
+                 (match-beginning 1) (match-end 1))))
+      (end-of-line)
+      (add-to-list 'jsm/my-contacts name))))
+
 (defun jsm/complete-address ()
   "Complete address at point if possible"
   (interactive)
