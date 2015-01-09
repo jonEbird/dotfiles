@@ -13,6 +13,6 @@
 [submodule ".emacs.d/geiser"]
 	path = .emacs.d/geiser
 	url = http://git.sv.gnu.org/r/geiser.git
-[submodule "reveal"]
-	path = org/reveal
+[submodule "/home/jsmiller/.emacs.d/org-reveal"]
+	path = .emacs.d/org-reveal
 	url = git@github.com:hakimel/reveal.js.git

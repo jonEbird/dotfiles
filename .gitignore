@@ -36,6 +36,7 @@ published/
 projects/*
 scratch/*
 # noise from a typical Linux build
+*.pyc
 .PyCharm*
 .Skype*
 .adobe/*
@@ -111,3 +112,4 @@ libpeerconnection.log
 .keybase*/*
 .stackato/*
 .vmware/*
+/org/*
