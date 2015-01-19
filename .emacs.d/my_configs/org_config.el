@@ -266,7 +266,7 @@ a:visited {
          :auto-sitemap t
          :sitemap-title "Notes Index"
          :base-directory "~/org/"
-         :publishing-directory "~/u_drive/public_html"
+         :publishing-directory "/usr2/jsmiller/public_html"
          :publishing-function org-html-publish-to-html
          :section-numbers nil
          :exclude "tasks.org"
@@ -277,7 +277,7 @@ a:visited {
         ("images"
          :base-directory "~/org/"
          :base-extension "jpg\\|gif\\|png"
-         :publishing-directory "~/u_drive/public_html"
+         :publishing-directory "/usr2/jsmiller/public_html"
          :publishing-function org-publish-attachment)))
 
 ;; --------------------------------------------------
@@ -378,7 +378,7 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 ;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
 (require 'ox-reveal)
 ; I have cloned reveal as a submodule
-(setq org-reveal-root (concat "file://" (expand-file-name "~/org/reveal/")))
+(setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/org-reveal/")))
 
 ;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
 ;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then

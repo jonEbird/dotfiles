@@ -114,6 +114,10 @@
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
 
+;; Make files that should be executable, executable
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
 ;; In addition to flyspell use abbrev to help with my common spelling mistakes
 ; Define new abbreviations via: "C-x a i g" for global or "C-x a i l" for
 ; local modes and then don't forget to save your abbreviations via M-x

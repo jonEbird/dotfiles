@@ -1,4 +1,4 @@
-personal_ws-1.1 en 715 
+personal_ws-1.1 en 722 
 Google
 PyPi
 Ashok's
@@ -8,6 +8,7 @@ analytics
 hexdump
 SpaceWalk
 cfg
+FPGA
 API
 firstboot
 Rancho
@@ -23,10 +24,10 @@ gitlab
 github
 handoffs
 https
-RPM's
 RPMs
-SCONs
+RPM's
 SCons
+SCONs
 STDERR
 kthreadd
 DBs
@@ -86,9 +87,9 @@ xslt
 automake
 cpu
 BitBake
-CTC
-FEC
 csh
+FEC
+CTC
 Qualcomm's
 Mormor
 unicode
@@ -97,6 +98,7 @@ DMV
 CSR
 Suresh
 DNS
+backports
 enbmsim
 dmz
 kobject
@@ -128,8 +130,8 @@ Env
 virtualenv
 ERC
 tunables
-cmake
 CMake
+cmake
 initramfs
 Moma
 gid
@@ -176,6 +178,7 @@ Incentivize
 UNINTERRUPTIBLE
 ftrace
 stackato
+PCIe
 sshd
 GSM
 APIs
@@ -200,8 +203,8 @@ ngircd
 imagemagick
 Makefile
 GPRS
-IPI
 GYN
+IPI
 Cher
 Farmor
 webapps
@@ -245,6 +248,7 @@ egrep
 Thelonious
 Dereferencing
 btfile
+Tesseract
 btdomain
 hpet
 vmstat
@@ -286,8 +290,8 @@ lockless
 namespace
 LVM
 iptables
-OID
 PCI
+OID
 QLDAP
 pdf
 DHCP
@@ -302,6 +306,7 @@ TSNC
 MTP
 MWC
 ldsudo
+segfaulting
 MTU
 warrentee
 rmdir
@@ -312,16 +317,16 @@ auth
 PHP
 qcow
 braxton
-UMTS
 VLAN
+UMTS
 ansible
 noquota
 QCT
 manpage
 downlink
 Javascript
-OOO
 NST
+OOO
 ntp
 ethernet
 sysctl
@@ -331,6 +336,7 @@ init
 VLANs
 NUM
 iteratively
+Children's
 cgroups
 erroring
 Gradle's
@@ -344,8 +350,8 @@ dropdown
 pietest
 PPD
 CTest
-RCU
 QIP
+RCU
 Makefile's
 Makefiles
 outliers
@@ -369,12 +375,12 @@ TBLFM
 lookup
 taskomatic
 modinfo
-sed
 rhn
+sed
 html
 cpumask
-scp
 SDK
+scp
 AttributeError
 TTUN
 jonEbird
@@ -437,8 +443,8 @@ chgrp
 Manfrotto
 SNR
 changelog
-CPack
 cpack
+CPack
 interworking
 RSS
 SPI
@@ -489,6 +495,7 @@ kworkers
 getent
 Ericsson
 systemctl
+keyring
 TSN
 cron
 Compat
@@ -552,10 +559,10 @@ centric
 gitflow
 elip
 interoperability
-FishEye
 Fisheye
-SysRq
+FishEye
 sysrq
+SysRq
 symlink
 proc
 chmod

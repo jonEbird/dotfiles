@@ -54,6 +54,8 @@
  mu4e-hide-index-messages         t              ;; No messages in mini-buffer about updates
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
  message-sendmail-envelope-from   'header
+ mail-interactive                 nil            ;; quiets msmtp false-positive errors
+ message-interactive              nil            ;; quiets msmtp false-positive errors
  )
 
 ; Default headers used in normal mode
