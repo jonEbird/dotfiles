@@ -111,17 +111,24 @@
 (defalias 'ack-find-file 'ack-and-a-half-find-file)
 (defalias 'ack-find-file-same 'ack-and-a-half-find-file-same)
 
-;; Markdown preview helper
+;; README preview helper thanks to pandoc
 ;; ------------------------------
-(require 'markdown-mode)
-(defun jsm/markdown-preview ()
-  "Preview the markdown file in a new browser tab"
+(defun readme-preview ()
+  "Preview the README rendered to html in a browser tab via pandoc"
   (interactive)
-  (let ((my-filename (buffer-file-name))
-        (html-filename (format "%s.html" (file-name-base (buffer-file-name)))))
-    (shell-command (format "pandoc -f markdown_github -t html -o %s %s" html-filename my-filename) nil nil)
-    (browse-url (concat "file://" (file-name-directory (buffer-file-name)) html-filename))))
-(define-key markdown-mode-map (kbd "<f12>") 'jsm/markdown-preview)
+  (let* ((html-filename (format "%s.html" (file-name-base buffer-file-name)))
+         (input-format (cond
+                        ((derived-mode-p 'rst-mode) "rst")
+                        ((derived-mode-p 'markdown-mode) "markdown_github")))
+         (cmd (format "pandoc -f %s -t html -o %s %s"
+                      input-format html-filename buffer-file-name)))
+    (shell-command cmd nil nil)
+    (browse-url (concat "file://" (file-name-directory buffer-file-name) html-filename))))
+
+;; Assign F12 to render README preview for select modes
+(dolist (hook '(markdown-mode-hook rst-mode-hook))
+  (add-hook hook
+            '(lambda () (local-set-key (kbd "<f12>") 'readme-preview))))
 
 ;; Multiple-cursors
 ;; ------------------------------
