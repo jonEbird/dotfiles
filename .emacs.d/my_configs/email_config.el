@@ -463,9 +463,9 @@ contact from all those present in the database."
 (defun my-helm-email-address-complete (addresses initial)
   (helm-comp-read "Address: " addresses :initial-input initial))
 
-(cond (helm-mode
+(cond ((boundp 'helm-mode)
        (setq my-address-completion-func 'my-helm-email-address-complete))
-      (ido-mode
+      ((boundp 'ido-mode)
        (setq my-address-completion-func 'my-ido-email-address-complete)))
 
 (define-key message-mode-map (kbd "<tab>") 'jsm/complete-address)

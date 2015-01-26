@@ -69,7 +69,7 @@
   ;; Consult Solarized color values at http://ethanschoonover.com/solarized#the-values
   (ignore-errors
     (load-theme my-dark-theme nil nil))
-  (when helm-mode
+  (when (boundp 'helm-mode)
     (set-face-attribute 'helm-selection nil :background "dark green" :underline t)
     (set-face-attribute 'helm-source-header nil :background "#073642")
     (set-face-attribute 'helm-ff-directory nil :foreground "#d70000" :background "#073642"))
