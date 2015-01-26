@@ -2,6 +2,7 @@
 
 # Grab the current ocean temperature
 
+import os
 import sys
 import urllib2
 import json
@@ -44,10 +45,17 @@ def gen_url(date, station="9410170", units="english"):
 
 def get_ocean_temps(date, station="9410170", units="english"):
     URL = gen_url(date, station, units)
+    cache_file = '/tmp/ocean-temp_%s.cache' % station
     try:
-        fulldata = json.loads(urllib2.urlopen(URL, timeout=3).read())
-    except socket.timeout, e:
-        return 'Location', '??'
+        data = urllib2.urlopen(URL, timeout=3).read()
+        with open(cache_file, 'w') as cache:
+            cache.write(data)
+    except socket.timeout:
+        if os.path.exists(cache_file):
+            data = open(cache_file).read()
+        else:
+            return "location", [{'v': '??'}]
+    fulldata = json.loads(data)
     # Filter out non-values
     temps = [ dp for dp in fulldata['data'] if dp[u'v'] ]
     # Ensure the returned data set is sorted by datetime(t)
