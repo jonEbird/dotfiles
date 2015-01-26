@@ -47,17 +47,17 @@
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
-              lua-mode etags-select markdown-mode htmlize ldap-mode url-dav
+              lua-mode markdown-mode htmlize ldap-mode url-dav
               org-caldav confluence-el expand-region iedit jedi mu4e
-              php-mode-improved flx paredit ido-vertical-mode
+              php-mode-improved flx paredit ido-vertical-mode dash
               multiple-cursors guide-key visual-regexp projectile
               ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
-              gtags multiple-cursors git-modes magit git-gutter
+              gtags multiple-cursors git-modes magit git-gutter popwin
               idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
               rpm-spec-mode cider rainbow-delimiters elixir org-reveal
               graphviz-dot-mode term+ term+ki term+mux phi-search smex
               helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
-              helm-gtags command-log-mode)))
+              helm-gtags command-log-mode helm-swoop)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
