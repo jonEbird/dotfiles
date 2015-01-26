@@ -304,6 +304,29 @@
   (interactive)
   (command-log-mode -1))
 
+;; ediff setup
+;; ------------------------------
+;; Thanks http://oremacs.com/2015/01/17/setting-up-ediff/
+(defmacro csetq (variable value)
+  `(funcall (or (get ',variable 'custom-set)
+                'set-default)
+            ',variable ,value))
+(csetq ediff-window-setup-function 'ediff-setup-windows-plain)
+(csetq ediff-split-window-function 'split-window-horizontally)
+(csetq ediff-diff-options "-w")
+
+(defun ora-ediff-hook ()
+  (ediff-setup-keymap)
+  (define-key ediff-mode-map "j" 'ediff-next-difference)
+  (define-key ediff-mode-map "k" 'ediff-previous-difference))
+
+(add-hook 'ediff-mode-hook 'ora-ediff-hook)
+
+;; TODO: Move from winner-mode to leveraging `ediff-before-setup-hook' and
+;; then restore it from `ediff-quit-hook' and `ediff-suspend-hook'
+(winner-mode)
+(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+
 ;; (setq my-window-config (current-window-configuration))
 ;; (set-window-configuration my-window-config)
 
