@@ -8,7 +8,8 @@
   (progn
     (paredit-mode)
     (rainbow-delimiters-mode)
-    (git-gutter-mode)))
+    (git-gutter-mode)
+    (define-key paredit-mode-map (kbd "M-q") 'fill-paragraph)))
 
 ;; Paredit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
