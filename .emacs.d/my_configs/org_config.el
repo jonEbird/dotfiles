@@ -127,6 +127,7 @@
 
 ;; Custom HTML exporting
 (setq org-html-postamble t
+      org-html-checkbox-type 'unicode
       org-export-with-smart-quotes t
       org-html-postamble-format  '(("en" "<hr/><p><b>Exported by</b> %a <b>on</b> %d</p>"))
       org-html-head-extra "
@@ -185,7 +186,7 @@ a:visited {
 (setq org-refile-targets (quote ((nil :maxlevel . 2)
                                  ("~/org/info.org" :maxlevel . 2)
                                  ("~/org/projects.org" :maxlevel . 3)
-                                 ("~/org/personal.org" :maxlevel . 2)
+                                 ("~/personal/org/personal.org" :maxlevel . 2)
                                  )))
 
 ;; --------------------------------------------------
@@ -219,12 +220,12 @@ a:visited {
     (file "~/org/info.tmplt") :clock-in t :clock-resume t)
    ("k" "Kudos to You" entry (file+olp "~/org/info.org" "Development Planning" "Kudos")
     (file "~/org/kudos.tmplt") )
-   ("h" "Home Personal Item" entry (file+headline "~/org/personal.org" "Personal")
+   ("h" "Home Personal Item" entry (file+headline "~/personal/org/personal.org" "Personal")
     (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)
    )))
 
-; Leaving "~/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/org/personal.org")))
+; Leaving "~/personal/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
+(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/personal/org/personal.org")))
 
 ;; Custom agenda block views
 ;; Stuff I want to see:
@@ -247,9 +248,9 @@ a:visited {
           (tags-todo "ProjectsFile|TasksFile"
                      ((org-agenda-skip-function (lambda nil (org-agenda-skip-entry-if 'todo '("STARTED"))))))
           (agenda "" ((org-agenda-span 'day)
-                      (org-agenda-files '("~/org/personal.org"))))
+                      (org-agenda-files '("~/personal/org/personal.org"))))
+          (todo "TODO")
           (tags "+needsrefile")
-          (todo "DONE")
           ))
         ("W" "Work meeting start of notes" occur-tree "^[[][0-9-]* [A-Za-z]* [0-9:]*[]] /[^/]*/.*$"
          ((org-agenda-overriding-header "Sparse tree regexp for start of meeting")))))

@@ -30,8 +30,8 @@
       helm-split-window-default-side        'below  ; considered right
       helm-ff-file-name-history-use-recentf t
       helm-quick-update                     t
-      helm-idle-delay                       0.01
-      helm-input-idle-delay                 0.01
+      helm-idle-delay                       0 ; was 0.01
+      helm-input-idle-delay                 0 ; was 0.01
       helm-ff-file-name-history-use-recentf t
       helm-buffers-fuzzy-matching           t
       helm-M-x-fuzzy-match                  t
@@ -49,25 +49,18 @@
 (if (fboundp 'session-yank)
     (setq session-save-print-spec     '(t nil 40000)))   ; https://github.com/emacs-helm/helm/issues/94
 
+
+;; Global helm key bindings
 (global-set-key (kbd "C-x b")     'helm-mini)
-
 (global-set-key (kbd "C-x C-f")   'helm-find-files)
-
 (global-set-key (kbd "C-c h o")   'helm-occur)
-
 (global-set-key (kbd "C-h SPC")   'helm-all-mark-rings)  ; This is ridiculous
 (global-set-key (kbd "C-c h SPC") 'helm-all-mark-rings)
-
 (global-set-key (kbd "C-c h g")   'helm-google-suggest)  ; More ridiculous
-
 (global-set-key (kbd "C-c h M-:") 'helm-eval-expression-with-eldoc)
-
 (global-set-key (kbd "C-h r")     'helm-info-emacs)
-
 (global-set-key (kbd "C-h d")     'helm-info-at-point)
-
 (global-set-key (kbd "<f1>")      'helm-resume)
-
 (global-set-key (kbd "C-c h i")   'helm-semantic-or-imenu)
 
 ;; Issue a C-u C-s while in helm-find-files to perform a recursive grep (or ack)
@@ -112,7 +105,7 @@
  '(helm-gtags-path-style 'relative)
  '(helm-gtags-ignore-case t)
  '(helm-gtags-auto-update t)
- '(helm-gtags-prefix-key "C-t")
+ '(helm-gtags-prefix-key "C-c")
  '(helm-gtags-suggested-key-mapping t))
 
 ;; key bindings
@@ -120,7 +113,7 @@
   '(progn
      (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
      (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
-     (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+     ;; (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
      (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
      (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
      (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
@@ -136,6 +129,12 @@
 (global-set-key (kbd "M-I") 'helm-swoop-back-to-last-point)
 (global-set-key (kbd "C-c M-i") 'helm-multi-swoop)
 (global-set-key (kbd "C-x M-i") 'helm-multi-swoop-all)
+
+; Keep track of where we were when we start paging around
+(defadvice helm-swoop (around my-scroll activate)
+  "Track last point before searching"
+  (push-mark (point) nil)
+  ad-do-it)
 
 ;; When doing isearch, hand the word over to helm-swoop
 (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)

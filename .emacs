@@ -108,6 +108,7 @@
 ;; I may enable flyspell-mode. When I do, let's kill the underline.
 (eval-after-load "flyspell"
   '(progn
+     (setq flyspell-issue-welcome-flag nil)
      (if (boundp 'flyspell-incorrect-face) (set-face-underline-p 'flyspell-incorrect-face nil))
      (if (boundp 'flyspell-duplicate-face) (set-face-underline-p 'flyspell-duplicate-face nil))))
 ; Most of my flyspell hook are located in their own respective config files,
@@ -350,7 +351,7 @@
 (defun jsm:highlight-current-word(b e)
   (interactive "r")
   (highlight-phrase
-   (buffer-substring-no-properties b e)
+   (format "\\<%s\\>" (buffer-substring-no-properties b e))
    'hi-yellow))
 ; I do not use mark-paragraph
 (global-set-key "\M-h" 'jsm:highlight-current-word)
@@ -414,6 +415,7 @@
                         "erc_config"
                         "misc_languages"
                         "efficiency_config"
+                        ;; Pick one: ido or helm
                         ; "ido_config"
                         "helm_config"
                         "email_config"

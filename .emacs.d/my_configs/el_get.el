@@ -26,17 +26,17 @@
  el-get-sources
  '(el-get                   ; self-hosting
    (:name cups
-          :type elpa)
+    :type elpa)
    (:name etags-table
-          :type elpa)
+    :type elpa)
    (:name xml-rpc
-          :type elpa)
+    :type elpa)
    (:name org2blog
-          :type elpa)
+    :type elpa)
    (:name org-mime
-          :type elpa)
+    :type elpa)
    (:name guide-key
-          :type elpa)
+    :type elpa)
    ))
 
 ; (el-get 'sync)
@@ -47,17 +47,17 @@
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
        '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized
-              lua-mode markdown-mode htmlize ldap-mode url-dav
-              org-caldav confluence-el expand-region iedit jedi mu4e
-              php-mode-improved flx paredit ido-vertical-mode dash
-              multiple-cursors guide-key visual-regexp projectile
-              ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
-              gtags multiple-cursors git-modes magit git-gutter popwin
-              idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
-              rpm-spec-mode cider rainbow-delimiters elixir org-reveal
-              graphviz-dot-mode term+ term+ki term+mux phi-search smex
-              helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
-              helm-gtags command-log-mode helm-swoop)))
+         lua-mode markdown-mode htmlize ldap-mode url-dav
+         org-caldav confluence-el expand-region iedit jedi mu4e
+         php-mode-improved flx paredit ido-vertical-mode dash
+         multiple-cursors guide-key visual-regexp projectile
+         ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
+         gtags multiple-cursors git-modes magit git-gutter popwin
+         idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
+         rpm-spec-mode cider rainbow-delimiters elixir org-reveal
+         graphviz-dot-mode term+ term+ki term+mux phi-search smex
+         helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
+         helm-gtags command-log-mode helm-swoop key-chord flycheck)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 

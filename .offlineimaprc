@@ -48,7 +48,7 @@ ssl = yes
 sslcacertfile = /etc/pki/tls/certs/ca-bundle.crt
 nametrans = lambda name: re.sub('^INBOX.', '', name)
 # folderfilter = lambda name: name in [ 'INBOX.important', 'INBOX.work' ]
-folderfilter = lambda name: not (name in [ 'Calendar', 'Contacts' ])
+folderfilter = lambda name: not (name in [ 'Calendar', 'Contacts', 'Drafts' ])
 # holdconnectionopen = yes
 maxconnections = 1
 # was 5 maxconnections

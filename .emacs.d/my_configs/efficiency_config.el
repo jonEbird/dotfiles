@@ -274,6 +274,7 @@
 
 ;; Enable semantic mode to better support imenu
 (semantic-mode 1)
+(setq semantic-edits-verbose-flag nil)
 
 ;; Capture my work window configuration and be able to switch back to it easily
 ;; ------------------------------
@@ -339,3 +340,10 @@
 
 ;; (require 'winring)
 ;; (winring-initialize)
+
+;; Key chords - http://www.emacswiki.org/emacs/key-chord.el
+;; ------------------------------
+(require 'key-chord)
+(key-chord-mode 1)
+(key-chord-define-global ",."     "<>\C-b")
+
