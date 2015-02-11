@@ -156,8 +156,23 @@
 ; in there. Instead have introduced a variable `msmtp-account' to track the
 ; specific msmtp account name to use when sending an email.
 (defun cg-feed-msmtp ()
-  (if (message-mail-p)
-      (setq message-sendmail-extra-arguments (list "-a" msmtp-account))))
+  (let* ((from
+          (save-restriction
+            (message-narrow-to-headers)
+            (message-fetch-field "from")))
+         (account-vars
+          (car
+           (delq 'nil
+                 (mapcar (lambda (account)
+                           (if (string-match (cadr (assq 'user-mail-address account)) from)
+                               (cdr account)))
+                         my-mu4e-account-alist)))))
+    (if account-vars
+        (progn
+          (mapc #'(lambda (var)
+                    (set (car var) (cadr var)))
+                account-vars)
+          (setq message-sendmail-extra-arguments (list "-a" msmtp-account))))))
 
 (add-hook 'message-send-mail-hook 'cg-feed-msmtp)
 
@@ -269,6 +284,18 @@ query"
 
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
 
+; Thanks to a solution provided in github - https://github.com/djcb/mu/issues/516#issuecomment-73392975 
+(defun stefan/mu4e-next-thread ()
+  (interactive)
+  (mu4e-headers-find-if-next
+   (lambda (msg)
+     (let ((thread (mu4e-message-field msg :thread)))
+        (or
+         (eq 0 (plist-get thread :level))
+         (plist-get thread :empty-parent))))))
+
+(define-key 'mu4e-headers-mode-map (kbd "TAB") 'stefan/mu4e-next-thread)
+
 ;-Helping-Functions--------------------------------
 
 (defun jsm/shr-browse-url ()
@@ -323,11 +350,13 @@ query"
   ; They all start with "mu4e": mu4e-main-mode, mu4e-headers-mode, mu4e-view-mode
   (if (or (string= "mu4e" (substring (symbol-name major-mode) 0 4))
           (string-match (expand-file-name "~/Maildir") (or buffer-file-name "")))
-      (progn
+      (progn ;; Currently with email
         (window-configuration-to-register ?m nil)
+        (when (= (length (window-list)) 1)
+          (bury-buffer))
         (unless (ignore-errors (jump-to-register ?e))
           (find-file (expand-file-name "~/org/projects.org"))))
-    (progn
+    (progn ;; Currently not looking at an email buffer
       (window-configuration-to-register ?e nil)
       (delete-other-windows)
       (unless (ignore-errors (jump-to-register ?m))
@@ -415,28 +444,30 @@ contact from all those present in the database."
 ;-Looking-up-Contacts--------------------
 
 ; Inspired from helm-mu
-(defun jsm/mu-contacts-init ()
-  "Retrieves contacts from mu."
+(defun jsm/mu-contact-lookup (name)
+  "Searches mu contacts for name"
   (let ((cmd (concat
-              "mu cfind --format=mutt-ab"
+              (format "mu cfind --format=mutt-ab %s" name)
               "| sed -n '/@/s/\\([^\t]*\\)\t\\([^\t]*\\).*/\"\\2\" <\\1>/p'"
               "| sed 's/\"\" //g'"
               "| egrep -v 'root@| <logwatch@| <buzz|@txt.voice.google|@plus.google.com'")))
     (cdr (split-string (shell-command-to-string cmd) "\n"))))
 
-(setq jsm/my-contacts (jsm/mu-contacts-init))
-
-;; Now add mailrc alias entries as well (inspired from mailabbrev.el)
-(with-temp-buffer
-  (insert-file-contents (or mail-personal-alias-file "~/.mailrc"))
-  (while (re-search-forward
-          "^a\\(lias\\)?[ \t]+" nil t)
-    (beginning-of-line)
-    (re-search-forward "[ \t]+\\([^ \t\n]+\\)")
-    (let ((name (buffer-substring
-                 (match-beginning 1) (match-end 1))))
-      (end-of-line)
-      (add-to-list 'jsm/my-contacts name))))
+;; Inspired from mailabbrev.el
+(defun my-mail-aliases ()
+  "Grab just the mail alias names from ~/.mailrc to be included in completion"
+  (with-temp-buffer
+    (insert-file-contents (or mail-personal-alias-file "~/.mailrc"))
+    (let ((my-aliases '()))
+      (while (re-search-forward
+              "^a\\(lias\\)?[ \t]+" nil t)
+        (beginning-of-line)
+        (re-search-forward "[ \t]+\\([^ \t\n]+\\)")
+        (let ((name (buffer-substring
+                     (match-beginning 1) (match-end 1))))
+          (end-of-line)
+          (add-to-list 'my-aliases name)))
+      my-aliases)))
 
 (defun jsm/complete-address ()
   "Complete address at point if possible"
@@ -445,15 +476,15 @@ contact from all those present in the database."
                      (cons (region-beginning) (region-end))
                    (bounds-of-thing-at-point 'symbol)))
          (eoh ;; end-of-headers
-             (save-excursion
-               (goto-char (point-min))
-               (search-forward-regexp mail-header-separator nil t))))
+          (save-excursion
+            (goto-char (point-min))
+            (search-forward-regexp mail-header-separator nil t))))
     (if (and bounds
-               (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p)))
-      (let* ((text (buffer-substring-no-properties (car bounds) (cdr bounds)))
-             (address (funcall my-address-completion-func jsm/my-contacts text)))
-        (delete-region (car bounds) (cdr bounds))
-        (insert address))
+             (and eoh (> eoh (point)) (mail-abbrev-in-expansion-header-p)))
+        (let* ((text (buffer-substring-no-properties (car bounds) (cdr bounds)))
+               (candidates (append (jsm/mu-contact-lookup text) (my-mail-aliases))))
+          (delete-region (car bounds) (cdr bounds))
+          (insert (funcall my-address-completion-func candidates text)))
       (insert "\t"))))
 
 (defun my-ido-email-address-complete (addresses initial)
