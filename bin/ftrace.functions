@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Helper ftrace functions
+TRACING_DIR=/sys/kernel/debug/tracing
+
+ftrace_start() {
+    if [ "$(cat ${TRACING_DIR}/current_tracer)" == "nop" ]; then
+        echo "Setting current_tracer to \"function\" since you have nop"
+        echo function > ${TRACING_DIR}/current_tracer
+    fi
+    echo "Starting ftrace"
+    echo 1 > ${TRACING_DIR}/tracing_on
+}
+
+ftrace_stop() {
+    echo 0 > ${TRACING_DIR}/tracing_on
+    echo "Stopped ftrace"
+}
+
+ftrace_copy() {
+    if [ ! -w . ]; then
+        echo "Can not write to $(pwd). Moving to /root"
+        cd /root
+    fi
+    local unique_trace="trace.$(date +%Y%m%d_%H%M%S)"
+    if [ -n "$1" ]; then
+        unique_trace="${unique_trace}.$1"
+    fi
+    cp ${TRACING_DIR}/trace "$unique_trace"
+    echo "Copied ftrace to \"$(pwd)/${unique_trace}\""
+}
+
+ftrace_collect_for() {
+    local sleep_time=$1
+    if [ -z "$sleep_time" ]; then
+        echo "Usage: ftrace_collect_for sleeptime"
+        return 1
+    fi
+    ftrace_start; sleep $sleep_time; ftrace_stop; ftrace_copy
+}
+
+ftrace_cpumask() {
+    if [ -z "$1" ]; then
+        cat ${TRACING_DIR}/tracing_cpumask | bitops --fmt xL 2>&-
+    else
+        echo "Setting tracing_cpumask to $1"
+        echo $1 | bitops -f lX > ${TRACING_DIR}/tracing_cpumask
+    fi
+}
+
+ftrace_pidmask() {
+    # Limit the ftrace to a single pid or reset it
+    case $1 in
+    [0-9]*)
+        echo $1 > ${TRACING_DIR}/set_ftrace_pid
+        ;;
+    reset)
+        echo > ${TRACING_DIR}/set_ftrace_pid
+        ;;
+    *)
+        cat ${TRACING_DIR}/set_ftrace_pid
+        ;;
+    esac
+}
+
+ftrace_buffer() {
+    if [ -z "$1" ]; then
+        # Report current buffer size when no argument
+        awk '{ printf("%d (%.2fMb)\n", $1, $1 / 1024) }' ${TRACING_DIR}/buffer_size_kb
+    else
+        kbytes=$(echo "$1" | sed -r -e 's/[kK][bB]?//g' -e 's/[mM][bB]?/*1024/g' \
+            -e 's/[gG][bB]?/*1024*1024/g' | bc)
+        if [ $kbytes -ne $(cat ${TRACING_DIR}/buffer_size_kb | awk '{print $1}') ]; then
+            # First disable the current tracer
+            cur_tracer=$(cat ${TRACING_DIR}/current_tracer)
+            echo nop > ${TRACING_DIR}/current_tracer
+            echo $kbytes > ${TRACING_DIR}/buffer_size_kb
+            echo $cur_tracer > ${TRACING_DIR}/current_tracer
+        fi
+    fi
+}
+
+ftrace_info() {
+    if [ "$(cat ${TRACING_DIR}/tracing_on)" == "0" ]; then
+        echo "Tracing is currently OFF"
+    else
+        echo "Tracing is currently ON"
+    fi
+    echo "Buffer size in KB is $(cat ${TRACING_DIR}/buffer_size_kb)"
+    echo "Current tracer is \"$(cat ${TRACING_DIR}/current_tracer)\""
+    echo "Tracing is limited to CPUs $(cat ${TRACING_DIR}/tracing_cpumask | bitops --fmt xL 2>&-)"
+}
+
+if basename -- $0 | /usr/bin/egrep '^-?(bash|zsh)' >/dev/null; then
+    echo "Functions sourced"
+    return
+fi
