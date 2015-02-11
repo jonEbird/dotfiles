@@ -1,21 +1,27 @@
 ; -*- emacs-lisp -*-
 
-;;(load-file "~/projects/stackoverflow/flymake.el")
-;; (when (load "flymake" t)
-;;   (defun flymake-pyflakes-init ()
-;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
-;; 		       'flymake-create-temp-inplace))
-;; 	   (local-file (file-relative-name
-;; 			temp-file
-;; 			(file-name-directory buffer-file-name))))
-;;       (list "pyflakes" (list local-file))))
-;;   (add-to-list 'flymake-allowed-file-name-masks
-;; 	       '("\\.py\\'" flymake-pyflakes-init)))
-;;(add-hook 'find-file-hook 'flymake-find-file-hook)
-
 ; Jedi auto completion support
 (if (require 'jedi nil 'noerror)
   ; (add-hook 'python-mode-hook 'auto-complete-mode 'append)
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:setup-keys t
         jedi:complete-on-dot t))
+
+;; enable flycheck support
+;; Would have tried Steve Purcell's flymake-python-pyflakes had flycheck
+;; not worked out for me.
+
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(setq flycheck-idle-change-delay 15)
+
+(cond ((boundp 'helm-mode)
+       (setq flycheck-completion-system 'nil))
+      ((boundp 'ido-mode)
+       (setq flycheck-completion-system 'ido)))
+
+;; concider customizing Variables:
+;;  flycheck-flake8-error-level-alist
+;;  flycheck-flake8-maximum-complexity
+;;  flycheck-flake8-maximum-line-length
+;;  flycheck-flake8rc -> ~/.config/flake8

@@ -1,3 +1,9 @@
 [pep8]
 ignore = E221,E265,E302,E301,W602,E126,E127,E502
 max-line-length = 100
+
+[flake8]
+ignore = E221,E265,E302,E301,W602,E126,E127,E502
+max-line-length = 100
+exclude = tests/*
+max-complexity = 10
