@@ -49,8 +49,8 @@
 (require 'desktop)
 (require 'savehist)
 (setq
- desktop-base-file-name (concat (expand-file-name "~/.emacs.desktop.") hostname)
- desktop-base-lock-name (concat (expand-file-name "~/.emacs.desktop.") hostname ".lock")
+ desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") hostname)
+ desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") hostname ".lock")
  savehist-file (concat (expand-file-name "~/.emacs.d/history.") hostname)
  history-length 250)
 (desktop-save-mode 1)

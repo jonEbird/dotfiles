@@ -45,7 +45,11 @@
 (setq org-clock-into-drawer t)
 ; Face it, your spelling sucks. You /need/ flyspell-mode on!
 ; FIXME: flyspell is killing org-archive on C-c $
-(add-hook 'org-mode-hook 'turn-on-flyspell 'append)
+(defun my-org-mode-settings ()
+  (interactive)
+  (turn-on-flyspell)
+  (flycheck-mode -1))
+(add-hook 'org-mode-hook 'my-org-mode-settings 'append)
 ; Hide all blank lines inside folded contents of headings
 (setq org-cycle-separator-lines 0)
 ; Allow alphabetic lists to be recognized for lists

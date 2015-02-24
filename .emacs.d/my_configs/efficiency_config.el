@@ -92,6 +92,8 @@
 (setq projectile-tags-command "gtags ."
       projectile-tags-file-name "GTAGS")
 
+(add-to-list 'projectile-globally-ignored-modes "Helm.*")
+
 ; Launch a unique shell for the particular session or project
 (defun jsm/unique-shell (&optional directory)
   "Start or return to a shell session named and started from a particular directory"

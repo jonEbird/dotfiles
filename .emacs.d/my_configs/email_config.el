@@ -107,6 +107,10 @@
 (setq mu4e-user-mail-address-list
       (mapcar (lambda (account) (cadr (assq 'user-mail-address account))) my-mu4e-account-alist))
 
+;; Prevent mail buffers from being included in project lists
+(if (boundp 'projectile-mode)
+    (add-to-list 'projectile-globally-ignored-modes "mu4e.*"))
+
 ;-Viewing-Email------------------------------------
 
 ;; https://groups.google.com/forum/#!topic/mu-discuss/xlZegBifdaA

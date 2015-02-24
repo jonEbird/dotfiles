@@ -9,6 +9,7 @@
     (paredit-mode)
     (rainbow-delimiters-mode)
     (git-gutter-mode)
+    (eldoc-mode 1)
     (define-key paredit-mode-map (kbd "M-q") 'fill-paragraph)))
 
 ;; Paredit
