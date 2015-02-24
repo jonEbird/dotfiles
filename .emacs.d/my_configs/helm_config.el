@@ -71,6 +71,10 @@
 ; Help to find man page entries at point via "C-c h m"
 (add-to-list 'helm-sources-using-default-as-input 'helm-source-man-pages)
 
+;; Tweak helm-mini to include bookmarks
+(setq helm-mini-default-sources
+      '(helm-source-buffers-list helm-source-recentf helm-source-bookmarks helm-source-buffer-not-found))
+
 ;; External Package Interface
 ; --------------------------------------------------
 (require 'helm-projectile)
