@@ -10,5 +10,7 @@
 	d = diff --color-words
 	alias = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\\t => \\2/' | sort
 	t = describe --abbrev=0 --tags
+	id = log -1 --pretty=format:'%C(cyan)%H%Creset (%C(yellow)%h%Creset)'
+	nix = "!f() { git rebase -p --onto $1^ $1; }; f"
 [push]
 	default = simple
