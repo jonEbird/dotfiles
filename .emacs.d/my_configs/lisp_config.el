@@ -23,6 +23,9 @@
 (add-hook 'geiser-repl-mode-hook                 'jsm/lisp-modes-hook)
 (add-hook 'clojure-mode-hook                     'jsm/lisp-modes-hook)
 
+;; Help out elisp hacking
+(define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function)
+
 ;; Scheme Development
 ;; ------------------------------
 ;; Geiser - Scheme development environment

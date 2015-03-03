@@ -317,18 +317,18 @@
 (csetq ediff-window-setup-function 'ediff-setup-windows-plain)
 (csetq ediff-split-window-function 'split-window-horizontally)
 (csetq ediff-diff-options "-w")
+(csetq ediff-show-clashes-only t)
 
-(defun ora-ediff-hook ()
-  (ediff-setup-keymap)
-  (define-key ediff-mode-map "j" 'ediff-next-difference)
-  (define-key ediff-mode-map "k" 'ediff-previous-difference))
+(defun my-ediff-cleanup ()
+  (interactive)
+  (ediff-janitor nil nil))
 
-(add-hook 'ediff-mode-hook 'ora-ediff-hook)
+(add-hook 'ediff-cleanup-hook 'my-ediff-cleanup)
 
 ;; TODO: Move from winner-mode to leveraging `ediff-before-setup-hook' and
 ;; then restore it from `ediff-quit-hook' and `ediff-suspend-hook'
 (winner-mode)
-(add-hook 'ediff-after-quit-hook-internal 'winner-undo)
+;; (add-hook 'ediff-after-quit-hook-internal 'winner-undo)
 
 ;; (setq my-window-config (current-window-configuration))
 ;; (set-window-configuration my-window-config)
