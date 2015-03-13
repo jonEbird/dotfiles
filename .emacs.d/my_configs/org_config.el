@@ -13,10 +13,10 @@
 ;    http://orgmode.org/worg/org-contrib/#repofile-contrib-lisp-org-checklist.el
 (load-file (expand-file-name "~/.emacs.d/org-checklist.el"))
 
-;; org-jira
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
-(require 'org-jira)
-(setq jiralib-url "https://crd-jira.qualcomm.com/jira")
+;; ;; org-jira
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
+;; (require 'org-jira)
+;; (setq jiralib-url "https://crd-jira.qualcomm.com/jira")
 
 ;; --------------------------------------------------
 ;; Basic org configuration
