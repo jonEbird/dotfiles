@@ -50,7 +50,7 @@ def get_ocean_temps(date, station="9410170", units="english"):
         data = urllib2.urlopen(URL, timeout=3).read()
         with open(cache_file, 'w') as cache:
             cache.write(data)
-    except socket.timeout:
+    except (socket.timeout, urllib2.HTTPError):
         if os.path.exists(cache_file):
             data = open(cache_file).read()
         else:

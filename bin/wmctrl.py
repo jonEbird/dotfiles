@@ -16,7 +16,6 @@ def wmctrl(*args):
     """ Run the wmctl with the arguments passed and return the stdout """
     #print 'DEBUG: Running: %s' % (' '.join(['wmctrl'] + list(args)))
     p = subprocess.Popen(['wmctrl'] + list(args), stdout=subprocess.PIPE)
-    #p.wait()
     stdout, stderr = p.communicate()
     if stderr:
         print 'STDERR: "%s"' % (stderr)
@@ -28,7 +27,6 @@ def pid2name(pid):
         return ''
     cmd = 'ps --no-header -o comm -p %s' % (str(pid))
     p = subprocess.Popen(cmd.split(), stdout=subprocess.PIPE)
-    p.wait()
     stdout, stderr = p.communicate()
     return stdout.strip()
 
