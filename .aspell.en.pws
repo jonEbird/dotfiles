@@ -1,4 +1,4 @@
-personal_ws-1.1 en 734 
+personal_ws-1.1 en 742 
 Google
 PyPi
 Ashok's
@@ -24,10 +24,10 @@ gitlab
 github
 handoffs
 https
-RPM's
 RPMs
-SCONs
+RPM's
 SCons
+SCONs
 STDERR
 kthreadd
 DBs
@@ -59,6 +59,7 @@ syspart
 cgroup
 Gradle
 kexec
+cmn
 dimmable
 runnable
 wordpress
@@ -77,6 +78,7 @@ daemonizing
 profiler
 onboard
 BTS
+crd
 EIA
 systemtap
 openssl
@@ -87,9 +89,9 @@ xslt
 automake
 cpu
 BitBake
-CTC
-FEC
 csh
+FEC
+CTC
 Qualcomm's
 Mormor
 unicode
@@ -131,8 +133,8 @@ Env
 virtualenv
 ERC
 tunables
-cmake
 CMake
+cmake
 initramfs
 Moma
 gid
@@ -145,6 +147,7 @@ Awaiz
 backtrace
 ESN
 CDMA
+RSUs
 McQuire
 sqft
 OpenEmbedded
@@ -204,8 +207,8 @@ ngircd
 imagemagick
 Makefile
 GPRS
-IPI
 GYN
+IPI
 Cher
 Farmor
 MSIM
@@ -252,6 +255,7 @@ Thelonious
 Dereferencing
 btfile
 Tesseract
+thirdParty
 dbus
 btdomain
 hpet
@@ -294,9 +298,9 @@ lockless
 namespace
 LVM
 iptables
-OID
-PCI
 ethtool
+PCI
+OID
 QLDAP
 pdf
 DHCP
@@ -314,6 +318,7 @@ segfaulting
 ldsudo
 pychecker
 MTU
+QCOM
 warrentee
 rmdir
 pid
@@ -323,16 +328,16 @@ auth
 PHP
 qcow
 braxton
-UMTS
 VLAN
+UMTS
 ansible
 noquota
 QCT
 manpage
 downlink
 Javascript
-OOO
 NST
+OOO
 ntp
 ethernet
 sysctl
@@ -356,14 +361,16 @@ dropdown
 pietest
 PPD
 CTest
-RCU
 QIP
+RCU
 Makefile's
 Makefiles
 outliers
 OSU
 retransmission
 REQ
+ntpd
+algorithmically
 JIRA
 Jira
 hideall
@@ -385,8 +392,8 @@ sed
 rhn
 html
 cpumask
-scp
 SDK
+scp
 AttributeError
 TTUN
 jonEbird
@@ -449,8 +456,8 @@ chgrp
 Manfrotto
 SNR
 changelog
-CPack
 cpack
+CPack
 interworking
 RSS
 SPI
@@ -569,10 +576,10 @@ breakpoint
 elip
 ntpdate
 interoperability
-FishEye
 Fisheye
-SysRq
+FishEye
 sysrq
+SysRq
 symlink
 proc
 chmod
@@ -724,6 +731,7 @@ HDFS
 Subchorionic
 LLVM
 Username
+differentiator
 dport
 MIMO
 passphrase

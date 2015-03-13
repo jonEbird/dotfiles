@@ -87,6 +87,8 @@
 (setq gtags-suggested-key-mapping t
       gtags-auto-update t)
 
+(setq large-file-warning-threshold (* 150 1000 1000)) ; 150M
+
 (require 'gtags)
 ; (add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
 ; gtags-find-tag (C-c t) - goes to function def
@@ -105,6 +107,9 @@
 
 ; Update the Projectile command for generating tags
 (setq projectile-tags-command "gtags")
+
+;; Add missing VC commands
+(global-set-key (kbd "C-x v f") 'vc-git-grep)
 
 ; (gtags-visit-rootdir "/usr/src/linux-2.6.21")
 

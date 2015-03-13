@@ -116,8 +116,20 @@
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
 
 ;; Make files that should be executable, executable
+(defun jsm:make-buffer-file-executable-if-script-p ()
+  "Limit the situations that I want scripts to be made executable"
+  (interactive)
+  (let ((parent-dir (file-name-base
+                     (directory-file-name
+                      (file-name-directory buffer-file-name)))))
+    (if (cond ((eq major-mode 'sh-mode) t)
+              ((and (eq major-mode 'python-mode)
+                    (string= parent-dir "scripts")) t)
+              (t nil))
+        (executable-make-buffer-file-executable-if-script-p))))
+
 (add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
+          'jsm:make-buffer-file-executable-if-script-p)
 
 ;; In addition to flyspell use abbrev to help with my common spelling mistakes
 ; Define new abbreviations via: "C-x a i g" for global or "C-x a i l" for
@@ -242,6 +254,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ediff-current-diff-C ((t (:background "gold4"))))
+ '(ediff-fine-diff-B ((t (:background "dark green"))))
  '(flyspell-incorrect ((t (:inherit error :foreground "firebrick3"))))
  '(org-level-5 ((t (:inherit outline-5 :foreground "dark orange"))))
  '(org-level-6 ((t (:inherit outline-6 :foreground "gold"))))
@@ -408,7 +422,7 @@
 ; load my configuration files
 (jsm:load-config-file '("el_get"
                         "lisp_config"
-                        ; "yasnippet_config"
+                        ;; "yasnippet_config"
                         "backup_config"
                         "org_config"
                         "tramp_config"

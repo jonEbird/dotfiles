@@ -1,5 +1,6 @@
 ;; Config for running a screencast
 
+;; https://launchpad.net/screenkey/+download
 (defvar screenkey-timeout 4
   "Number of seconds to allow screenkey to run normally")
 
