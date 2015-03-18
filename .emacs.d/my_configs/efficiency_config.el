@@ -82,7 +82,7 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t
-      projectile-indexing-method 'native)
+      projectile-indexing-method 'alien)
 
 ; I will periodically do the following to keep my dot-files project from
 ; cluttering projectile's caching:
@@ -92,7 +92,7 @@
 (setq projectile-tags-command "gtags ."
       projectile-tags-file-name "GTAGS")
 
-(add-to-list 'projectile-globally-ignored-modes "Helm.*")
+(add-to-list 'projectile-globally-ignored-modes "helm.*")
 
 ; Launch a unique shell for the particular session or project
 (defun jsm/unique-shell (&optional directory)
@@ -236,18 +236,18 @@
 ; (global-set-key (kbd "<f6>") (faux-screen-utility-terminal "jon"))
 ; (funcall jon-shell "~/repos")
 
-; Setup a utility terminal to be used in ad-hoc situations using the
-; currnet default-directory location
+;; Setup a utility terminal to be used in ad-hoc situations using the
+;; current default-directory location
 (global-set-key (kbd "<f12>")
                 (lambda ()
                   (interactive)
                   (funcall (faux-screen-utility-terminal "Utility") default-directory)))
 
-; integrate with projectile
-(defun jsm/projectile-shell ()
+;; Integrate with projectile
+(defun projectile-utility-shell ()
   (interactive)
   (funcall (faux-screen-utility-terminal "prj") (projectile-project-root)))
-(define-key projectile-command-map (kbd "$") 'jsm/projectile-shell)
+(define-key projectile-command-map (kbd "$") 'projectile-utility-shell)
 
 ;; Recentf Support
 ;; ------------------------------

@@ -1,4 +1,4 @@
-personal_ws-1.1 en 742 
+personal_ws-1.1 en 745 
 Google
 PyPi
 Ashok's
@@ -24,10 +24,10 @@ gitlab
 github
 handoffs
 https
-RPMs
 RPM's
-SCons
+RPMs
 SCONs
+SCons
 STDERR
 kthreadd
 DBs
@@ -77,9 +77,10 @@ CRC
 daemonizing
 profiler
 onboard
-BTS
 crd
+BTS
 EIA
+subtree
 systemtap
 openssl
 FDD
@@ -89,9 +90,9 @@ xslt
 automake
 cpu
 BitBake
-csh
-FEC
 CTC
+FEC
+csh
 Qualcomm's
 Mormor
 unicode
@@ -133,8 +134,8 @@ Env
 virtualenv
 ERC
 tunables
-CMake
 cmake
+CMake
 initramfs
 Moma
 gid
@@ -207,8 +208,8 @@ ngircd
 imagemagick
 Makefile
 GPRS
-GYN
 IPI
+GYN
 Cher
 Farmor
 MSIM
@@ -299,8 +300,8 @@ namespace
 LVM
 iptables
 ethtool
-PCI
 OID
+PCI
 QLDAP
 pdf
 DHCP
@@ -328,16 +329,16 @@ auth
 PHP
 qcow
 braxton
-VLAN
 UMTS
+VLAN
 ansible
 noquota
 QCT
 manpage
 downlink
 Javascript
-NST
 OOO
+NST
 ntp
 ethernet
 sysctl
@@ -361,16 +362,16 @@ dropdown
 pietest
 PPD
 CTest
-QIP
 RCU
+QIP
 Makefile's
 Makefiles
 outliers
 OSU
 retransmission
+algorithmically
 REQ
 ntpd
-algorithmically
 JIRA
 Jira
 hideall
@@ -456,8 +457,8 @@ chgrp
 Manfrotto
 SNR
 changelog
-cpack
 CPack
+cpack
 interworking
 RSS
 SPI
@@ -465,6 +466,8 @@ xymon
 dropbox
 src
 UEs
+subtree's
+subtrees
 DNAT
 bootable
 submodule
@@ -576,10 +579,10 @@ breakpoint
 elip
 ntpdate
 interoperability
-Fisheye
 FishEye
-sysrq
+Fisheye
 SysRq
+sysrq
 symlink
 proc
 chmod

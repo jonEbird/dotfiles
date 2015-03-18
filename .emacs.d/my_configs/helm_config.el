@@ -39,6 +39,18 @@
       ido-use-virtual-buffers               t
       )
 
+;; http://www.reddit.com/r/emacs/comments/2z7nbv/lean_helm_window/
+(setq helm-autoresize-max-height 30)  ;; Orig 40
+(setq helm-autoresize-min-height 30)  ;; Orig 10
+(helm-autoresize-mode 1)
+
+(defun helm-toggle-header-line ()
+  (if (= (length helm-sources) 1)
+      (set-face-attribute 'helm-source-header nil :height 0.1)
+    (set-face-attribute 'helm-source-header nil :height 1.0)))
+
+(add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
+
 ; (add-to-list 'helm-boring-file-regexp-list "")
 (add-to-list 'completion-ignored-extensions ".snapshot/")
 

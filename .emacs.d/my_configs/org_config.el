@@ -35,8 +35,8 @@
 
 ;; Other Org variables
 ; Typical work estimates for a task
-(setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
-                                    ("STYLE_ALL" . "habit"))))
+(setq org-global-properties '(("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
+                              ("STYLE_ALL" . "habit")))
 ; columns shown in column mode (defaults to "%25ITEM %TODO %3PRIORITY %TAGS")
 (setq org-columns-default-format "%80ITEM %TODO %3PRIORITY %10Effort(Effort){:} %TAGS"
       org-tags-column -100)
@@ -72,28 +72,28 @@
 ; Setup additional colors for the various TODO states
 ; #+TODO: TODO(t) STARTED(s) DELEGATED(d@) WAITING(w@) | DONE(o@) CANCELED(c@)
 (setq org-todo-keyword-faces
-      (quote (("TODO" :foreground "red" :weight bold)
-              ("STARTED" :foreground "steel blue" :weight bold)
-              ("INFO" :foreground "blue" :weight bold)
-              ("DELEGATED" :background "red" :foreground "black" :weight bold)
-              ("WAITING" :foreground "orange" :weight bold)
-              ("DONE" :foreground "forest green" :weight bold)
-              ("CANCELED" :foreground "yellow" :weight bold)
-              ("PHONE" :foreground "forest green" :weight bold))))
+      '(("TODO" :foreground "red" :weight bold)
+        ("STARTED" :foreground "steel blue" :weight bold)
+        ("INFO" :foreground "blue" :weight bold)
+        ("DELEGATED" :background "red" :foreground "black" :weight bold)
+        ("WAITING" :foreground "orange" :weight bold)
+        ("DONE" :foreground "forest green" :weight bold)
+        ("CANCELED" :foreground "yellow" :weight bold)
+        ("PHONE" :foreground "forest green" :weight bold)))
 ; language recognition for #+begin_src blocks
-(setq org-src-lang-modes (quote
-                          (("ocaml" . tuareg)
-                           ("elisp" . emacs-lisp)
-                           ("ditaa" . artist)
-                           ("asymptote" . asy)
-                           ("dot" . graphviz-dot)
-                           ("shell" . sh)
-                           ("python" . python)
-                           ("javascript" . js)
-                           ("c" . c)
-                           ("sql" . sql)
-                           ("scheme" . scheme)
-                           ("exlixir" . elixir))))
+(setq org-src-lang-modes
+      '(("ocaml" . tuareg)
+        ("elisp" . emacs-lisp)
+        ("ditaa" . artist)
+        ("asymptote" . asy)
+        ("dot" . graphviz-dot)
+        ("shell" . sh)
+        ("python" . python)
+        ("javascript" . js)
+        ("c" . c)
+        ("sql" . sql)
+        ("scheme" . scheme)
+        ("exlixir" . elixir)))
 (setq org-src-preserve-indentation t
       org-src-fontify-natively t
       org-src-tab-acts-natively t
@@ -107,21 +107,21 @@
 
 ; org-babel configuration
 (org-babel-do-load-languages
- (quote org-babel-load-languages)
- (quote ((emacs-lisp . t)
-         (dot . t)
-         (ditaa . t)
-         (R . t)
-         (python . t)
-         (ruby . t)
-         (gnuplot . t)
-         (clojure . t)
-         (sh . t)
-         (ledger . t)
-         (org . t)
-         (plantuml . t)
-         (latex . t)
-         (scheme . t))))
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (dot . t)
+   (ditaa . t)
+   (R . t)
+   (python . t)
+   (ruby . t)
+   (gnuplot . t)
+   (clojure . t)
+   (sh . t)
+   (ledger . t)
+   (org . t)
+   (plantuml . t)
+   (latex . t)
+   (scheme . t)))
 
 (setq org-ditaa-jar-path "/usr/share/java/ditaa.jar")
 (setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
@@ -187,11 +187,10 @@ a:visited {
 ;  This allows for file like pathing for refiling and lets me pick heading and subheading (level <= 2)
 (setq org-refile-use-outline-path t)
 ;; (setq org-refile-targets (quote ((nil :maxlevel . 2))))
-(setq org-refile-targets (quote ((nil :maxlevel . 2)
-                                 ("~/org/info.org" :maxlevel . 2)
-                                 ("~/org/projects.org" :maxlevel . 3)
-                                 ("~/personal/org/personal.org" :maxlevel . 2)
-                                 )))
+(setq org-refile-targets '((nil :maxlevel . 2)
+                           ("~/org/info.org" :maxlevel . 2)
+                           ("~/org/projects.org" :maxlevel . 3)
+                           ("~/personal/org/personal.org" :maxlevel . 2)))
 
 ;; --------------------------------------------------
 ;; Customize Capture and Agenda
@@ -204,32 +203,29 @@ a:visited {
           'append)
 
 ;; Capture new TODO items via org-capture
-(setq
- org-directory "~/org"
- org-default-notes-file (concat org-directory "/notes.org")
- )
+(setq org-directory "~/org"
+      org-default-notes-file (concat org-directory "/notes.org"))
 
-(setq org-capture-templates (quote (
-   ("t" "Todo Item" entry (file+headline "~/org/tasks.org" "Tasks")
-    (file "~/org/tasks.tmplt") )
-   ("v" "Vendor or Product" entry (file+olp "~/org/projects.org" "Vendors" "Misc Vendor or Product")
-    (file "~/org/vendor_product.tmplt") :clock-in t :clock-resume t)
-   ("p" "Projects or Repeating" entry (file+headline "~/org/projects.org" "Projects")
-    (file "~/org/projects.tmplt") )
-   ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
-    (file "~/org/meetings.tmplt") )
-   ("s" "Support Production or Oncall Consultation" entry (file+headline "~/org/projects.org" "Support Production")
-    (file "~/org/support.tmplt") )
-   ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
-    (file "~/org/info.tmplt") )
-   ("k" "Kudos to You" entry (file+olp "~/org/info.org" "Development Planning" "Kudos")
-    (file "~/org/kudos.tmplt") )
-   ("h" "Home Personal Item" entry (file+headline "~/personal/org/personal.org" "Personal")
-    (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)
-   )))
+(setq org-capture-templates
+      '(("t" "Todo Item" entry (file+headline "~/org/tasks.org" "Tasks")
+         (file "~/org/tasks.tmplt") )
+        ("v" "Vendor or Product" entry (file+olp "~/org/projects.org" "Vendors" "Misc Vendor or Product")
+         (file "~/org/vendor_product.tmplt") :clock-in t :clock-resume t)
+        ("p" "Projects or Repeating" entry (file+headline "~/org/projects.org" "Projects")
+         (file "~/org/projects.tmplt") )
+        ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
+         (file "~/org/meetings.tmplt") )
+        ("s" "Support Production or Oncall Consultation" entry (file+headline "~/org/projects.org" "Support Production")
+         (file "~/org/support.tmplt") )
+        ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
+         (file "~/org/info.tmplt") )
+        ("k" "Kudos to You" entry (file+olp "~/org/info.org" "Development Planning" "Kudos")
+         (file "~/org/kudos.tmplt") )
+        ("h" "Home Personal Item" entry (file+headline "~/personal/org/personal.org" "Personal")
+         (file "~/org/personal.tmplt") :clock-in t :clock-resume t :kill-buffer t)))
 
 ; Leaving "~/personal/org/personal.org" out of my org-agenda-files. Can narrow ('<') for home Agenda work.
-(setq org-agenda-files (quote ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/personal/org/personal.org")))
+(setq org-agenda-files '("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org" "~/personal/org/personal.org"))
 
 ;; Custom agenda block views
 ;; Stuff I want to see:
