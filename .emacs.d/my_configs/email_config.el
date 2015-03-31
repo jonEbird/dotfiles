@@ -63,7 +63,7 @@
       '( (:human-date    .  13)
          (:flags         .   6)
          (:from-or-to    .  22)
-         (:subject       .  nil)))
+         (:thread-subject       .  nil)))
 
 ;; When 'j'umping to a Maildir, you can set these shortcuts
 (setq mu4e-maildir-shortcuts
@@ -234,13 +234,13 @@ non-threaded and regular headers when disabling"
                (:flags         .   6)
                (:mailing-list  .  30)
                (:from-or-to    .  22)
-               (:subject       .  nil))
+               (:thread-subject       .  nil))
             mu4e-headers-show-threads t)
     (setq mu4e-headers-fields
           '( (:human-date    .  13)
              (:flags         .   6)
              (:from-or-to    .  22)
-             (:subject       .  nil))
+             (:thread-subject       .  nil))
           mu4e-headers-show-threads nil)))
 
 (defun jsm/toggle-view-mailing-lists ()
