@@ -14,9 +14,9 @@
 (load-file (expand-file-name "~/.emacs.d/org-checklist.el"))
 
 ;; ;; org-jira
-;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
-;; (require 'org-jira)
-;; (setq jiralib-url "https://crd-jira.qualcomm.com/jira")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
+(require 'org-jira)
+(setq jiralib-url "https://crd-jira.qualcomm.com/jira")
 
 ;; --------------------------------------------------
 ;; Basic org configuration
@@ -66,7 +66,8 @@
 (setq org-return-follows-link t)
 ; Export settings
 (setq org-use-sub-superscripts nil
-      org-export-with-sub-superscripts nil)
+      org-export-with-sub-superscripts nil
+      org-export-headline-levels 8)
 ; Don't remove the highlighting after an occur search (C-c / /)
 (setq org-remove-highlights-with-change nil)
 ; Setup additional colors for the various TODO states
@@ -104,6 +105,8 @@
              '("sh" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
 (add-to-list 'org-structure-template-alist
              '("cj" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"clojure\">\n\n</src>"))
+(add-to-list 'org-structure-template-alist
+             '("java" "#+BEGIN_SRC java -n -r\n?\n#+END_SRC" "<src lang=\"java\">\n\n</src>"))
 
 ; org-babel configuration
 (org-babel-do-load-languages
@@ -164,10 +167,26 @@ blockquote p {
   word-wrap: break-word;
 }
 a {
-	color: #666;
+  color: #666;
 }
 a:visited {
-	color: #666;
+  color: #666;
+}
+a:hover {
+  color: #c00;
+}
+p code, li code {
+  color: darkgreen;
+  font-weight: bold;
+}
+.figure p {
+  text-align: left;
+}
+
+#content {
+  margin: 0 auto;
+  padding: 30px;
+  width: 1200px;
 }
   /*]]>*/-->
 </style>")
@@ -443,7 +462,8 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
   (save-excursion
     (org-mark-subtree)
     (org-export-as-html-and-open 3)))
-(define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
+;; (define-key org-mode-map (kbd "<f12>") 'jsm/org-export-subtree-as-html-and-open)
+
 ;; (?o "As HTML file and open"
 ;;     (lambda (a s v b)
 ;;       (if a (org-html-export-to-html t s v b)

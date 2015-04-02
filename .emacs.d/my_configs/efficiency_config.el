@@ -69,7 +69,7 @@
 ;; ------------------------------
 (require 'guide-key)
 (guide-key-mode 1)
-(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x 5" "C-c p" "C-c h"))
+(setq guide-key/guide-key-sequence '("C-x r" "C-x 4" "C-x 5" "C-c p" "C-c p s" "C-c p 4" "C-c h"))
 
 ;; Visual Regexp Replacements
 ;; ------------------------------
@@ -169,10 +169,10 @@
 
 ;; Moved onto using session over desktop.el
 ;; ------------------------------
-(setq session-save-file (concat (expand-file-name "~/.emacs.d/.session-") hostname))
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
-(setq desktop-globals-to-save '(desktop-missing-file-warning)) ;; per session.el
+;; (setq session-save-file (concat (expand-file-name "~/.emacs.d/.session-") hostname))
+;; (require 'session)
+;; (add-hook 'after-init-hook 'session-initialize)
+;; (setq desktop-globals-to-save '(desktop-missing-file-warning)) ;; per session.el
 
 ;; Improved buffer listing - Use ibuffer
 ;; ------------------------------
@@ -254,8 +254,8 @@
 ;; enable recent files mode.
 (recentf-mode t)
 
-; 50 files ought to be enough.
-(setq recentf-max-saved-items 50)
+; How many files for recentf to track
+(setq recentf-max-saved-items 100)
 
 ; Ignore certain files from the exclusive recentf-list
 (add-to-list 'recentf-exclude "^/tmp/.*html$")

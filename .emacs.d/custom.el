@@ -8,11 +8,17 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" "0fe229019b6395a78aefe7dd673d909b7aa89edb22bb6e077a94d9dcaee2de21" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "e4e97731f52a5237f37ceb2423cb327778c7d3af7dc831788473d4a76bcc9760" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+    ("31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" "756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" "0fe229019b6395a78aefe7dd673d909b7aa89edb22bb6e077a94d9dcaee2de21" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "e4e97731f52a5237f37ceb2423cb327778c7d3af7dc831788473d4a76bcc9760" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(display-time-mode t)
  '(fill-column 75)
  '(flymake-log-level 3)
  '(global-visual-line-mode t)
+ '(gtags-prefix-key "C-t")
+ '(helm-gtags-auto-update t)
+ '(helm-gtags-ignore-case t)
+ '(helm-gtags-path-style (quote relative))
+ '(helm-gtags-prefix-key "C-c")
+ '(helm-gtags-suggested-key-mapping t)
  '(org-drill-optimal-factor-matrix
    (quote
     ((2
@@ -64,7 +70,8 @@
  ;; If there is more than one, they won't work right.
  '(ediff-current-diff-C ((t (:background "gold4"))))
  '(ediff-fine-diff-B ((t (:background "dark green"))))
- '(flyspell-incorrect ((t (:inherit error :foreground "firebrick3"))))
+ '(flyspell-incorrect ((t (:inherit error :foreground "firebrick2" :inverse-video nil :underline nil :slant normal :weight normal))))
  '(org-level-5 ((t (:inherit outline-5 :foreground "dark orange"))))
  '(org-level-6 ((t (:inherit outline-6 :foreground "gold"))))
+ '(org-verbatim ((t (:inherit shadow :foreground "forest green"))))
  '(sh-heredoc ((t (:foreground "#2aa198")))))

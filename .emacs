@@ -109,8 +109,12 @@
 (eval-after-load "flyspell"
   '(progn
      (setq flyspell-issue-welcome-flag nil)
-     (if (boundp 'flyspell-incorrect-face) (set-face-underline-p 'flyspell-incorrect-face nil))
-     (if (boundp 'flyspell-duplicate-face) (set-face-underline-p 'flyspell-duplicate-face nil))))
+     ;; Older face name had "-face" extension
+     (ignore-errors (set-face-underline-p 'flyspell-incorrect-face nil))
+     (ignore-errors (set-face-underline-p 'flyspell-duplicate-face nil))
+     ;; Newer 24.4 dropped the "-face"
+     (ignore-errors (set-face-underline-p 'flyspell-incorrect nil))
+     (ignore-errors (set-face-underline-p 'flyspell-duplicate nil))))
 ; Most of my flyspell hook are located in their own respective config files,
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
@@ -302,7 +306,7 @@
    (format "\\<%s\\>" (buffer-substring-no-properties b e))
    'hi-yellow))
 ; I do not use mark-paragraph
-(global-set-key "\M-h" 'jsm:highlight-current-word)
+(global-set-key (kbd "M-h") 'jsm:highlight-current-word)
 
 (defun jsm:kill-ring-sexp(&optional arg)
   "Highlight the current sexp ala mark-sexp and then copy ala kill-ring-save"
@@ -336,6 +340,12 @@
     (ansi-color-apply-on-region (point-min) (point-max))))
 (defalias 'ascii-unescape-buffer 'ansi-color-buffer)
 
+;; Excorporate - Support for retrieving calendaring info from Exchange
+;; Note: Need to load this before any other soap-clients like org-jira form my org_config
+;; FIXME: This is an ugly place to put this
+(require 'excorporate)
+(setq excorporate-configuration "jsmiller@qti.qualcomm.com")
+
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files
 ;; --------------------------------------------------
@@ -350,7 +360,8 @@
     (let ((fullpath (expand-file-name
 		     (concat jsm:emacs-config-dir file ".el"))))
       (if (file-exists-p fullpath)
-	  (load fullpath)
+	  (with-demoted-errors "Error: %S"
+            (load fullpath))
 	(message "Could NOT load config file:%s" file))
       )))
 ; load my configuration files
@@ -373,6 +384,7 @@
                         "php_config"
                         "linux_config"
                         "windows_config"
+                        ;; "screencast"
                         ))
 
 (setq frame-title-format '(buffer-file-name "%f" ("%b")))

@@ -4,6 +4,13 @@
 (require 'color-theme)
 (require 'smart-mode-line)
 
+;; Require my theme(s)
+(require 'color-theme-solarized)
+
+;;; Code:
+
+(color-theme-solarized)
+
 ;; (setq my-dark-theme 'zenburn
 ;;       my-dark-theme-sml 'light)
 ;; respectful or automatic or smart-mode-line-powerline
