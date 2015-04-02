@@ -348,4 +348,23 @@
 (require 'key-chord)
 (key-chord-mode 1)
 (key-chord-define-global ",."     "<>\C-b")
+(key-chord-define-global "SS"     'helm-projectile-ag)
 
+;; Quickly split window and get to my projects File
+;; ------------------------------
+(defvar my-projects-file "~/org/projects.org"
+  "My favorite projects file")
+
+(defun switch-to-projects-other-window ()
+  "Quickly open my favorite projects buffer in other window"
+  (interactive)
+  (let* ((project-filename (expand-file-name my-projects-file))
+         (project-buffer (file-name-nondirectory project-filename)))
+    (if (get-buffer project-buffer)
+        (switch-to-buffer-other-window project-buffer)
+      (find-file-other-window project-filename))))
+
+(key-chord-define-global "PP"    'switch-to-projects-other-window)
+
+(provide 'efficiency_config)
+;;; efficiency_config.el ends here
