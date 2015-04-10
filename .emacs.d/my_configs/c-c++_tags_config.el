@@ -69,7 +69,8 @@
     (when (require 'auto-complete-clang nil t)
       (add-to-list 'ac-sources 'ac-source-clang)))
   (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-    (gtags-mode 1)))
+    (gtags-mode 1))
+  (flyspell-prog-mode))
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook-func)
 

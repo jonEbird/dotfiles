@@ -5,12 +5,12 @@
 (defun jsm/lisp-modes-hook ()
   "Hook this single function to the lisp-like modes"
   (interactive)
-  (progn
-    (paredit-mode)
-    (rainbow-delimiters-mode)
-    (git-gutter-mode)
-    (eldoc-mode 1)
-    (define-key paredit-mode-map (kbd "M-q") 'fill-paragraph)))
+  (paredit-mode)
+  (rainbow-delimiters-mode)
+  (git-gutter-mode)
+  (eldoc-mode 1)
+  (define-key paredit-mode-map (kbd "M-q") 'fill-paragraph)
+  (flyspell-prog-mode))
 
 ;; Paredit
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)

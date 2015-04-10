@@ -7,6 +7,14 @@
   (setq jedi:setup-keys t
         jedi:complete-on-dot t))
 
+(defun my-python-mode-hook ()
+  "Minor setup when entering Python mode"
+  (interactive)
+  (hs-minor-mode)
+  (flyspell-prog-mode))
+
+(add-hook 'python-mode-hook 'my-python-mode-hook)
+
 ;; enable flycheck support
 ;; Would have tried Steve Purcell's flymake-python-pyflakes had flycheck
 ;; not worked out for me.
