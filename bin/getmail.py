@@ -112,14 +112,18 @@ class KeyringManager(object):
 
     def get_pass(self, username, server):
         """ Return the password from the keyring. """
-        try:
-            results = gk.find_network_password_sync(user=username, server=server,
-                                                    protocol=self.protocol)
-            return results[0]["password"]
-        except gk.NoMatchError:
-            print >> sys.stderr, "No password set for user '%s' in server '%s'" % \
-                (username, server)
-            return ''
+        for retries in range(3):
+            try:
+                results = gk.find_network_password_sync(user=username, server=server,
+                                                        protocol=self.protocol)
+                return results[0]["password"]
+            except gk.NoMatchError:
+                print >> sys.stderr, "No password set for user '%s' in server '%s'" % \
+                    (username, server)
+                return ''
+            except gk.IOError as e:
+                print >> sys.stderr, "Problem retrieving password: %s" % str(e)
+        return ''
 
     def populate_keyring(self, app="msmtp", protocol="smtp"):
         """Populate keyring with all of my email netrc passwords """

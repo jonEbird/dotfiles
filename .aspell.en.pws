@@ -1,4 +1,4 @@
-personal_ws-1.1 en 785 
+personal_ws-1.1 en 824 
 refactor
 cfg
 buildsystem
@@ -13,6 +13,7 @@ xslt
 STDIN
 gerrit
 DBs
+arp
 Zinq
 reinstall
 CC'ed
@@ -48,6 +49,7 @@ systemctl
 DMV
 pypirc
 CSR
+klockwork
 DNS
 dereference
 Gbe
@@ -59,6 +61,7 @@ gcc
 prototyped
 CDMA
 eNB
+hotfix
 Vadatech
 qgroup
 DSL
@@ -93,6 +96,7 @@ chroot
 relinked
 ido
 gpg
+HLD
 Traceback
 cronjobs
 Dan's
@@ -102,10 +106,13 @@ GPS
 timeline
 Nvidia
 gitflow
+GPT
 HOA
+GPU
 ortools
-GSM
 MQTT
+GSM
+Args
 GSS
 Balancer
 clojure
@@ -150,6 +157,7 @@ symlinks
 NAS
 nat
 fabio
+ksh
 structs
 SyZyGy
 syzygy
@@ -195,9 +203,11 @@ LWN
 Lucent
 modprobe
 MTP
+brtfs
 that'll
 MWC
 Trifexis
+fixup
 MTU
 mdadm
 ntpd
@@ -207,6 +217,7 @@ Qualcomm's
 taskomatic
 daemonizing
 NUMA
+MUX
 PHP
 Vectra
 dimmable
@@ -220,6 +231,7 @@ ntp
 NUM
 rpmbuild
 umask
+PMI
 ota
 Scalable
 poc
@@ -242,6 +254,7 @@ OSU
 STDOUT
 REQ
 pre
+Dired
 sdb
 Hadoop
 Arduino
@@ -286,12 +299,14 @@ repoquery
 tim
 faux
 Pervia
+UDP
 uname
 SPG
 SNR
 SPI
 RSS
 src
+TMC
 wireshark
 UEs
 Moma's
@@ -355,6 +370,7 @@ enbl
 SDMA
 wpa
 algorithmically
+paystubs
 enbu
 MacLaine
 interworking
@@ -410,9 +426,11 @@ timesource
 mv
 erroring
 ns
+kintex
 TDMA
 PN
 config
+ps
 runtime
 sdcard
 debugfs
@@ -435,6 +453,7 @@ xilinx
 HDFS
 un
 vm
+Tx
 iteratively
 incentivized
 multicast
@@ -462,7 +481,7 @@ SNAT
 FQDN
 linux
 Trackable
-UART
+uart
 MPTCP
 Compat
 tftp
@@ -498,6 +517,7 @@ VLANs
 RSUs
 sqft
 workqueue
+cheatsheet
 logfile
 biosdevname
 RunQ
@@ -506,6 +526,7 @@ PostgreSQL
 stackato
 chunked
 filesystem
+hardcode
 objectClass
 breakpoint
 GPIO
@@ -522,6 +543,7 @@ braxton
 goto
 TODO
 Ericsson
+SSIT
 bullseye
 operationalize
 Podcasts
@@ -535,6 +557,7 @@ repos
 sudo
 Suresh
 cpuset
+GPUs
 netboot
 businfo
 HWTYPE
@@ -589,7 +612,9 @@ McQuire
 differentiator
 craddocker
 pentari
+ForwardX
 distutils
+automounted
 Gradle
 enablerepo
 Ashok's
@@ -598,6 +623,8 @@ TSNC
 README
 sysrq
 SysRq
+LLMNR
+tuple
 UMTS
 VLAN
 Scribbs
@@ -640,8 +667,11 @@ http
 ldap
 corefile
 ftrace
+Sendil
+bootup
 bedrest
 rgrep
+NWLDMA
 Sectorization
 VoIP
 namespace
@@ -664,6 +694,8 @@ automake
 backports
 OpenJDK
 templated
+YAML
+programmatically
 pitocin
 ISOs
 elisp
@@ -678,6 +710,7 @@ rsyslog
 login
 dport
 automountMaps
+artix
 outlier
 subtree
 manpage
@@ -690,14 +723,18 @@ Mallorca
 kickstarted
 wideband
 noarch
+Rajesh
 workspace
 Zhang
 runlevel
 https
+uptime
 workqueues
 zach
 ldsudo
 btfile
+hotfixes
+JTAG
 Atlassian
 Abhi
 thunderbird
@@ -738,13 +775,15 @@ NAPI
 mutex
 retransmission
 utils
-CMake
 cmake
+CMake
 filesystems
 Awaiz
 boolean
+decrypt
 Nati
 hostapd
+mgmt
 AHCI
 hermes
 sttsmsim

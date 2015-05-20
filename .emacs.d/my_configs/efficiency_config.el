@@ -350,21 +350,46 @@
 (key-chord-define-global ",."     "<>\C-b")
 (key-chord-define-global "SS"     'helm-projectile-ag)
 
-;; Quickly split window and get to my projects File
+;; Quickly split window and get to my most common org files
 ;; ------------------------------
-(defvar my-projects-file "~/org/projects.org"
-  "My favorite projects file")
+(defun switch-to-myfile-other-window (filename)
+  "Generate a function for quickly switching to or opening FILENAME in a
+other-window split style"
+  `(lambda ()
+     (interactive)
+     (let* ((filepath ,(expand-file-name filename))
+            (filebuffer (file-name-nondirectory filepath)))
+       (if (get-buffer filebuffer)
+           (switch-to-buffer-other-window filebuffer)
+         (find-file-other-window filepath)))))
 
-(defun switch-to-projects-other-window ()
-  "Quickly open my favorite projects buffer in other window"
-  (interactive)
-  (let* ((project-filename (expand-file-name my-projects-file))
-         (project-buffer (file-name-nondirectory project-filename)))
-    (if (get-buffer project-buffer)
-        (switch-to-buffer-other-window project-buffer)
-      (find-file-other-window project-filename))))
+(key-chord-define-global "JP"  (switch-to-myfile-other-window "~/org/projects.org"))
+(key-chord-define-global "JI"  (switch-to-myfile-other-window "~/org/info.org"))
+(key-chord-define-global "JM"  (switch-to-myfile-other-window "~/org/meetings.org"))
+(key-chord-define-global "JT"  (switch-to-myfile-other-window "~/org/tasks.org"))
+(key-chord-define-global "JS"  (switch-to-myfile-other-window "~/org/secret.gpg"))
 
-(key-chord-define-global "PP"    'switch-to-projects-other-window)
+;; Dired Fixup
+;; ------------------------------
+;; http://mbork.pl/2015-04-25_Some_Dired_goodies
+(setq dired-guess-shell-alist-user
+      '(("\\.pdf\\'" "evince")
+	("\\.tex\\'" "pdflatex")
+	("\\.ods\\'\\|\\.xlsx?\\'\\|\\.docx?\\'\\|\\.csv\\'" "libreoffice")))
+
+;; Don't keep dired buffers around
+(put 'dired-find-alternate-file 'disabled nil)
+
+(add-to-list 'completion-ignored-extensions ".snapshot/")
+(require 'dired-x)
+(require 'wdired)
+
+;; Zeal http://zealdocs.org/
+;; ------------------------------
+(require 'zeal-at-point)
+(add-to-list 'zeal-at-point-mode-alist '(python-mode . "python 2"))
+(add-to-list 'zeal-at-point-mode-alist '(emacs-lisp-mode . "emacs lisp"))
+(global-set-key (kbd "s-z") 'zeal-at-point)
 
 (provide 'efficiency_config)
 ;;; efficiency_config.el ends here

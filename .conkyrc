@@ -35,6 +35,7 @@ draw_graph_borders yes
 draw_outline no
 draw_shades no
 use_xft yes
+override_utf8_locale yes
 xftfont DejaVu Sans Mono:size=12
 #xftfont Sans:style=Bold:size=10
 # gap_x 5
@@ -50,7 +51,6 @@ out_to_stderr no
 extra_newline no
 own_window yes
 own_window_class Conky
-own_window_type conky
 own_window_transparent yes
 # Resizing:
 #  1. comment out the 'own_window_hints' line
@@ -59,7 +59,7 @@ own_window_transparent yes
 #  4. uncomment the 'own_window_hints' line again
 #  5. final restart of conky: pkill -x -SIGUSR1 conky
 # Thanks: http://obakfahad.com/conky-window-size-problem/
-own_window_hints undecorated,below,above,sticky,skip_taskbar,skip_pager
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
 
 stippled_borders 0
 update_interval 5.0
@@ -68,8 +68,9 @@ use_spacer right
 show_graph_scale no
 show_graph_range no
 # minimum_size 300 350
-minimum_size 180 500
-maximum_width 1200
+minimum_size 200 1800
+maximum_width 800
+text_buffer_size 2000
 
 TEXT
 ${nodename}
@@ -85,3 +86,7 @@ $hr
 ${color grey}Gmail:    $color ${execpi 5 ~/bin/inbox_count.sh -m /Gmail/INBOX --list-breakdown}
 ${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX}
 ${execpi 5 ~/bin/inbox_count.sh -m '/Qualcomm/*' -x "and not m:/Qualcomm/INBOX" --mailbox-counts | sed 's|/Qualcomm/||g'}
+$hr
+${color grey}Meetings for Today:
+$color${execpi 30 ~/bin/cal.py conky}
+

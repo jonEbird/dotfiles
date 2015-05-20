@@ -79,8 +79,8 @@ org-store-file () {
 alias ppjson="python -m json.tool"
 
 # f-u flow control
-stty -ixon
-stty -ixoff
+stty -ixon >/dev/null 2>&1
+stty -ixoff >/dev/null 2>&1
 
 # Domain / Site specific configurations
 DOMAIN=$(dnsdomainname 2>&-)

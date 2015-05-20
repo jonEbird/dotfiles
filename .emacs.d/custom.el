@@ -71,6 +71,7 @@
  '(ediff-current-diff-C ((t (:background "gold4"))))
  '(ediff-fine-diff-B ((t (:background "dark green"))))
  '(flyspell-incorrect ((t (:inherit error :foreground "firebrick2" :inverse-video nil :underline nil :slant normal :weight normal))))
+ '(org-code ((t (:inherit shadow :foreground "forest green"))))
  '(org-level-5 ((t (:inherit outline-5 :foreground "dark orange"))))
  '(org-level-6 ((t (:inherit outline-6 :foreground "gold"))))
  '(org-verbatim ((t (:inherit shadow :foreground "forest green"))))

@@ -83,6 +83,9 @@
 (global-set-key (kbd "<C-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
 (global-set-key (kbd "<C-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
 
+;; Banish the mouse
+(mouse-avoidance-mode 'banish)
+
 ;; Support a moderate scroll via pgdn (aka [next]) and pgup (aka [prior])
 ;; Useful for browsing log output or moderately shifting email for reading
 (global-set-key [next]
@@ -142,14 +145,19 @@
 ; 1. Open abbrev-file via M-x list-abbrevs,
 ; 2. edit and save via abbrev-edit-save-buffer picking
 ;    ~/.emacs.d/abbrev_defs then you can close the buffer.
-;; (dolist (hook '(erc-mode-hook
-;;                 emacs-lisp-mode-hook
-;;                 text-mode-hook
-;;                 org-mode-hook
-;;                 mu4e-compose-mode-hook))
-;;   (add-hook hook (lambda () (abbrev-mode 1))))
-;; (quietly-read-abbrev-file)
-; (setq save-abbrevs 'silently)
+(dolist (hook '(erc-mode-hook
+                emacs-lisp-mode-hook
+                text-mode-hook
+                org-mode-hook))
+  (add-hook hook (lambda () (abbrev-mode 1))))
+(quietly-read-abbrev-file)
+(setq save-abbrevs 'silently)
+
+;; Special, helper abbrevs
+(define-abbrev global-abbrev-table "0mq" "ØMQ")
+
+;; Damn my spelling / typing
+(define-abbrev global-abbrev-table "teh" "the")
 
 ;; don't iconify from within X
 (when (not (eq nil window-system))

@@ -45,10 +45,12 @@
 (setq org-clock-into-drawer t)
 ; Face it, your spelling sucks. You /need/ flyspell-mode on!
 ; FIXME: flyspell is killing org-archive on C-c $
+(require 'org-bullets)
 (defun my-org-mode-settings ()
   (interactive)
   (turn-on-flyspell)
-  (flycheck-mode -1))
+  (flycheck-mode -1)
+  (org-bullets-mode 1))
 (add-hook 'org-mode-hook 'my-org-mode-settings 'append)
 ; Hide all blank lines inside folded contents of headings
 (setq org-cycle-separator-lines 0)
@@ -61,7 +63,7 @@
                                 ("N" . org-narrow-to-subtree)
                                 ("W" . widen)))
 ; Increase the amount of levels available to imenu
-(setq org-imenu-depth 3)
+(setq org-imenu-depth 4)
 ; RET follows links
 (setq org-return-follows-link t)
 ; Export settings

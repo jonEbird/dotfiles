@@ -1,0 +1,19 @@
+#!/bin/env python
+
+import sys
+import webbrowser
+
+
+def add_java_exception(ipaddress):
+    """Add the IP as a URL to the Java security exception list"""
+    fn = sys.path.expanduser("~/.java/deployment/security/exception.sites")
+    # FIXME: Should not overwrite this each time but be intelligent about
+    # adding
+    with open(fn, 'w') as fh:
+        fh.write('https://%s\n' % ipaddress)
+
+if __name__ == '__main__':
+
+    ilo_address = sys.argv[1]
+    wh = webbrowser.get('/usr/bin/firefox %s')
+    wh.open_new_tab('https://%s/index.html' % ilo_address)
