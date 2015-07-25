@@ -46,19 +46,19 @@
       (append
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
-       '(cups ace-jump-mode yaml-mode names color-theme color-theme-solarized
-         lua-mode markdown-mode htmlize ldap-mode url-dav google-maps
+       '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
+         lua-mode markdown-mode google-maps htmlize ldap-mode url-dav
          org-caldav confluence-el expand-region iedit jedi mu4e
-         php-mode-improved flx paredit ido-vertical-mode dash
+         flx paredit ido-vertical-mode dash ; php-mode-improved
          multiple-cursors guide-key visual-regexp projectile
          ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
-         gtags multiple-cursors git-modes magit git-gutter popwin
+         gtags multiple-cursors magit git-gutter
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
          rpm-spec-mode cider rainbow-delimiters elixir org-reveal
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
          helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
          helm-gtags command-log-mode helm-swoop key-chord flycheck
-         ag helm-ag wdired org-bullets zeal-at-point)))
+         ag helm-ag wdired org-bullets zeal-at-point ace-window avy)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 

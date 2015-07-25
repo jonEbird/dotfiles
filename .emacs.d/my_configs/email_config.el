@@ -39,7 +39,7 @@
  mu4e-maildir                     "~/Maildir"    ;; top-level Maildir
  mu4e-get-mail-command            "true"         ;; calling offlineimap separately
  mu4e-update-interval             120            ;; Not needed with offlineimap hooks
- mu4e-use-fancy-chars             t              ;; Pretty symbols in the view
+ mu4e-use-fancy-chars             nil            ;; Pretty symbols in the view
  mu4e-view-show-images            t              ;; Show images inline
  mu4e-view-image-max-width        800            ;; Limit too big photos
  mu4e-view-prefer-html            t              ;; I get a lot of HTML emails
@@ -203,6 +203,11 @@
 
 (add-hook 'mu4e-compose-mode-hook 'my-mu4e-compose-settings)
 
+;; ; Per ML https://groups.google.com/forum/#!topic/mu-discuss/XChrOWBNzO4
+;; (add-hook 'mu4e-compose-mode-hook
+;;           (defun cpb-compose-setup ()
+;;             "Use hard newlines, so outgoing mails will have format=flowed."
+;;             (use-hard-newlines t 'guess)))
 
 ;-Mailing-Lists------------------------------------
 
@@ -278,12 +283,14 @@ query"
         ; TODO: Need to iterate this query-prev until ml is no longer in
         ; the current search query
         (mu4e-headers-query-prev)
-        (setq jsm/narrowed-ml nil))
+        (setq jsm/narrowed-ml nil
+              mu4e-headers-auto-update t))
     (let ((ml (mu4e-message-field-at-point :mailing-list)))
       (if ml
           (progn
             (mu4e-headers-search-narrow ml)
-            (setq jsm/narrowed-ml ml))
+            (setq jsm/narrowed-ml ml
+                  mu4e-headers-auto-update nil))
         (message "Message is not a mailing-list email")))))
 
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)

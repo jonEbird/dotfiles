@@ -5,7 +5,7 @@
 (defun jsm/lisp-modes-hook ()
   "Hook this single function to the lisp-like modes"
   (interactive)
-  (paredit-mode)
+  (enable-paredit-mode)
   (rainbow-delimiters-mode)
   (git-gutter-mode)
   (eldoc-mode 1)

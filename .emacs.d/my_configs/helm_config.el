@@ -52,7 +52,6 @@
 (add-hook 'helm-before-initialize-hook 'helm-toggle-header-line)
 
 ; (add-to-list 'helm-boring-file-regexp-list "")
-(add-to-list 'completion-ignored-extensions ".snapshot/")
 
 ; Global key bindings
 (global-set-key (kbd "M-x")       'helm-M-x)
@@ -75,7 +74,25 @@
 (global-set-key (kbd "<f1>")      'helm-resume)
 (global-set-key (kbd "C-c h i")   'helm-semantic-or-imenu)
 
+;; Found the helm-org-*-headings functions via comments discussion at:
+;; http://irreal.org/blog/?p=4170
+(defun helm-org-search-headers (arg)
+  (interactive "P")
+  (cond ((equal arg nil) (call-interactively 'helm-semantic-or-imenu))
+        ((equal arg '(4)) (helm-org-in-buffer-headings))
+        ((equal arg '(16)) (helm-org-agenda-files-headings))))
+(define-key org-mode-map (kbd "C-c h i") 'helm-org-search-headers)
+
 ;; Issue a C-u C-s while in helm-find-files to perform a recursive grep (or ack)
+;; (cond
+;;  ((executable-find "ag")
+;;   (setq helm-grep-default-command         "ag --nogroup --nocolor %p %f"
+;;         helm-grep-default-recurse-command "ag --nogroup --nocolor %p %f"))
+;;  ((executable-find "ack")
+;;   (setq helm-grep-default-command         "ack -Hn --no-group --no-color %e %p %f"
+;;         helm-grep-default-recurse-command "ack -H  --no-group --no-color %e %p %f"))
+;;  (t
+;;   (message "Neither ag or ack found to configure helm-grep-default-command")))
 (when (executable-find "ack")
   (setq helm-grep-default-command         "ack -Hn --no-group --no-color %e %p %f"
         helm-grep-default-recurse-command "ack -H  --no-group --no-color %e %p %f"))

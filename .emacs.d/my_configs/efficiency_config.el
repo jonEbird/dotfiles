@@ -16,7 +16,8 @@
 
 ; (global-git-gutter-mode t)
 (dolist (hook
-         '(python-mode-hook c++-mode-hook c-mode-hook emacs-lisp-mode-hook shell-mode-hook))
+         '(c-mode-hook c++-mode-hook python-mode-hook
+                       emacs-lisp-mode-hook shell-mode-hook))
   (add-hook hook 'git-gutter-mode 'append))
 
 (global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
@@ -32,11 +33,13 @@
 ;; Revert current hunk
 (global-set-key (kbd "C-x v r") 'git-gutter:revert-hunk)
 
-;; Using ace-jump
+;; Avy - Replacing previously used ace-jump-mode
 ;; ------------------------------
-(require 'ace-jump-mode)
-(global-set-key (kbd "C-c SPC") 'ace-jump-mode)
-(global-set-key (kbd "C-0") 'ace-jump-mode)
+(require 'avy)
+(global-set-key (kbd "C-0") 'avy-goto-word-1)
+(global-set-key (kbd "C-:") 'avy-goto-char)
+(global-set-key (kbd "C-'") 'avy-goto-char-2)
+(global-set-key (kbd "M-g g") 'avy-goto-line)
 
 ;; Expand-region
 ;; ------------------------------
@@ -118,14 +121,15 @@
 (defun readme-preview ()
   "Preview the README rendered to html in a browser tab via pandoc"
   (interactive)
-  (let* ((html-filename (format "%s.html" (file-name-base buffer-file-name)))
+  (let* ((html-filename (make-temp-file "preview"))
          (input-format (cond
                         ((derived-mode-p 'rst-mode) "rst")
                         ((derived-mode-p 'markdown-mode) "markdown_github")))
          (cmd (format "pandoc -f %s -t html -o %s %s"
                       input-format html-filename buffer-file-name)))
     (shell-command cmd nil nil)
-    (browse-url (concat "file://" (file-name-directory buffer-file-name) html-filename))))
+    (browse-url (concat "file://" html-filename))
+    (run-at-time "10 sec" nil `(lambda () (delete-file ,html-filename)))))
 
 ;; Assign F12 to render README preview for select modes
 (dolist (hook '(markdown-mode-hook rst-mode-hook))
@@ -348,7 +352,7 @@
 (require 'key-chord)
 (key-chord-mode 1)
 (key-chord-define-global ",."     "<>\C-b")
-(key-chord-define-global "SS"     'helm-projectile-ag)
+(key-chord-define-global "AG"     'helm-projectile-ag)
 
 ;; Quickly split window and get to my most common org files
 ;; ------------------------------
@@ -390,6 +394,37 @@ other-window split style"
 (add-to-list 'zeal-at-point-mode-alist '(python-mode . "python 2"))
 (add-to-list 'zeal-at-point-mode-alist '(emacs-lisp-mode . "emacs lisp"))
 (global-set-key (kbd "s-z") 'zeal-at-point)
+
+;; Open Files within containers
+;; ------------------------------
+;; http://www.emacswiki.org/emacs/TrampAndDocker
+(push
+ (cons
+  "docker"
+  '((tramp-login-program "docker")
+    (tramp-login-args (("exec" "-it") ("%h") ("/bin/bash")))
+    (tramp-remote-shell "/bin/sh")
+    (tramp-remote-shell-args ("-i") ("-c"))))
+ tramp-methods)
+
+(defadvice tramp-completion-handle-file-name-all-completions
+  (around dotemacs-completion-docker activate)
+  "(tramp-completion-handle-file-name-all-completions \"\" \"/docker:\" returns
+    a list of active Docker container names, followed by colons."
+  (if (equal (ad-get-arg 1) "/docker:")
+      (let* ((dockernames-raw (shell-command-to-string "docker ps | awk '$NF != \"NAMES\" { print $NF \":\" }'"))
+             (dockernames (cl-remove-if-not
+                           #'(lambda (dockerline) (string-match ":$" dockerline))
+                           (split-string dockernames-raw "\n"))))
+        (setq ad-return-value dockernames))
+    ad-do-it))
+
+
+;; Ace-window
+;; ------------------------------
+(require 'ace-window)
+(global-set-key (kbd "C-x o") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 (provide 'efficiency_config)
 ;;; efficiency_config.el ends here

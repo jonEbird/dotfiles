@@ -80,7 +80,8 @@
     (set-face-attribute 'helm-selection nil :background "dark green" :underline t)
     (set-face-attribute 'helm-source-header nil :background "#073642")
     (set-face-attribute 'helm-ff-directory nil :foreground "#d70000" :background "#073642"))
-  ; Toggle between light and dark themes with F7
+
+  ;; Toggle between light and dark themes with F7
   (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
 
   ;; Smart-mode-line
@@ -89,7 +90,7 @@
         sml/shorten-modes   t
         sml/mode-width      'full
         sml/name-width      25
-        sml/hidden-modes    '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter"))
+        sml/hidden-modes    '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter" " Helm" " Paredit" " fs" " ElDoc" " WS" " Fly" " Abbrev" " Gtags" " HelmGtags" " MRev"))
   (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
   (sml/setup)
 

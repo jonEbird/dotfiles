@@ -351,8 +351,8 @@
 ;; Excorporate - Support for retrieving calendaring info from Exchange
 ;; Note: Need to load this before any other soap-clients like org-jira form my org_config
 ;; FIXME: This is an ugly place to put this
-(require 'excorporate)
-(setq excorporate-configuration "jsmiller@qti.qualcomm.com")
+;(require 'excorporate)
+;(setq excorporate-configuration "jsmiller@qti.qualcomm.com")
 
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files

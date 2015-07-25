@@ -76,7 +76,9 @@
 
 ; Auto-complete support for C++
 (require 'auto-complete-clang)
-(define-key c++-mode-map (kbd "C-M-<return>") 'ac-complete-clang)
+(add-hook 'c++-mode-hook
+          '(lambda ()
+             (define-key c++-mode-map (kbd "C-M-<return>") 'ac-complete-clang)))
 
 ; ----------------------------------------------------------------------
 ; Source Code Navigation - Aka Tags
