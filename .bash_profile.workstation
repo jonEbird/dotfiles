@@ -4,21 +4,21 @@ normal-screen() {
     # Start a screen session
     if screen -ls | egrep -q '[0-9]+\.normal'; then
         echo "Normal session already started."
-        screen -x normal 
+        screen -x normal
     else
         echo "Starting screen session \"normal\" in background"
         # Lets ensure a ssh-agent is started
         eval $(ssh-agent )
         ssh-add
         screen -dmS normal
-        screen -dmr normal -X screen -t linbird 11 repeat ssh -L6667:localhost:6667 linbird
-        # Are we in an X environment? 
+        #screen -dmr normal -X screen -t linbird 11 repeat ssh -L6667:localhost:6667 linbird
+        # Are we in an X environment?
         if /bin/xset -b >/dev/null 2>&1; then
             # other things that need started
             feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
             sudo systemctl reload nscd
             synergyc esp-dev-jsmiller-1
-            conky -d >/dev/null 2>&1
+            conky -x 5 -y 5 -d >/dev/null 2>&1
             #screen -dmr normal -X screen -t synergy 20 repeat synergys -a :24800 -d DEBUG -f
             [ -f ~/pithos/bin/pithos ] && screen -dmr normal -X screen -t pithos  21 repeat ~/pithos/bin/pithos
             # Gnome or AwesomeWM ?
@@ -49,7 +49,7 @@ normal-tmux() {
         ssh-add
         tmux new-session -d -s normal
 
-        tmux new-window -t normal:11 "repeat ssh -L6667:localhost:6667 linbird"
+        #tmux new-window -t normal:11 "repeat ssh -L6667:localhost:6667 linbird"
         tmux set-window-option -t normal:11 monitor-activity off
 
         # Are we in an X environment?

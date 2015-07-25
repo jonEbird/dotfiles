@@ -70,7 +70,7 @@ ftrace_buffer() {
     else
         kbytes=$(echo "$1" | sed -r -e 's/[kK][bB]?//g' -e 's/[mM][bB]?/*1024/g' \
             -e 's/[gG][bB]?/*1024*1024/g' | bc)
-        if [ $kbytes -ne $(cat ${TRACING_DIR}/buffer_size_kb | awk '{print $1}') ]; then
+        if [ $kbytes -ne $(awk '{print $1}' < ${TRACING_DIR}/buffer_size_kb) ]; then
             # First disable the current tracer
             cur_tracer=$(cat ${TRACING_DIR}/current_tracer)
             echo nop > ${TRACING_DIR}/current_tracer

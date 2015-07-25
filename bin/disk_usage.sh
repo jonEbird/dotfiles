@@ -1,7 +1,7 @@
 #!/bin/bash
 
 debug() {
-    echo "DEBUG: $@"
+    echo "DEBUG: $*"
 }
 
 smart_du() {
@@ -30,22 +30,22 @@ smart_du() {
 	#[ "$(df -k . | awk '{ mnt=$NF } END { print mnt }')" != "$(df -k $file | awk '{ mnt=$NF } END { print mnt }')" ] && continue
 
 	sliver_of_tamale=$(du -skx "$file" | awk '{ print $1 }')
-	pnt=$((${sliver_of_tamale}00/${whole_tamale}))
+	pnt=$((${sliver_of_tamale}00/whole_tamale))
 	#debug "$(pwd)/${file} ${pnt}%"
 	if [ $pnt -ge $sig_file_pnt ]; then
 	    founddirt="yes"
 	    if [ -d "$file" ]; then
 		sigdirs="$sigdirs $file"
 	    elif [ -f "$file" ]; then
-		echo "$(pwd)/${file}	# $(($cur_pnt * $pnt / 100))%"
-		sigsum=$(($sigsum + $sliver_of_tamale))
+		echo "$(pwd)/${file}	# $((cur_pnt * pnt / 100))%"
+		sigsum=$((sigsum + sliver_of_tamale))
 	    fi
 	fi
     done
     # now to recursively query the _significant_ subdirs
     for subdir in $sigdirs; do
-	pnt=$(($(du -skx "$subdir" | awk '{ print $1 }')00/${whole_tamale}))
-	smart_du $subdir $sig_file_pnt $sig_whole $(($cur_pnt * $pnt / 100)) $cur_fs 
+	pnt=$(($(du -skx "$subdir" | awk '{ print $1 }')00/whole_tamale))
+	smart_du $subdir $sig_file_pnt $sig_whole $((cur_pnt * pnt / 100)) $cur_fs
     done
 
     # reporting and returning time.

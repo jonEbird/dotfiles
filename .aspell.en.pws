@@ -1,4 +1,4 @@
-personal_ws-1.1 en 824 
+personal_ws-1.1 en 848 
 refactor
 cfg
 buildsystem
@@ -27,6 +27,7 @@ EDB
 BSC
 lshw
 cmn
+AXI
 BSP
 tunable
 dir
@@ -59,6 +60,7 @@ errored
 CSV
 gcc
 prototyped
+yocto
 CDMA
 eNB
 hotfix
@@ -121,6 +123,7 @@ hpp
 iLO
 dropdown
 ini
+IPC
 Makefile
 ansible
 Lync
@@ -130,6 +133,7 @@ cpack
 CPack
 lan
 cpusets
+architecting
 IPv
 ish
 dbus
@@ -142,7 +146,9 @@ sourceforge
 Mormor
 MCE
 BPDU
+MDB
 pygccxml
+lfs
 scalability
 MBR
 openldap
@@ -161,6 +167,7 @@ ksh
 structs
 SyZyGy
 syzygy
+NBU
 meetup
 DHCP
 neo
@@ -234,6 +241,7 @@ umask
 PMI
 ota
 Scalable
+NWL
 poc
 Symfony
 Coccinelle
@@ -257,6 +265,7 @@ pre
 Dired
 sdb
 Hadoop
+MySQL
 Arduino
 UNINTERRUPTIBLE
 SCM
@@ -272,6 +281,7 @@ filelist
 TBD
 syspart
 sha
+PTP
 QRC
 systemtap
 lspci
@@ -296,6 +306,7 @@ SoC
 etags
 CPUs
 repoquery
+SMP
 tim
 faux
 Pervia
@@ -329,9 +340,11 @@ docstrings
 SSN
 Children's
 uio
+TPE
 DPDK
 handoffs
 UMB
+SVG
 backtrace
 ntpdate
 Atlassian's
@@ -339,6 +352,7 @@ tsc
 svn
 rhgb
 RHEL
+UML
 startup
 TSN
 SATA
@@ -378,6 +392,7 @@ xml
 Gbps
 Subchorionic
 updatesd
+hugepages
 kworkers
 yml
 versioning
@@ -388,6 +403,7 @@ automountMapName
 BT
 ldapsearch
 EPEL
+FB
 DL
 fc
 nitty
@@ -521,6 +537,7 @@ cheatsheet
 logfile
 biosdevname
 RunQ
+uboot
 virtualenv
 PostgreSQL
 stackato
@@ -605,7 +622,9 @@ mitchelh
 downlink
 openafs
 OpenAFS
+grandmaster
 gitlab
+GitHub
 github
 backend
 McQuire
@@ -688,6 +707,7 @@ Atheros
 chown
 getfacl
 datacenters
+assignee
 pastable
 Dereferencing
 automake
@@ -701,6 +721,7 @@ ISOs
 elisp
 pyplusplus
 ITOC
+proxied
 ISRP
 gantt
 argparse
@@ -708,6 +729,7 @@ EEPROM
 iptables
 rsyslog
 login
+ghantt
 dport
 automountMaps
 artix
@@ -818,7 +840,9 @@ AFS
 getent
 openssl
 café
+netbackup
 Morfar
+BGP
 Sharepoint
 devel
 syscalls

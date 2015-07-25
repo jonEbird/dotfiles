@@ -45,3 +45,101 @@ mv2workspace() {
         fi
     fi
 }
+
+ssh-fixid() {
+    # Fixes an ssh-rsa fingerprint if necessary
+    local lkey= rkey= host=
+    if [ -z "$1" ]; then
+        echo "Usage: ssh-fixid <host> [hostB...]" 1>&2
+        return 1
+    fi
+    for host in $*; do
+        lkey=$(ssh-keygen  -t ssh-rsa -F $host 2>&1 | egrep -v '^#')
+        rkey=$(ssh-keyscan -t ssh-rsa    $host 2>&1 | egrep -v '^#')
+        if [ "$lkey" != "$rkey" -a -n "$lkey" -a -n "$rkey" ]; then
+            ssh-keygen -R $host >/dev/null 2>&1
+            echo "$rkey" >> ~/.ssh/known_hosts
+        fi
+    done
+}
+
+group() {
+    if [ -z "$SERVERS" ]; then
+        echo "Need to set \$SERVERS first."
+        return 1
+    fi
+    if [ "$1" == "--fix" -o "$1" == "--clean" ]; then
+        ssh-fixid $SERVERS
+        shift
+    fi
+    case "$1" in
+        fix|fixid|clean)
+            ssh-fixid $SERVERS
+            ;;
+        *keys*|*push*|ssh-copy-id)
+            export SERVERS
+            ~/bin/pw ~/bin/ssh-copy-id.sh
+            ;;
+        f18|fc18)
+            echo "Rebuild to F18"
+            for S in $SERVERS; do
+                echo "--- Initiating rebuild of $S to Fedora18 ---";
+                ssh root@$S /host/esp-dev-jsmiller-1/esp-fc14-to-fc18.sh
+            done
+            ;;
+        f20|fc20|rebuild)
+            echo "Rebuild to F20"
+            for S in $SERVERS; do
+                echo "--- Initiating rebuild of $S to Fedora20 ---";
+                ssh root@$S /host/esp-dev-jsmiller-1/esp-fc18-to-fc20.sh
+            done
+            ;;
+        *ota*)
+            echo "Rebuild OTA machine(s) to F18"
+            for S in $SERVERS; do
+                scp -pr ~/Documents/Qualcomm/Espresso/to_f18 ~/ota-fc14-to-fc18.sh root@${S}:
+            done
+            for S in $SERVERS; do
+                echo "--- Initiating rebuild of $S to Fedora18 ---";
+                ssh root@$S /root/ota-fc14-to-fc18.sh
+            done
+            ;;
+        ping)
+            echo '"Just one ping" - Sean Connery, Red October'
+            for S in $SERVERS; do
+                echo "--- $S ---"
+                #ping -qc1 $S | grep -A2 "ping statistics" | sed 's/.*/  &/g'
+                ping -qc1 $S 2>&1 | sed 's/.*/  &/g'
+            done
+            ;;
+        *lookup*|dig|dns|address)
+            for S in $SERVERS; do
+                nslookup $S | tail -n +4 | sed 's/.*/  &/g'
+            done
+            ;;
+        *copy*|scp)
+            for S in $SERVERS; do
+                scp -r "$2" root@${S}:
+            done
+            ;;
+        reboot)
+            echo "Rebooting servers"
+            for S in $SERVERS; do
+                echo "--- $S ---";
+                ssh -t root@$S "reboot-delayed -f 5"
+            done
+            ;;
+        rsync)
+            echo "Rsyncing $2 to servers"
+            for S in $SERVERS; do
+                echo "--- $S ---";
+                rsync -a $2 ${S}:
+            done
+            ;;
+        *)
+            for S in $SERVERS; do
+                echo "--- $S ---"
+                ssh root@$S $@
+            done
+    esac
+}

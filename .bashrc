@@ -19,7 +19,7 @@ PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
 # PS1 and related Status
-if [ "$(ps --no-headers -o comm -p $PPID)" == "emacs" ]; then
+if [ "$(ps --no-headers -o comm -p $PPID 2>/dev/null)" == "emacs" ]; then
     if [ -n "$EMACS_PS1" ]; then
         PS1="$EMACS_PS1"
     else

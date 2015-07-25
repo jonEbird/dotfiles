@@ -56,8 +56,9 @@ def pformat_list(l, join=' ', indent=1, width=80, maxlines=0, formatter=None):
     cur_len = 0
     lines = 1
     for item in l:
-        s_item = str(item)
-        newtxt = '%s%s' % (join, s_item)
+        # Using str(item) can periodically throw UnicodeEncodeError whereas
+        # this '%s' hack doesn't. Don't know why. FYI, "bad" char was u'\u2013'
+        newtxt = '%s%s' % (join, item)
 
         # Will newtxt push us over the limit?
         if cur_len + len(newtxt) > width:

@@ -28,3 +28,7 @@
 [mergetool "ediff"]
 	cmd = ediff.sh $LOCAL $REMOTE $MERGED $BASE
 	trustExitCode = true
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true

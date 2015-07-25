@@ -68,8 +68,8 @@ use_spacer right
 show_graph_scale no
 show_graph_range no
 # minimum_size 300 350
-minimum_size 200 1800
-maximum_width 800
+minimum_size 1000 1800
+maximum_width 2000
 text_buffer_size 2000
 
 TEXT
