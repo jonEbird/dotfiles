@@ -6,7 +6,7 @@
 ;; --------------------------------------------------
 
 ;; Extra load path
-; (add-to-list 'load-path (expand-file-name "~/.emacs.d/"))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp/"))
 
 ; turn off the toolbar and menu bar
 (tool-bar-mode -1)

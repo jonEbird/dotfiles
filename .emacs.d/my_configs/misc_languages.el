@@ -6,3 +6,5 @@
 
 (require 'flycheck)
 (setq flycheck-shellcheck-excluded-warnings '("SC2086"))
+
+(require 'thrift)
