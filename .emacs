@@ -84,7 +84,7 @@
 (global-set-key (kbd "<C-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
 
 ;; Banish the mouse
-(mouse-avoidance-mode 'banish)
+(mouse-avoidance-mode 'none)
 
 ;; Support a moderate scroll via pgdn (aka [next]) and pgup (aka [prior])
 ;; Useful for browsing log output or moderately shifting email for reading

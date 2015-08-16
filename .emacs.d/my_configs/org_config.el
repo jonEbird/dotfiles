@@ -188,10 +188,26 @@ p code, li code {
 #content {
   margin: 0 auto;
   padding: 30px;
-  width: 1200px;
+  width: 297mm;
+  size: A4;
+  margin: 0;
 }
+
+@page {
+  size: A4;
+  margin: 0;
+}
+@media print {
+  html, body {
+    width: 210mm;
+    height: 297mm;
+  }
+}
+
   /*]]>*/-->
 </style>")
+;; http://stackoverflow.com/questions/16649943/css-to-set-a4-paper-size
+;; Previously had: #content width: 1200px;
 
 ; Update any dblocks before exporting
 ; (add-hook 'org-export-first-hook 'org-update-all-dblocks 'append)
