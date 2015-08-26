@@ -258,11 +258,13 @@ query"
   (if (not (boundp 'jsm/ml-mode)) (setq jsm/ml-mode nil))
   (if jsm/ml-mode
       (progn
-        (setq jsm/ml-mode nil)
+        (setq jsm/ml-mode nil
+              mu4e-headers-auto-update t)
         (jsm/toggle-mailing-list-headers-fields nil)
         (ignore-errors (mu4e-headers-query-prev)))
     (progn
-      (setq jsm/ml-mode t)
+      (setq jsm/ml-mode t
+            mu4e-headers-auto-update nil)
       (jsm/toggle-mailing-list-headers-fields t)
       ; Removed the extra "and flag:unread" from the search
       (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND flag:list AND flag:unread")
@@ -283,14 +285,12 @@ query"
         ; TODO: Need to iterate this query-prev until ml is no longer in
         ; the current search query
         (mu4e-headers-query-prev)
-        (setq jsm/narrowed-ml nil
-              mu4e-headers-auto-update t))
+        (setq jsm/narrowed-ml nil))
     (let ((ml (mu4e-message-field-at-point :mailing-list)))
       (if ml
           (progn
             (mu4e-headers-search-narrow ml)
-            (setq jsm/narrowed-ml ml
-                  mu4e-headers-auto-update nil))
+            (setq jsm/narrowed-ml ml))
         (message "Message is not a mailing-list email")))))
 
 (define-key mu4e-headers-mode-map (kbd "L") 'jsm/narrow-to-mailing-list)
