@@ -47,10 +47,10 @@ eval set -- "$TEMP"
 while true ; do
     case "$1" in
         -l|--non-list)
-            EXTRA_FILTER="$EXTRA_FILTER AND NOT list:*"; shift
+            EXTRA_FILTER="$EXTRA_FILTER AND NOT flag:list"; shift
             ;;
         -L|--lists)
-            EXTRA_FILTER="$EXTRA_FILTER AND list:*"; shift
+            EXTRA_FILTER="$EXTRA_FILTER AND flag:list"; shift
             ;;
         -x|--extra)
             shift; EXTRA_FILTER="$EXTRA_FILTER $1"; shift
@@ -84,11 +84,11 @@ case $MODE in
     list-breakdown)
         # Ignore any EXTRA_FILTER options
         MSG=""
-        verbose "Not in list: mu find flag:unread m:$MAILDIR AND NOT list:*"
-        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT "list:*" 2>/dev/null | wc -l)
+        verbose "Not in list: mu find flag:unread m:$MAILDIR AND NOT flag:list"
+        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT flag:list 2>/dev/null | wc -l)
         MSG="${non_list}"
-        verbose "IN list: mu find flag:unread and 'list:*' and m:$MAILDIR "
-        list=$(mu find --nocolor flag:unread AND 'list:*' and m:$MAILDIR  2>/dev/null | wc -l)
+        verbose "IN list: mu find flag:unread and flag:list and m:$MAILDIR "
+        list=$(mu find --nocolor flag:unread AND flag:list and m:$MAILDIR  2>/dev/null | wc -l)
         if [ $list -gt 0 ]; then
             MSG="$MSG ($list in groups)"
         fi

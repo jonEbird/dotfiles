@@ -79,8 +79,8 @@
 (setq mu4e-bookmarks
       '( ("flag:unread AND NOT flag:trashed AND m:/Qualcomm/*"    "Unread messages"           ?u)
          ("\"Maildir:/Qualcomm/INBOX\""                           "Qualcomm Inbox"            ?q)
-         ("m:/Gmail/INBOX and not list:*"                         "Gmail Inbox (no groups)"   ?g)
-         ("m:/Gmail/INBOX and list:*"                             "Gmail Groups"              ?G)
+         ("m:/Gmail/INBOX and NOT flag:list"                      "Gmail Inbox (no groups)"   ?g)
+         ("m:/Gmail/INBOX and flag:list"                          "Gmail Groups"              ?G)
          ("date:today..now"                                       "Today's messages"          ?t)
          ("date:7d..now"                                          "Last 7 days"               ?w)
          ("mime:image/*"                                          "Messages with images"      ?i)))
@@ -265,7 +265,7 @@ query"
       (setq jsm/ml-mode t)
       (jsm/toggle-mailing-list-headers-fields t)
       ; Removed the extra "and flag:unread" from the search
-      (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND list:* AND flag:unread")
+      (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND flag:list AND flag:unread")
       ; (mu4e-headers-search-narrow "flag:unread")
       )))
 

@@ -88,5 +88,5 @@ ${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX
 ${execpi 5 ~/bin/inbox_count.sh -m '/Qualcomm/*' -x "and not m:/Qualcomm/INBOX" --mailbox-counts | sed 's|/Qualcomm/||g'}
 $hr
 ${color grey}Meetings for Today:
-$color${execpi 30 ~/bin/cal.py conky}
+$color${execpi 30 timeout -s 9 20 ~/bin/cal.py conky}
 
