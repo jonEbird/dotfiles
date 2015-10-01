@@ -11,6 +11,33 @@ verbose() {
     fi
 }
 
+shell-count() {
+    local mode="sum"
+    if [ "$1" == "--breakout" ]; then
+        mode="breakout"
+        shift
+    elif [ "$1" == "--breakdown" ]; then
+        mode="breakdown"
+        shift
+    fi
+    local MB="$1" summary=""
+    if [ $mode == "sum" ]; then
+        find "$MB" -name new -type d -print0 | xargs -0 ls | wc -l
+    elif [ $mode == "breakdown" ]; then
+        list_cnt=$(grep -E -il '^List-Id: ' ${MB}/*/new/* | wc -l)
+        nonlist_cnt=$(grep -E -iL '^List-Id: ' ${MB}/*/new/* | wc -l)
+        echo "$nonlist_cnt ($list_cnt)"
+    elif [ $mode == "breakout" ]; then
+        find "$MB" -name new -type d | \
+            while read subdir; do
+                cnt=$(ls "${subdir}" 2>&- | wc -l)
+                if [ $cnt -gt 0 ]; then
+                    echo " $(basename "$(dirname "$subdir")") $cnt"
+                fi
+            done
+    fi
+}
+
 usage() {
     cat <<EOF
 Usage: $(basename $0) [options]
@@ -78,25 +105,28 @@ done
 # Primarilly used for my conky status
 case $MODE in
     simple-count)
-        verbose "Simple count: mu find flag:unread m:$MAILDIR $EXTRA_FILTER"
-        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER 2>/dev/null | wc -l
+        # verbose "Simple count: mu find flag:unread m:$MAILDIR $EXTRA_FILTER"
+        # mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER 2>/dev/null | wc -l
+        shell-count $MAILDIR
         ;;
     list-breakdown)
-        # Ignore any EXTRA_FILTER options
-        MSG=""
-        verbose "Not in list: mu find flag:unread m:$MAILDIR AND NOT flag:list"
-        non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT flag:list 2>/dev/null | wc -l)
-        MSG="${non_list}"
-        verbose "IN list: mu find flag:unread and flag:list and m:$MAILDIR "
-        list=$(mu find --nocolor flag:unread AND flag:list and m:$MAILDIR  2>/dev/null | wc -l)
-        if [ $list -gt 0 ]; then
-            MSG="$MSG ($list in groups)"
-        fi
-        echo $MSG
+        # # Ignore any EXTRA_FILTER options
+        # MSG=""
+        # verbose "Not in list: mu find flag:unread m:$MAILDIR AND NOT flag:list"
+        # non_list=$(mu find --nocolor flag:unread m:$MAILDIR AND NOT flag:list 2>/dev/null | wc -l)
+        # MSG="${non_list}"
+        # verbose "IN list: mu find flag:unread and flag:list and m:$MAILDIR "
+        # list=$(mu find --nocolor flag:unread AND flag:list and m:$MAILDIR  2>/dev/null | wc -l)
+        # if [ $list -gt 0 ]; then
+        #     MSG="$MSG ($list in groups)"
+        # fi
+        # echo $MSG
+        shell-count --breakdown $MAILDIR
         ;;
     mailbox-counts)
-        verbose "Mailbox count: mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
-        mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m 2>&- | \
-            awk '{ M[$0]++ } END { for (m in M) printf("%4s %s\n", M[m], m); }'
+        # verbose "Mailbox count: mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m | uniq -c"
+        # mu find --nocolor flag:unread m:$MAILDIR $EXTRA_FILTER -f "m" -s m 2>&- | \
+        #     awk '{ M[$0]++ } END { for (m in M) printf("%4s %s\n", M[m], m); }'
+        shell-count --breakout $MAILDIR
         ;;
 esac

@@ -83,9 +83,12 @@ ${color grey}Processes:$color $processes  ${color grey}Running:$color $running_p
 $hr
 ${execpi 60 ~/bin/ocean-temp.py}
 $hr
-${color grey}Gmail:    $color ${execpi 5 ~/bin/inbox_count.sh -m /Gmail/INBOX --list-breakdown}
-${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX}
-${execpi 5 ~/bin/inbox_count.sh -m '/Qualcomm/*' -x "and not m:/Qualcomm/INBOX" --mailbox-counts | sed 's|/Qualcomm/||g'}
+# ${color grey}Gmail:    $color ${execpi 5 ~/bin/inbox_count.sh -m /Gmail/INBOX --list-breakdown}
+# ${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m /Qualcomm/INBOX}
+# ${execpi 5 ~/bin/inbox_count.sh -m '/Qualcomm/*' -x "and not m:/Qualcomm/INBOX" --mailbox-counts | sed 's|/Qualcomm/||g'}
+${color grey}Gmail:    $color ${execpi 5 ~/bin/inbox_count.sh -m ~/Maildir/Gmail --list-breakdown}
+${color grey}Qualcomm: $color ${execpi 5 ~/bin/inbox_count.sh -m ~/Maildir/Qualcomm/INBOX}
+${execpi 5 ~/bin/inbox_count.sh -m ~/Maildir/Qualcomm --mailbox-counts | grep -v INBOX}
 $hr
 ${color grey}Meetings for Today:
 $color${execpi 30 timeout -s 9 20 ~/bin/cal.py conky}

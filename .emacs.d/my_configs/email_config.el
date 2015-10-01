@@ -38,7 +38,7 @@
 (setq
  mu4e-maildir                     "~/Maildir"    ;; top-level Maildir
  mu4e-get-mail-command            "true"         ;; calling offlineimap separately
- mu4e-update-interval             120            ;; Not needed with offlineimap hooks
+ mu4e-update-interval             nil            ;; Not needed with offlineimap hooks
  mu4e-use-fancy-chars             nil            ;; Pretty symbols in the view
  mu4e-view-show-images            t              ;; Show images inline
  mu4e-view-image-max-width        800            ;; Limit too big photos
@@ -53,10 +53,13 @@
  mu4e-headers-show-threads        nil            ;; Keep non-threaded by default 'P' to change
  mu4e-hide-index-messages         t              ;; No messages in mini-buffer about updates
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
+ mu4e-headers-leave-behavior      'apply         ;; automatically apply the marks
  message-sendmail-envelope-from   'header
  mail-interactive                 nil            ;; quiets msmtp false-positive errors
  message-interactive              nil            ;; quiets msmtp false-positive errors
  )
+
+;; mu4e-headers-auto-update
 
 ; Default headers used in normal mode
 (setq mu4e-headers-fields
@@ -373,6 +376,9 @@ query"
       (unless (ignore-errors (jump-to-register ?m))
         (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
+
+;; "U" was previously set to 
+(define-key mu4e-headers-mode-map (kbd "U") 'mu4e-update-index)
 
 ; Next two functions are courtesy of sabof https://github.com/djcb/mu/issues/128
 (defun mu4e-headers-mark-all-unread-read ()
