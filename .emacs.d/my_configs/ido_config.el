@@ -31,6 +31,19 @@
 ; Finally, with the improved highlighting, it is also nice to view matches vertically
 (ido-vertical-mode)
 
+
+;; Integration with recentf
+(defun ido-recentf-open ()
+  "Use `ido-completing-read' to \\[find-file] a recent file."
+  (interactive)
+  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
+      (message "Opening file...")
+    (message "Aborting")))
+
+;; get rid of `find-file-read-only' and replace it with something
+;; more useful.
+(global-set-key (kbd "C-x C-r") 'ido-recentf-open)
+
 ;; Better command issuing
 ;; ------------------------------
 (require 'smex)

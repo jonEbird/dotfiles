@@ -48,14 +48,25 @@
 (require 'org-bullets)
 (defun my-org-mode-settings ()
   (interactive)
+  ;; Spelling
+  ;; http://endlessparentheses.com/ispell-and-org-mode.html
   (turn-on-flyspell)
+  (make-local-variable 'ispell-skip-region-alist)
+  (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+  (add-to-list 'ispell-skip-region-alist '("~" "~"))
+  (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  ;; Other hacks
   (flycheck-mode -1)
   (org-bullets-mode 1))
 (add-hook 'org-mode-hook 'my-org-mode-settings 'append)
+
 ; Hide all blank lines inside folded contents of headings
 (setq org-cycle-separator-lines 0)
 ; Allow alphabetic lists to be recognized for lists
 (setq org-alphabetical-lists t)
+; Change ellipsis from the three dots to something more visually distinctive
+(setq org-ellipsis "⤵")
 ; Speed commands
 (setq org-use-speed-commands t)
 (setq org-speed-commands-user '(("P" . org-property-action)
@@ -391,7 +402,7 @@ p code, li code {
 (define-key org-mode-map "\C-co" 'org-work-checkout)
 
 ;; Presentations via S5 for your org file
-(load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
+;; (load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
 ;; Find further S5 themes:
 ;;   Official Site   - http://meyerweb.com/eric/tools/s5/themes/
 ;;   Nice Collection - http://atuan.com/s5/
@@ -416,7 +427,8 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 ;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
 (require 'ox-reveal)
 ; I have cloned reveal as a submodule
-(setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/org-reveal/")))
+;; (setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/org-reveal/")))
+(setq org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/")
 
 ;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
 ;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then
@@ -533,6 +545,9 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 
 ; org-drill support
 (require 'org-drill)
+
+;; org-download
+;; (require 'org-download)
 
 ;; Calendaring support with org-caldav. I created an el-get recipe to
 ;; ensure this package is installed.

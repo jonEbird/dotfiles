@@ -13,8 +13,3 @@
              '(nil "\\`root\\'" "/ssh:%h:"))
 (add-to-list 'tramp-default-proxies-alist
              '((regexp-quote (system-name)) nil nil))
-
-(if (eq system-type 'windows-nt)
-    (setq tramp-default-method "pscp")
-  )
-;(setq tramp-debug-buffer t)

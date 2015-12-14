@@ -57,7 +57,8 @@ normal-tmux() {
             # other things that need started
             feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
             sudo systemctl condreload nscd >/dev/null 2>&1
-            synergyc esp-dev-jsmiller-1
+            tmux new-window -t normal:20 "repeat synergyc -f -d DEBUG esp-dev-jsmiller-1"
+            tmux set-window-option -t normal:20 monitor-activity off
             conky -d >/dev/null 2>&1
             if [ -f ~/pithos/bin/pithos ]; then
                 tmux new-window -t normal:21 "repeat ~/pithos/bin/pithos"

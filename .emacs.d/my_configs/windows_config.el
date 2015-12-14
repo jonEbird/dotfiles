@@ -68,6 +68,8 @@
 			("\\.pdf\\'" . default)
 			("\\.xlsx?" . default)
 			("\\.docx?" . default)))
+  ;; Use Putty tools for remote editing
+  (setq tramp-default-method "pscp")
   (load-theme 'deeper-blue nil nil)
   ;; Thank you - http://stackoverflow.com/questions/5436563/setting-emacs-font-under-windows
   (set-face-attribute 'default nil

@@ -22,9 +22,12 @@ shell-count() {
     fi
     local MB="$1" summary=""
     if [ $mode == "sum" ]; then
+        verbose "Executing: find "$MB" -name new -type d -print0 | xargs -0 ls | wc -l"
         find "$MB" -name new -type d -print0 | xargs -0 ls | wc -l
     elif [ $mode == "breakdown" ]; then
+        verbose "Checking ML count via: grep -E -il '^List-Id: ' ${MB}/*/new/* | wc -l"
         list_cnt=$(grep -E -il '^List-Id: ' ${MB}/*/new/* | wc -l)
+        verbose "Checking non ML count: grep -E -iL '^List-Id: ' ${MB}/*/new/* | wc -l"
         nonlist_cnt=$(grep -E -iL '^List-Id: ' ${MB}/*/new/* | wc -l)
         echo "$nonlist_cnt ($list_cnt)"
     elif [ $mode == "breakout" ]; then

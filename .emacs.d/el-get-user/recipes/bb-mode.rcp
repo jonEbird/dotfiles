@@ -1,0 +1,5 @@
+(:name bb-mode
+       :description "Emacs major mode for bitbake recipes"
+       :type github
+       :pkgname "mferland/bb-mode"
+       :compile "bb-mode.el")

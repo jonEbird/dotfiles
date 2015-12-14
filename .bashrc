@@ -51,6 +51,7 @@ export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
 export LANG=en_US.UTF-8
 export LESS="-I-q-s-F-R"
+export TERM="xterm-256color"
 export WORKON_HOME=~/venv
 
 # User specific aliases and functions
@@ -62,7 +63,7 @@ alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
 alias ls='ls --color=auto -F '
-alias magit='emacsclient -a emacs -e "(magit-status \"$(pwd)\")"'
+alias magit='emacsclient -a emacs -e "(magit-status \"$(git rev-parse --show-toplevel)\")"'
 function projectile() {
     local project_dir="${1:-$(pwd)}"
     emacsclient -a emacs -e "(projectile-add-known-project \"${project_dir%%/}/\")"
@@ -89,7 +90,7 @@ if [ -d ~/.bashrc.${DOMAIN}.d ]; then
 	source ${bashrc}
     done
 fi
-MACHINE=$(hostname | sed 's/^\([^\.]*\).*$/\1/g')
+MACHINE=$(uname -n | sed 's/^\([^\.]*\).*$/\1/g')
 if [ -d ~/.bashrc.${MACHINE}.d ]; then
     for bashrc in ~/.bashrc.${MACHINE}.d/*; do
 	source ${bashrc}

@@ -55,8 +55,8 @@
  message-kill-buffer-on-exit      t              ;; Don't keep around messages
  mu4e-headers-leave-behavior      'apply         ;; automatically apply the marks
  message-sendmail-envelope-from   'header
- mail-interactive                 nil            ;; quiets msmtp false-positive errors
- message-interactive              nil            ;; quiets msmtp false-positive errors
+ mail-interactive                 t              ;; quiets msmtp false-positive errors
+ message-interactive              t              ;; quiets msmtp false-positive errors
  )
 
 ;; mu4e-headers-auto-update
@@ -262,12 +262,14 @@ query"
   (if jsm/ml-mode
       (progn
         (setq jsm/ml-mode nil
-              mu4e-headers-auto-update t)
+              ;mu4e-headers-auto-update t
+              )
         (jsm/toggle-mailing-list-headers-fields nil)
         (ignore-errors (mu4e-headers-query-prev)))
     (progn
       (setq jsm/ml-mode t
-            mu4e-headers-auto-update nil)
+            ;mu4e-headers-auto-update nil
+            )
       (jsm/toggle-mailing-list-headers-fields t)
       ; Removed the extra "and flag:unread" from the search
       (mu4e-headers-search-bookmark "m:/Gmail/INBOX AND flag:list AND flag:unread")
@@ -377,8 +379,12 @@ query"
         (mu4e)))))
 (global-set-key (kbd "<f11>") 'switch-between-mu4e)
 
-;; "U" was previously set to 
-(define-key mu4e-headers-mode-map (kbd "U") 'mu4e-update-index)
+;; "U" was previously set to ??
+(define-key mu4e-headers-mode-map (kbd "U")
+  '(lambda ()
+     (interactive)
+     (mu4e-update-index)
+     (mu4e-headers-rerun-search)))
 
 ; Next two functions are courtesy of sabof https://github.com/djcb/mu/issues/128
 (defun mu4e-headers-mark-all-unread-read ()
@@ -511,12 +517,20 @@ contact from all those present in the database."
 (defun my-helm-email-address-complete (addresses initial)
   (helm-comp-read "Address: " addresses :initial-input initial))
 
-(cond ((boundp 'helm-mode)
+(defun my-ivy-email-address-complete (addresses initial)
+  "Wrapping function to call IVY completion on my filtered email addresses"
+  (ivy-completing-read "Address: " addresses nil nil initial))
+
+(cond ((boundp 'ivy-mode)
+       (setq my-address-completion-func 'my-ivy-email-address-complete))
+      ((boundp 'helm-mode)
        (setq my-address-completion-func 'my-helm-email-address-complete))
       ((boundp 'ido-mode)
        (setq my-address-completion-func 'my-ido-email-address-complete)))
 
-(define-key message-mode-map (kbd "<tab>") 'jsm/complete-address)
+(if (fboundp 'ivy-select-and-insert-contact)
+    (define-key message-mode-map (kbd "<tab>") 'ivy-select-and-insert-contact)
+  (define-key message-mode-map (kbd "<tab>") 'jsm/complete-address))
 
 ;-Sending-HTML-Emails--------------------
 

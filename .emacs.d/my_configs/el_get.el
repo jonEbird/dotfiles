@@ -50,7 +50,7 @@
          lua-mode markdown-mode google-maps htmlize ldap-mode url-dav
          org-caldav confluence-el expand-region iedit jedi mu4e
          flx paredit ido-vertical-mode dash ; php-mode-improved
-         multiple-cursors guide-key visual-regexp projectile
+         multiple-cursors popwin guide-key visual-regexp projectile
          ack-and-a-half cl-lib autopair yasnippet auto-complete-clang
          gtags multiple-cursors magit git-gutter
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
@@ -58,7 +58,8 @@
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
          helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
          helm-gtags command-log-mode helm-swoop key-chord flycheck
-         ag helm-ag wdired org-bullets zeal-at-point ace-window avy)))
+         ag helm-ag wdired org-bullets zeal-at-point org-download
+         ace-window avy hydra use-package bb-mode swiper docker-tramp)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 

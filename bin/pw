@@ -19,9 +19,9 @@ set timeout -1
 match_max 100000
 
 while { true } {
-    expect {
-    "assword: " { send -- "$pass\r" }
-    "Are you sure you want to continue connecting" { send -- "yes\r" }
-    eof { send_user "That is all she wrote.\n"; exit }
+    expect -nocase {
+        "password: " { send -- "$pass\r" }
+        "are you sure you want to continue connecting" { send -- "yes\r" }
+        eof { send_user "That is all she wrote.\n"; exit }
     }
 }

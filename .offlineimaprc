@@ -68,7 +68,7 @@ sslcacertfile = /etc/pki/tls/certs/ca-bundle.crt
 maxage = 90
 maxconnections = 1
 # was 8 maxconnections
-folderfilter = lambda name: name in [ 'BuckeyePredictions',  'FB', 'Family',
+folderfilter = lambda name: name in [ 'BuckeyePredictions',  'FB',
                                       'INBOX', 'Jott', 'Nationwide',
                                       'Netflix', 'PyCon', 'Spacewalk', 'TechCols',
                                       'YouMail', 'colug', 'jonEbird', 'linux-s390']

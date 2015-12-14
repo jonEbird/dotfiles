@@ -11,8 +11,9 @@
 (global-set-key (kbd "C-x C-z") 'magit-status)
 
 ;; 2. Enable the git-gutter
-(setq git-gutter:disabled-modes
-      '(org-mode mu4e-view-mode mu4e-headers-mode))
+(defvar git-gutter:disabled-modes
+  '(org-mode mu4e-view-mode mu4e-headers-mode)
+  "Do not use git-gutter with org files or email")
 
 ; (global-git-gutter-mode t)
 (dolist (hook
@@ -156,10 +157,18 @@
 (add-hook 'multiple-cursors-mode-disabled-hook
           (lambda ()
                  (interactive)
-                 (global-set-key (kbd "C-s") 'isearch-forward)
-                 (global-set-key (kbd "C-r") 'isearch-backward)))
+                 (global-set-key (kbd "C-s") 'swiper) ; was isearch-forward
+                 (global-set-key (kbd "C-r") 'swiper))) ; isearch-backward
 ; (require 'phi-replace)
 ; (global-set-key (kbd "M-%") 'phi-replace-query)
+
+;; More search replacements
+;; Per http://pragmaticemacs.com/emacs/dont-search-swipe/
+(require 'swiper)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
+(setq ivy-display-style 'fancy
+      ivy-use-virtual-buffers t)
 
 ;; Undo-tree - Try for starters: C-x u
 ;; ------------------------------
@@ -266,18 +275,6 @@
 (add-to-list 'recentf-exclude "^/tmp/org")
 (add-to-list 'recentf-exclude (expand-file-name "~/Maildir"))
 
-(defun ido-recentf-open ()
-  "Use `ido-completing-read' to \\[find-file] a recent file"
-  (interactive)
-  (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-      (message "Opening file...")
-    (message "Aborting")))
-
-;; get rid of `find-file-read-only' and replace it with something
-;; more useful.
-(when ido-mode
-  (global-set-key (kbd "C-x C-r") 'ido-recentf-open))
-
 ;; Enable semantic mode to better support imenu
 (semantic-mode 1)
 (setq semantic-edits-verbose-flag nil)
@@ -288,10 +285,10 @@
 
 ;; Show me bad whitespace
 ;; ------------------------------
-(require 'whitespace)
-(setq whitespace-style '(face tabs trailing indentation space-before-tab space-after-tab)
-      whitespace-global-modes '(python-mode c-mode c++-mode))
-(global-whitespace-mode 1)
+;; (require 'whitespace)
+;; (setq whitespace-style '(face tabs trailing indentation space-before-tab space-after-tab)
+;;       whitespace-global-modes '(python-mode c-mode c++-mode))
+;; (global-whitespace-mode 1)
 ; (face tabs spaces trailing lines space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark)
 
 ;; Support for showing key commands
@@ -352,7 +349,8 @@
 (require 'key-chord)
 (key-chord-mode 1)
 (key-chord-define-global ",."     "<>\C-b")
-(key-chord-define-global "AG"     'helm-projectile-ag)
+;; Defaulted to: C-c p s s
+; (key-chord-define-global "AG"     'helm-projectile-ag)
 
 ;; Quickly split window and get to my most common org files
 ;; ------------------------------
@@ -398,6 +396,8 @@ other-window split style"
 ;; Open Files within containers
 ;; ------------------------------
 ;; http://www.emacswiki.org/emacs/TrampAndDocker
+(require 'docker-tramp)
+
 (push
  (cons
   "docker"

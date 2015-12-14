@@ -1,0 +1,5 @@
+(:name org-download
+       :description "Drag and drop images to Emacs org-mode"
+       :type github
+       :pkgname "abo-abo/org-download"
+       :compile "org-download.el")

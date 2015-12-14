@@ -78,4 +78,6 @@ Optional keys include %author, %title and %date.")
                 (replace-regexp
                  (regexp-quote "<div id=\"table-of-contents\">")
                  "<div id=\"table-of-contents\" class=\"slide\">"))))))
-      (org-export-as-html arg hidden ext-plist to-buffer body-only pub-dir))))
+      (org-html-export-as-html nil arg hidden body-only ext-plist))))
+;; Was (org-export-as-html arg hidden ext-plist to-buffer body-only pub-dir)
+; Passed (arg &optional hidden ext-plist to-buffer body-only pub-dir)

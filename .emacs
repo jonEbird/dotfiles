@@ -23,7 +23,9 @@
 (setq transient-mark-mode t)
 
 ; include buffer name in titlebar
-(setq frame-title-format '(buffer-file-name "%f" ("%b")))
+(setq frame-title-format '(buffer-file-name "%f" ("%b"))
+      inhibit-default-init t ;; Needed to avoid Fedora's default.el overriding my frame-title-format setting
+      )
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward)
 
@@ -41,7 +43,7 @@
 (defalias 'repl 'ielm "Alias to the elisp REPL")
 
 ; Useful for conditional variables
-(defvar hostname
+(defvar my-hostname
   (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
   "hostname of this machine")
 
@@ -49,12 +51,12 @@
 (require 'desktop)
 (require 'savehist)
 (setq
- desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") hostname)
- desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") hostname ".lock")
- savehist-file (concat (expand-file-name "~/.emacs.d/history.") hostname)
+ desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname)
+ desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname ".lock")
+ savehist-file (concat (expand-file-name "~/.emacs.d/history.") my-hostname)
  history-length 250)
-(desktop-save-mode 1)
-(savehist-mode 1)
+;(desktop-save-mode 1)
+;(savehist-mode 1)
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
@@ -63,8 +65,7 @@
   (require 'package)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
-  (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
-  (package-initialize)
+  ; (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
   )
 
 ;; Extra add-ons - Typcially from git submodules
@@ -82,6 +83,9 @@
 ;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
 (global-set-key (kbd "<C-mouse-4>") (lambda () (interactive) (text-scale-increase 1)))
 (global-set-key (kbd "<C-mouse-5>") (lambda () (interactive) (text-scale-decrease 1)))
+
+;; Quickly kill a buffer
+(global-set-key (kbd "M-k") (lambda () (interactive) (kill-buffer nil)))
 
 ;; Banish the mouse
 (mouse-avoidance-mode 'none)
@@ -109,15 +113,15 @@
 (setq x-select-enable-clipboard t)
 
 ;; I may enable flyspell-mode. When I do, let's kill the underline.
+(defvar flyspell-issue-welcome-flag nil)
 (eval-after-load "flyspell"
   '(progn
-     (setq flyspell-issue-welcome-flag nil)
      ;; Older face name had "-face" extension
-     (ignore-errors (set-face-underline-p 'flyspell-incorrect-face nil))
-     (ignore-errors (set-face-underline-p 'flyspell-duplicate-face nil))
+     (ignore-errors (set-face-underline 'flyspell-incorrect-face nil))
+     (ignore-errors (set-face-underline 'flyspell-duplicate-face nil))
      ;; Newer 24.4 dropped the "-face"
-     (ignore-errors (set-face-underline-p 'flyspell-incorrect nil))
-     (ignore-errors (set-face-underline-p 'flyspell-duplicate nil))))
+     (ignore-errors (set-face-underline 'flyspell-incorrect nil))
+     (ignore-errors (set-face-underline 'flyspell-duplicate nil))))
 ; Most of my flyspell hook are located in their own respective config files,
 ;   but for some modes I don't have a dedicated .el file
 (add-hook 'text-mode-hook 'turn-on-flyspell 'append)
@@ -171,12 +175,12 @@
 (put 'scroll-left 'disabled nil)
 
 ;; For longlines-mode
-(setq longlines-wrap-follows-window-size t)
+(defvar longlines-wrap-follows-window-size t)
 
 ;; Show the datetime in the modeline?
 ; display-time-format overrides display-time-day-and-date & display-time-24hr-format
-(setq display-time-format "%a %Y-%m-%d %H:%M"
-      display-time-load-average-threshold 5)
+(defvar display-time-format "%a %Y-%m-%d %H:%M")
+(defvar display-time-load-average-threshold 5)
 ; Enabling the modeline addition (Disable with a negative ARG)
 (display-time-mode 1)
 
@@ -184,7 +188,7 @@
 (server-start nil)
 
 ;; Kill trailing whitespace but only in certain modes
-(setq delete-trailing-whitespace-modes (list "org-mode" "text-mode")) ; "emacs-lisp-mode"
+(defvar delete-trailing-whitespace-modes '("org-mode" "text-mode"))
 (defun delete-trailing-whitespace-inmodes ()
   "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
   (interactive)
@@ -196,12 +200,12 @@
 
 ; Bookmarks support
 ; See http://emacs-fu.blogspot.com/2009/11/bookmarks.html
-(setq
- bookmark-default-file "~/.emacs.d/bookmarks" ;; keep my ~/ clean
- bookmark-save-flag 1)                        ;; autosave each change)
+(defvar bookmark-default-file "~/.emacs.d/bookmarks"
+  "keep my ~/ clean")
+(defvar bookmark-save-flag 1 "autosave each change")
 
 ;; Games setup
-(setq tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
+(defvar tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
 
 ;; Move customizations to a separate file
 (setq custom-file "~/.emacs.d/custom.el")
@@ -244,21 +248,8 @@
 ;; Systemd unit files
 (add-to-list 'auto-mode-alist '("\\.service" . conf-mode))
 
-;; Transparency
-(eval-when-compile (require 'cl))
-(set-frame-parameter (selected-frame) 'alpha '(100 100))
-(add-to-list 'default-frame-alist '(alpha 100 100))
-(defun toggle-transparency ()
-  (interactive)
-  (if (/=
-       (cadr (find 'alpha (frame-parameters nil) :key #'car))
-       100)
-      (set-frame-parameter nil 'alpha '(100 100)) ; Not transparent
-    (set-frame-parameter nil 'alpha '(80 60))))   ; Tranparent
-(global-set-key (kbd "C-c t") 'toggle-transparency)
-
 ;; GnuPG Setup
-(setq epa-armor 't)
+(defvar epa-armor 't)
 (require 'epa-file)
 (epa-file-enable)
 
@@ -316,13 +307,15 @@
 ; I do not use mark-paragraph
 (global-set-key (kbd "M-h") 'jsm:highlight-current-word)
 
+;; (unhighlight-regexp t)
+
 (defun jsm:kill-ring-sexp(&optional arg)
   "Highlight the current sexp ala mark-sexp and then copy ala kill-ring-save"
   (interactive "^p")
   (or arg (setq arg 1))
   (mark-sexp arg)
   (kill-ring-save (region-beginning) (region-end)))
-(global-set-key "\M-p" 'jsm:kill-ring-sexp)
+;(global-set-key "\M-p" 'jsm:kill-ring-sexp)
 
 ;; Used for preferring a .gpg version of a file over a normal one
 ;;   Handy for dynamically building configs, such as org-mode during boot.
@@ -362,7 +355,8 @@
 ;;  then modified slightly to test for the existence of config files
 ; default emacs configuration directory
 (defconst jsm:emacs-config-dir "~/.emacs.d/my_configs/" "")
-; utility finction to auto-load my package configurations
+
+;; Utility function to auto-load my package configurations
 (defun jsm:load-config-file (filelist)
   (dolist (file filelist)
     (let ((fullpath (expand-file-name
@@ -372,7 +366,8 @@
             (load fullpath))
 	(message "Could NOT load config file:%s" file))
       )))
-; load my configuration files
+
+;; load my configuration files
 (jsm:load-config-file '("el_get"
                         "lisp_config"
                         ;; "yasnippet_config"
@@ -382,9 +377,10 @@
                         "erc_config"
                         "misc_languages"
                         "efficiency_config"
-                        ;; Pick one: ido or helm
+                        ;; Pick one: ido or helm or ivy
                         ; "ido_config"
-                        "helm_config"
+                        ; "helm_config"
+                        "ivy_config"
                         "email_config"
                         ; "elip_edb"
                         "c-c++_tags_config"
@@ -395,4 +391,5 @@
                         ;; "screencast"
                         ))
 
-(setq frame-title-format '(buffer-file-name "%f" ("%b")))
+(provide '.emacs)
+;;; .emacs ends here

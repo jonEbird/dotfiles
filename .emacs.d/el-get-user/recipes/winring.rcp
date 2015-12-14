@@ -1,0 +1,4 @@
+(:name winring
+       :description "Window configuration rings for Emacs"
+       :type bzr
+       :url "lp:winring")
