@@ -19,6 +19,11 @@ _netrc
 .emacs.d/url/*
 .emacs.desktop*
 .emacs.d/el-get/
+.emacs.d/recentf
+.emacs.d/ac-comphist.dat
+.emacs.d/smex-items
+.emacs.d/projectile-bookmarks.eld
+.emacs.d/history.unknown
 .eshell/*
 .ido.*
 .history

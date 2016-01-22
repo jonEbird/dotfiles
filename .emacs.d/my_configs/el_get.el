@@ -41,6 +41,11 @@
 
 ; (el-get 'sync)
 
+;; Special quick hack for Mac platform before getting too far
+(when (eq system-type 'darwin)
+  (el-get 'sync '(exec-path-from-shell))
+  (exec-path-from-shell-copy-env "PATH"))
+
 ; Finally my list of packages wanting to be installed
 (setq jsm-packages
       (append

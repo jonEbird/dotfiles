@@ -367,6 +367,8 @@
 	(message "Could NOT load config file:%s" file))
       )))
 
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/el-get/google-maps"))
+
 ;; load my configuration files
 (jsm:load-config-file '("el_get"
                         "lisp_config"
