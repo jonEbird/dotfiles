@@ -1,4 +1,4 @@
-personal_ws-1.1 en 883 
+personal_ws-1.1 en 885 
 refactor
 cfg
 buildsystem
@@ -24,13 +24,13 @@ DDR
 runnable
 DHA
 cli
-EDB
 dev
+EDB
 BSC
 DFS
 lshw
-AXI
 cmn
+AXI
 initrd
 BSP
 tunable
@@ -38,8 +38,8 @@ dir
 nginx
 dma
 CRC
-BTS
 crd
+BTS
 OFDM
 EIA
 expander
@@ -47,9 +47,9 @@ rmdir
 FDD
 cpu
 Klocwork
-csh
-FEC
 CTC
+FEC
+csh
 Moma
 mistyped
 systemctl
@@ -117,8 +117,8 @@ timeline
 Nvidia
 gitflow
 GPT
-GPU
 HOA
+GPU
 ortools
 MQTT
 GSM
@@ -136,8 +136,8 @@ IPC
 Makefile
 ansible
 Lync
-GYN
 IPI
+GYN
 cpack
 CPack
 lan
@@ -164,8 +164,8 @@ openldap
 vmlinuz
 nscd
 kickstarts
-LLC
 Mem
+LLC
 installables
 Javascript
 symlinks
@@ -232,6 +232,7 @@ mdadm
 ntpd
 kthreadd
 pid
+pex
 Qualcomm's
 taskomatic
 daemonizing
@@ -418,8 +419,8 @@ automountMapName
 BT
 ldapsearch
 EPEL
-DL
 FB
+DL
 fc
 nitty
 webapps
@@ -437,8 +438,8 @@ refactored
 SpaceWalk
 GV
 syslog
-gz
 ip
+gz
 HW
 LD
 kerberos
@@ -448,11 +449,12 @@ md
 installable
 struct
 xsltproc
+artifactory
 nd
 subnet
 eICIC
-LV
 MQ
+LV
 postinst
 timesource
 mv
@@ -468,8 +470,8 @@ sdcard
 debugfs
 scriptable
 ethernet
-RO
 py
+RO
 Gradle's
 FMLA
 pagedrain
@@ -503,8 +505,8 @@ Erlang
 FPGA
 journaling
 hideall
-ESNs
 EUFI
+ESNs
 RPMs
 RPM's
 eval
@@ -647,9 +649,9 @@ downlink
 openafs
 OpenAFS
 grandmaster
+gitlab
 GitHub
 github
-gitlab
 backend
 McQuire
 differentiator
@@ -670,8 +672,8 @@ sysrq
 SysRq
 LLMNR
 tuple
-VLAN
 UMTS
+VLAN
 Scribbs
 DavMail
 jsmiller
@@ -828,8 +830,8 @@ NAPI
 mutex
 retransmission
 utils
-CMake
 cmake
+CMake
 filesystems
 Awaiz
 boolean
@@ -844,8 +846,8 @@ sttsmsim
 bdist
 lockless
 gitignore
-BitBake
 bitbake
+BitBake
 tshark
 portfast
 tcpdump

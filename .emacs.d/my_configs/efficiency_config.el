@@ -371,6 +371,13 @@ other-window split style"
 (key-chord-define-global "JT"  (switch-to-myfile-other-window "~/org/tasks.org"))
 (key-chord-define-global "JS"  (switch-to-myfile-other-window "~/org/secret.gpg"))
 
+(defun mosh-irc ()
+  (interactive)
+  (if (get-buffer "*Shell mosh-irc*")
+      (switch-to-buffer "*Shell mosh-irc*")
+    (funcall (faux-screen-utility-terminal "mosh-irc") (expand-file-name "~"))))
+(key-chord-define-global "CT" (lambda () (interactive) (mosh-irc)))
+
 ;; Dired Fixup
 ;; ------------------------------
 ;; http://mbork.pl/2015-04-25_Some_Dired_goodies
