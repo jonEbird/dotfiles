@@ -14,6 +14,9 @@ _netrc
 .emacs.d/*.el
 .emacs.d/kiwanami/*
 .emacs.d/server/*
+.emacs.d/.python-environments/
+.emacs.d/desktop.*
+.emacs.d/notes
 .emacs.d/tramp*
 .emacs.d/tutorial/*
 .emacs.d/url/*
@@ -23,6 +26,7 @@ _netrc
 .emacs.d/ac-comphist.dat
 .emacs.d/smex-items
 .emacs.d/projectile-bookmarks.eld
+.emacs.d/projectile.cache
 .emacs.d/history.unknown
 .eshell/*
 .ido.*

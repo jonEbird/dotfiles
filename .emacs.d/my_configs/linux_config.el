@@ -1,36 +1,8 @@
 ; -*- emacs-lisp -*-
 
 ;;; Linux Configuration
-(require 'color-theme)
-(require 'smart-mode-line)
-
-;; Require my theme(s)
-(require 'color-theme-solarized)
 
 ;;; Code:
-
-(color-theme-solarized)
-
-;; (setq my-dark-theme 'zenburn
-;;       my-dark-theme-sml 'light)
-;; respectful or automatic or smart-mode-line-powerline
-(setq my-dark-theme       'solarized-dark
-      my-dark-theme-sml   'respectful
-      my-light-theme      'solarized-light
-      my-light-theme-sml  'automatic)
-
-(defun toggle-night-color-theme ()
-  "Switch to/from night color scheme, including shell theme, for presentation mode"
-  (interactive)
-  (if (eq (frame-parameter (next-frame) 'background-mode) 'light)
-      (progn
-        (load-theme my-dark-theme nil nil)
-        (shell-command "~/gnome-terminal-colors-solarized/install.sh -s dark -p default" nil nil)
-        (setq sml/theme my-dark-theme-sml))
-    (load-theme my-light-theme nil nil)
-    (shell-command "~/gnome-terminal-colors-solarized/install.sh -s light -p default" nil nil)
-    (setq sml/theme my-light-theme-sml))
-  (sml/setup))
 
 ; Modified from: http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
 (defun flyspell-detect-ispell-args (&optional RUN-TOGETHER)
@@ -81,24 +53,12 @@
     (set-face-attribute 'helm-source-header nil :background "#073642")
     (set-face-attribute 'helm-ff-directory nil :foreground "#d70000" :background "#073642"))
 
-  ;; Toggle between light and dark themes with F7
-  (global-set-key (kbd "<f7>") 'toggle-night-color-theme)
-
-  ;; Smart-mode-line
-  ;; ------------------------------
-  (setq sml/theme           my-dark-theme-sml
-        sml/shorten-modes   t
-        sml/mode-width      'full
-        sml/name-width      25
-        sml/hidden-modes    '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter" " Helm" " Paredit" " fs" " ElDoc" " WS" " Fly" " Abbrev" " Gtags" " HelmGtags" " MRev"))
-  (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
-  (sml/setup)
-
   ;; Printing support!
   (require 'printing)
   (pr-update-menus t)
   ; make sure we use localhost as cups server
   (setenv "CUPS_SERVER" "localhost")
-  (require 'cups)
+  (require 'cups))
 
-  )
+(provide 'linux_config)
+;;; linux_config.el ends here

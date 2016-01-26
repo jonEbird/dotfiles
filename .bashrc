@@ -18,8 +18,27 @@ done
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
+if which brew >/dev/null 2>&1; then
+
+    # Bash Completion
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        . $(brew --prefix)/etc/bash_completion
+    fi
+
+    # Coreutils
+    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+    export MANPATH="$(brew --prefix coreutils)/share/man:$MANPATH"
+
+    # Findutils
+    PATH="$(brew --prefix findutils)/libexec/gnubin:$PATH"
+    MANPATH="$(brew --prefix findutils)/libexec/gnuman:$MANPATH"
+
+    # Other Mac specific items
+    alias cal='gcal'
+fi
+
 # PS1 and related Status
-if [ "$(ps --no-headers -o comm -p $PPID 2>/dev/null)" == "emacs" ]; then
+if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
     if [ -n "$EMACS_PS1" ]; then
         PS1="$EMACS_PS1"
     else
@@ -42,6 +61,10 @@ gitps1() {
         #PS1='[\u@\h \W ($(_git_repo):$(__git_ps1 "%s)")]\$ '
     fi
 }
+
+if docker-machine ls -q 2>/dev/null | grep -E '^default$' >/dev/null; then
+    eval "$(docker-machine env default)"
+fi
 
 export HISTSIZE=100000
 export MPD_HOST=sajou

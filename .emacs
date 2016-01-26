@@ -55,8 +55,8 @@
  desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname ".lock")
  savehist-file (concat (expand-file-name "~/.emacs.d/history.") my-hostname)
  history-length 250)
-;(desktop-save-mode 1)
-;(savehist-mode 1)
+(desktop-save-mode 1)
+(savehist-mode 1)
 
 (add-to-list 'desktop-globals-to-save 'file-name-history)
 
@@ -379,6 +379,7 @@
                         "erc_config"
                         "misc_languages"
                         "efficiency_config"
+                        "theme_config"
                         ;; Pick one: ido or helm or ivy
                         ; "ido_config"
                         ; "helm_config"
@@ -390,6 +391,7 @@
                         "php_config"
                         "linux_config"
                         "windows_config"
+                        "mac_config"
                         ;; "screencast"
                         ))
 

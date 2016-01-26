@@ -2,6 +2,9 @@
 
 # Script designed to install self into machine via symlinks
 
+# TODO:
+# 1. Need to intelligently configure ~/.gitconfig
+
 set -eu
 DEBUG=0
 

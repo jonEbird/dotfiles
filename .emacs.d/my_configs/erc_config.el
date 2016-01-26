@@ -113,13 +113,13 @@
 (defun irc-work ()
   (interactive)
   (erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
-           :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird")
-  )
+           :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird"))
+
 (defun irc-home ()
   (interactive)
   (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
-           :password (netrc-get jonebird-irc-creds "password") :nick "jon")
-  )
+           :password (netrc-get jonebird-irc-creds "password") :nick "jon"))
+
 (defun irc-qualcomm ()
   (interactive)
   (erc-tls :server "chat-irc.qualcomm.com" :port 9999 :full-name "Jon Miller"
