@@ -13,8 +13,15 @@
 
 ;; Some standard key bindings
 (global-set-key (kbd "<f9>") 'ivy-resume)
-(define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial-or-done)
 (define-key ivy-minibuffer-map (kbd "C-w") 'ivy-yank-word)
+
+;; Swap TAB and C-j. The `ivy-alt-done' will immediately select the current
+;; target and continue wheras the `ivy-partial-or-done' will only take it
+;; if it is the only remaining selection. Essentially, Abo thinks you
+;; should get used to used C-j when you've decided what to select but I
+;; still like TAB for that, so I'm switching these.
+(define-key ivy-minibuffer-map (kbd "TAB") 'ivy-alt-done)
+(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-partial-or-done)
 
 ;; Integration with other Modes
 (setq projectile-completion-system 'ivy
