@@ -371,6 +371,14 @@ other-window split style"
 (key-chord-define-global "JT"  (switch-to-myfile-other-window "~/org/tasks.org"))
 (key-chord-define-global "JS"  (switch-to-myfile-other-window "~/org/secret.gpg"))
 
+
+;; IRC chat over a mosh connection to my VPS
+;; Using `mtrace' for buffer notification
+(require 'mtrace)
+
+(setq mtrace-notify-changes-limit 1)
+(mtrace-mode)
+
 (defun mosh-irc ()
   (interactive)
   (if (get-buffer "*Shell mosh-irc*")
