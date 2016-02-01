@@ -448,5 +448,13 @@ other-window split style"
 ;; see https://www.gnu.org/software/emacs/manual/html_node/elisp/Creating-Frames.html
 (add-hook 'after-make-frame-functions '--set-emoji-font)
 
+;; Evil mode for my Boss For people that want to use my keyboard, to help
+;; point out something that I'm editing but are unfortunately vim users,
+;; use the following F13 key (DAS keyboard) to toggle between evil-mode.
+(require 'use-package)
+
+(use-package evil
+  :bind ("<f13>" . evil-mode))
+
 (provide 'efficiency_config)
 ;;; efficiency_config.el ends here

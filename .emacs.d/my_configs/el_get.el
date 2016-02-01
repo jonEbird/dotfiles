@@ -64,7 +64,8 @@
          helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
          helm-gtags command-log-mode helm-swoop key-chord flycheck
          ag helm-ag wdired org-bullets zeal-at-point org-download
-         ace-window avy hydra use-package bb-mode swiper docker-tramp)))
+         ace-window avy hydra use-package bb-mode swiper docker-tramp
+         mtrace evil)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
