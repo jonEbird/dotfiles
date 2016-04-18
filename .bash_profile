@@ -49,3 +49,13 @@ if [ -d ~/.bash_profile.${MACHINE}.d ]; then
 	source ${bashprofile}
     done
 fi
+
+# Startup docker machine if necessary
+if command -v docker-machine >/dev/null; then
+    if [[ $(docker-machine status default) == "Stopped" ]]; then
+        docker-machine start default >/dev/null
+    fi
+fi
+
+# Evil RVM
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*

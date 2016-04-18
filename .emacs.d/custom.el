@@ -19,6 +19,9 @@
  '(helm-gtags-path-style (quote relative))
  '(helm-gtags-prefix-key "C-c")
  '(helm-gtags-suggested-key-mapping t)
+ '(org-agenda-files
+   (quote
+    ("~/org/projects.org" "~/org/info.org" "~/org/meetings.org" "~/org/tasks.org")))
  '(org-drill-optimal-factor-matrix
    (quote
     ((2

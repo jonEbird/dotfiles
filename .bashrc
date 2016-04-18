@@ -18,7 +18,7 @@ done
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
-if which brew >/dev/null 2>&1; then
+if which brew >/dev/null 2>&1 && [[ $(uname) == "Darwin" ]]; then
 
     # Bash Completion
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -33,6 +33,12 @@ if which brew >/dev/null 2>&1; then
     PATH="$(brew --prefix findutils)/libexec/gnubin:$PATH"
     MANPATH="$(brew --prefix findutils)/libexec/gnuman:$MANPATH"
 
+    # Go environment setup
+    export GOROOT=$(brew --prefix go)/libexec
+    export GOPATH=$HOME/go
+    [[ -d $GOPATH ]] || mkdir $GOPATH
+    export PATH=$PATH:$GOPATH/bin
+
     # Other Mac specific items
     alias cal='gcal'
 fi
@@ -45,9 +51,11 @@ if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
         PS1="\W $ "
     fi
     export PAGER=emacspager
+    export TERM=eterm-color
 else
     # Standard PS1
     PS1="[\u@\h \W]\$ "
+    export TERM="xterm-256color"
 fi
 
 gitps1() {
@@ -74,17 +82,18 @@ export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
 export LANG=en_US.UTF-8
 export LESS="-I-q-s-F-R"
-export TERM="xterm-256color"
 export WORKON_HOME=~/venv
 
 # User specific aliases and functions
-xset b off 2>&-
+# xset b off 2>&-
 alias vlc='vlc --zoom=2 '
 alias bc='bc -lq'
 alias n='normal-tmux '
+alias grep='grep --color=auto '
 alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
+alias ag='ag --color-match 4\;37 '
 alias ls='ls --color=auto -F '
 alias magit='emacsclient -a emacs -e "(magit-status \"$(git rev-parse --show-toplevel)\")"'
 function projectile() {
@@ -93,11 +102,10 @@ function projectile() {
 }
 org-store-file () {
     local f fp
-    for f in $*; do
-        cd "$(dirname $f)"
-        fp="file:$(pwd | sed "s|^${HOME}|~|g")/$(basename $f)"
-        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename $f)\"))"
-        cd ~-
+    for f in "$@"; do
+        fp=$(cd "$(dirname "$f")"; pwd -P)
+        fp="file:~${fp#${HOME}}/$(basename "$f")"
+        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename "$f")\"))"
     done
 }
 alias ppjson="python -m json.tool"

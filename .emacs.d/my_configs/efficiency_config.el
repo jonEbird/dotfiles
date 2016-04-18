@@ -4,11 +4,17 @@
 ; could be many different things from project navigation, to custom
 ; function with key bindings, etc.
 
+(require 'use-package)
+
 ;; Git Setup
 ;; ------------------------------
 
 ;; 1. Magit support
 (global-set-key (kbd "C-x C-z") 'magit-status)
+
+;; Support org-store-link support in magit buffers
+;; (Have a custom el-get recipe for this)
+(require 'orgit)
 
 ;; 2. Enable the git-gutter
 (defvar git-gutter:disabled-modes
@@ -21,7 +27,7 @@
                        emacs-lisp-mode-hook shell-mode-hook))
   (add-hook hook 'git-gutter-mode 'append))
 
-(global-set-key (kbd "C-x C-g") 'git-gutter:toggle)
+(global-set-key (kbd "C-x C-g") 'git-gutter-mode)
 (global-set-key (kbd "C-x v =") 'git-gutter:popup-hunk)
 
 ;; Jump to next/previous hunk
@@ -109,6 +115,16 @@
 
 (global-set-key (kbd "C-x 4 $") 'jsm/unique-shell)
 
+;; Use the 'hub' utility to quickly open up the project webpage in GHE
+(defun github-browse (&optional directory)
+  (interactive)
+  (let ((default-directory (or directory (read-directory-name "Project Directory: ")))
+        (cmd (format "hub browse")))
+    (shell-command cmd nil nil)))
+
+(define-key projectile-command-map (kbd "B")
+  (lambda () (interactive) (github-browse (projectile-project-root))))
+
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
 (require 'ack-and-a-half)
@@ -157,16 +173,30 @@
 (add-hook 'multiple-cursors-mode-disabled-hook
           (lambda ()
                  (interactive)
-                 (global-set-key (kbd "C-s") 'swiper) ; was isearch-forward
-                 (global-set-key (kbd "C-r") 'swiper))) ; isearch-backward
+                 (global-set-key (kbd "C-s") 'isearch-forward)
+                 (global-set-key (kbd "C-r") 'isearch-backward)))
 ; (require 'phi-replace)
 ; (global-set-key (kbd "M-%") 'phi-replace-query)
+
+
+;; Smart Searching
+;; ------------------------------
+;; Just discovered "M-s ." and only then learned of the vim equivalent
+(global-set-key (kbd "C-*") 'isearch-forward-symbol-at-point)
+
+;; I also like to use occur, so following in the same manor
+(defun jsm/occur-thing-at-point ()
+  (interactive)
+  (occur (format "\\<%s\\>" (thing-at-point 'symbol t))))
+
+(global-set-key (kbd "M-s *") 'jsm/occur-thing-at-point)
+(global-set-key (kbd "C-M-*") 'jsm/occur-thing-at-point)
 
 ;; More search replacements
 ;; Per http://pragmaticemacs.com/emacs/dont-search-swipe/
 (require 'swiper)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "s-s") 'swiper)
+(global-set-key (kbd "s-r") 'swiper)
 (setq ivy-display-style 'fancy
       ivy-use-virtual-buffers t)
 
@@ -261,6 +291,7 @@
   (interactive)
   (funcall (faux-screen-utility-terminal "prj") (projectile-project-root)))
 (define-key projectile-command-map (kbd "$") 'projectile-utility-shell)
+;; (define-key projectile-command-map (kbd "4 $") (lambda () (interactive) (projectile-utility-shell nil)))
 
 ;; Recentf Support
 ;; ------------------------------
@@ -382,7 +413,9 @@ other-window split style"
 (defun mosh-irc ()
   (interactive)
   (if (get-buffer "*Shell mosh-irc*")
-      (switch-to-buffer "*Shell mosh-irc*")
+      (if (equal (buffer-name) "*Shell mosh-irc*")
+          (bury-buffer)
+        (switch-to-buffer "*Shell mosh-irc*"))
     (funcall (faux-screen-utility-terminal "mosh-irc") (expand-file-name "~"))))
 (key-chord-define-global "CT" (lambda () (interactive) (mosh-irc)))
 
@@ -400,6 +433,18 @@ other-window split style"
 (add-to-list 'completion-ignored-extensions ".snapshot/")
 (require 'dired-x)
 (require 'wdired)
+
+;;narrow dired to match filter
+(use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
+
+;; Reusing buffers is about using `find-alternative-file'
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "^") ; was dired-up-directory
+              (lambda () (interactive) (find-alternate-file "..")))))
 
 ;; Zeal http://zealdocs.org/
 ;; ------------------------------
@@ -459,8 +504,6 @@ other-window split style"
 ;; Evil mode for my Boss For people that want to use my keyboard, to help
 ;; point out something that I'm editing but are unfortunately vim users,
 ;; use the following F13 key (DAS keyboard) to toggle between evil-mode.
-(require 'use-package)
-
 (use-package evil
   :bind ("<f13>" . evil-mode))
 

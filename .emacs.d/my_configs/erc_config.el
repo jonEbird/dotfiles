@@ -15,9 +15,14 @@
 (setq erc-log-channels-directory "~/.erc/logs/"
       erc-save-buffer-on-part t
       erc-hide-list nil ; '("JOIN" "PART" "QUIT")
-      jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc")
+      jonebird-irc-creds nil
       erc-server-flood-margin 1000
       )
+
+;; Retrieve my irc credentials
+(defun jsm/set-irc-creds ()
+  (unless jonebird-irc-creds
+    (setq jonebird-irc-creds (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebirdirc"))))
 
 ; Assign the common C-x C-s to act as you'd expect in erc mode
 (define-key erc-mode-map (kbd "C-x C-s") 'erc-save-buffer-in-logs)
@@ -112,16 +117,19 @@
 ; Typical connection
 (defun irc-work ()
   (interactive)
+  (jsm/set-irc-creds)
   (erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
            :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird"))
 
 (defun irc-home ()
   (interactive)
+  (jsm/set-irc-creds)
   (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
            :password (netrc-get jonebird-irc-creds "password") :nick "jon"))
 
 (defun irc-qualcomm ()
   (interactive)
+  (jsm/set-irc-creds)
   (erc-tls :server "chat-irc.qualcomm.com" :port 9999 :full-name "Jon Miller"
            :password "blah" :nick "jsmiller"))
 
@@ -129,5 +137,6 @@
 ; chat.freenode.net
 (defun irc-freenode ()
   (interactive)
+  (jsm/set-irc-creds)
   (erc-tls :server "chat.freenode.net" :port 6697 :full-name "Jon Miller"
            :nick "jonEbird"))

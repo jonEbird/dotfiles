@@ -50,11 +50,10 @@
 ; Session Save Support - Desktop and Savehist
 (require 'desktop)
 (require 'savehist)
-(setq
- desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname)
- desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname ".lock")
- savehist-file (concat (expand-file-name "~/.emacs.d/history.") my-hostname)
- history-length 250)
+(setq history-length 250
+      desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname)
+      desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname ".lock")
+      savehist-file (concat (expand-file-name "~/.emacs.d/history.") my-hostname))
 (desktop-save-mode 1)
 (savehist-mode 1)
 
@@ -92,25 +91,37 @@
 
 ;; Support a moderate scroll via pgdn (aka [next]) and pgup (aka [prior])
 ;; Useful for browsing log output or moderately shifting email for reading
-(global-set-key [next]
-                (lambda ()
-                  (interactive)
-                  (dolist (n '(6 2 1))
-                    (scroll-up n)
-                    (sit-for (/ 1.0 (+ n 20))))))
-(global-set-key [prior]
-                (lambda ()
-                  (interactive)
-                  (dolist (n '(6 2 1))
-                    (scroll-down n)
-                    (sit-for (/ 1.0 (+ n 20))))))
+(defun jsm/smooth-scroll (direction)
+  (interactive)
+  ;; Down is up and up is down in this crazy mixed up world
+  (let ((f (if (equal direction 'up) 'scroll-down 'scroll-up)))
+    (dolist (n '(6 2 1))
+      (funcall f n)
+      (sit-for (/ 1.0 (+ n 20))))))
+
+(global-set-key [next] (lambda () (interactive) (jsm/smooth-scroll 'down)))
+(global-set-key [prior] (lambda () (interactive) (jsm/smooth-scroll 'up)))
+(when (eq system-type 'darwin)
+  ;; On a Mac, my smooth scrolling when pgdn is C-down and pgup is C-up
+  (global-set-key [C-down] (lambda () (interactive) (jsm/smooth-scroll 'down)))
+  (global-set-key [C-up] (lambda () (interactive) (jsm/smooth-scroll 'up))))
 
 ;; not only turn off the bell but turn any of them off
-(setq visible-bell 1)
+(setq visible-bell t)
 (setq ring-bell-function 'ignore)
 
 ;; set/use X clipboard
 (setq x-select-enable-clipboard t)
+
+;; Transparency
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (cadr (frame-parameter nil 'alpha))
+       100)
+      (set-frame-parameter nil 'alpha '(100 100))
+    (set-frame-parameter nil 'alpha '(90 50))))
+(global-set-key (kbd "C-c t") 'toggle-transparency)
 
 ;; I may enable flyspell-mode. When I do, let's kill the underline.
 (defvar flyspell-issue-welcome-flag nil)
@@ -133,7 +144,8 @@
   (let ((parent-dir (file-name-base
                      (directory-file-name
                       (file-name-directory buffer-file-name)))))
-    (if (cond ((eq major-mode 'sh-mode) t)
+    (if (cond ((and (eq major-mode 'sh-mode)
+                    (string= (file-name-extension buffer-file-name) ".sh")) t)
               ((and (eq major-mode 'python-mode)
                     (string= parent-dir "scripts")) t)
               (t nil))
@@ -152,7 +164,8 @@
 (dolist (hook '(erc-mode-hook
                 emacs-lisp-mode-hook
                 text-mode-hook
-                org-mode-hook))
+                org-mode-hook
+                prog-mode-hook))
   (add-hook hook (lambda () (abbrev-mode 1))))
 (quietly-read-abbrev-file)
 (setq save-abbrevs 'silently)
@@ -241,6 +254,7 @@
 
 ;; zsh files are to be treated as shell scripts
 (add-to-list 'auto-mode-alist '("\\.zsh$" . sh-mode))
+(add-to-list 'auto-mode-alist '("\\.bats$" . sh-mode))
 
 ;; Markdown files
 (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
@@ -306,6 +320,7 @@
    'hi-yellow))
 ; I do not use mark-paragraph
 (global-set-key (kbd "M-h") 'jsm:highlight-current-word)
+(global-set-key (kbd "s-h") 'jsm:highlight-current-word)
 
 ;; (unhighlight-regexp t)
 
@@ -376,7 +391,7 @@
                         "backup_config"
                         "org_config"
                         "tramp_config"
-                        "erc_config"
+                        ; "erc_config"
                         "misc_languages"
                         "efficiency_config"
                         "theme_config"
@@ -386,6 +401,7 @@
                         "ivy_config"
                         "email_config"
                         ; "elip_edb"
+                        "java_config"
                         "c-c++_tags_config"
                         "python_config"
                         "php_config"

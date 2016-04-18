@@ -500,19 +500,19 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 ;;     (org-open-file (org-html-export-to-html nil s v b)))))))
 
 
-(defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)
-  (interactive "P")
-  (let ((new-file-name (concat
-                        (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (substring-no-properties (org-get-heading t t)))
-                        ".html") ))
-    (save-excursion
-      (org-mark-subtree)
-      (org-export-as-html arg 'hidden nil new-file-name nil "~/published")
-      (switch-to-buffer new-file-name)
-      (write-file "~/published" nil)
-      (kill-buffer))
-    new-file-name))
-(define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
+;; (defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)
+;;   (interactive "P")
+;;   (let ((new-file-name (concat
+;;                         (replace-regexp-in-string "[^a-zA-Z0-9]+" "_" (substring-no-properties (org-get-heading t t)))
+;;                         ".html") ))
+;;     (save-excursion
+;;       (org-mark-subtree)
+;;       (org-export-as-html arg 'hidden nil new-file-name nil "~/published")
+;;       (switch-to-buffer new-file-name)
+;;       (write-file "~/published" nil)
+;;       (kill-buffer))
+;;     new-file-name))
+;; (define-key org-mode-map (kbd "<f9>") 'jsm/org-export-subtree-as-html-with-subtree-name-and-open)
 
 (defun jsm/org-export-subtree-attach-to-email (arg)
   (interactive "P")

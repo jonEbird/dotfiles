@@ -1,8 +1,10 @@
-personal_ws-1.1 en 885 
+personal_ws-1.1 en 918 
+IntelliJ
 refactor
 cfg
 buildsystem
 API
+shellcheck
 BKL
 moab
 rebasing
@@ -14,6 +16,7 @@ xslt
 STDIN
 gerrit
 DBs
+mixin
 arp
 repeatability
 Zinq
@@ -32,6 +35,7 @@ lshw
 cmn
 AXI
 initrd
+AWS
 BSP
 tunable
 dir
@@ -43,13 +47,14 @@ BTS
 OFDM
 EIA
 expander
+RESTful
 rmdir
 FDD
 cpu
 Klocwork
-CTC
 FEC
 csh
+CTC
 Moma
 mistyped
 systemctl
@@ -71,6 +76,7 @@ CDMA
 eNB
 gdb
 hotfix
+DRI
 Vadatech
 qgroup
 DSL
@@ -107,6 +113,7 @@ relinked
 ido
 gpg
 HLD
+Gemfile
 Traceback
 cronjobs
 Dan's
@@ -142,6 +149,7 @@ cpack
 CPack
 lan
 cpusets
+mixins
 architecting
 IPv
 ish
@@ -150,6 +158,7 @@ IRQ
 Farfar
 perf
 timestamp
+Tomer
 passphrase
 sourceforge
 Mormor
@@ -168,6 +177,7 @@ Mem
 LLC
 installables
 Javascript
+bool
 symlinks
 JVM
 NAS
@@ -189,11 +199,12 @@ KVM
 NFS
 QCOM
 LSF
-subtrees
 subtree's
+subtrees
 outliers
 LTE
 Carmel
+keychord
 Mellanox
 noquota
 qcow
@@ -218,6 +229,7 @@ Solaris
 pdf
 refactoring
 LWN
+ciborg
 manpages
 Lucent
 modprobe
@@ -243,12 +255,14 @@ Vectra
 dimmable
 QCT
 kthreads
+ons
 segfaulting
 CMakeLists
 NST
 OOO
 ntp
 NUM
+DevOps
 rpmbuild
 umask
 PMI
@@ -275,6 +289,7 @@ Weblogic
 OSU
 STDOUT
 REQ
+prb
 pre
 Dired
 sdb
@@ -292,6 +307,7 @@ WCDMA
 qmt
 OFDMA
 filelist
+runtimes
 TBD
 syspart
 sha
@@ -312,6 +328,7 @@ SIM
 qti
 RPN
 Beamforming
+xUnit
 SMI
 netmask
 sysctl
@@ -331,6 +348,7 @@ SPG
 SNR
 SPI
 RSS
+TLF
 src
 TMC
 wireshark
@@ -362,6 +380,7 @@ handoffs
 UMB
 SVG
 backtrace
+str
 ntpdate
 Atlassian's
 tsc
@@ -384,12 +403,12 @@ dereferences
 Cheeseshop
 checksum
 url
-UTF
+utf
 Monit
 datacenter
 usr
 txt
-Splunk
+splunk
 precoding
 proc
 enbmsim
@@ -445,6 +464,7 @@ LD
 kerberos
 zsh
 ZTE
+JS
 md
 installable
 struct
@@ -459,6 +479,7 @@ postinst
 timesource
 mv
 erroring
+buildozer
 ns
 kintex
 TDMA
@@ -492,6 +513,7 @@ iteratively
 incentivized
 multicast
 Qualnet
+Procfile
 Buildout
 PyPi
 analytics
@@ -548,6 +570,7 @@ hostname
 postinstall
 HOWTOs
 Workflows
+buildpacks
 VLANs
 RSUs
 sqft
@@ -568,6 +591,7 @@ filesystem
 hardcode
 objectClass
 breakpoint
+screensaver
 GPIO
 SRIO
 spacecmd
@@ -585,6 +609,7 @@ goto
 reproducibility
 TODO
 Ericsson
+orchestrator
 SSIT
 bullseye
 operationalize
@@ -598,6 +623,7 @@ Cher's
 repos
 sudo
 Suresh
+JUnit
 cpuset
 GPUs
 netboot
@@ -618,6 +644,7 @@ hogl
 bbuesker
 qualcomm
 valgrind
+expensing
 btsettree
 virtualization
 OpenEmbedded
@@ -644,6 +671,7 @@ Atlanticus
 sysfs
 reStructureText
 initramfs
+Romain
 mitchelh
 downlink
 openafs
@@ -676,6 +704,7 @@ UMTS
 VLAN
 Scribbs
 DavMail
+whitelist
 jsmiller
 depmod
 Buesker
@@ -766,6 +795,7 @@ artix
 outlier
 subtree
 manpage
+Logitech
 Vodatech
 kthread
 SCons
@@ -800,6 +830,7 @@ thirdParty
 kmod
 kexec
 kworker
+classpath
 webapp
 Tesseract
 routable
@@ -880,6 +911,8 @@ netbackup
 Morfar
 BFS
 BGP
+heroku
+protobuf
 Sharepoint
 devel
 syscalls

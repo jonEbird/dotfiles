@@ -16,3 +16,10 @@
 (setq auto-mode-alist (cons '("\\.bbappend$" . bb-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.bbclass$" . bb-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.conf$" . bb-mode) auto-mode-alist))
+
+;; Enable flycheck for comments in other languages
+(dolist (hook
+         '(c-mode-hook c++-mode-hook python-mode-hook
+                       emacs-lisp-mode-hook shell-mode-hook
+                       prog-mode-hook))
+  (add-hook hook 'flyspell-prog-mode 'append))

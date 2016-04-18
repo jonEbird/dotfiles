@@ -1,0 +1,4 @@
+(:name chef-mode
+       :description "Emacs mode to edit Chef repositories"
+       :type github
+       :pkgname "mpasternacki/chef-mode")

@@ -40,6 +40,7 @@
 (global-set-key (kbd "C-x C-r") 'ivy-recentf-open)
 
 ;; Counsel Setting
+(setq counsel-find-file-at-point t)
 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
 ;; ;; Found the helm-org-*-headings functions via comments discussion at:
@@ -98,6 +99,10 @@
 (define-key projectile-command-map (kbd "s s")
   (lambda () (interactive) (counsel-ag nil (projectile-project-root))))
 
+;; Use counsel-imenu everywhere
+;; ------------------------------
+(global-set-key (kbd "M-i") 'counsel-imenu)
+
 ;; Better command issuing
 ;; ------------------------------
 (require 'smex)
@@ -129,6 +134,9 @@
         (unless (equal contact "")
           (kill-region start end)
           (insert contact))))))
+
+;; FIXME: Somewhere helm is being activated. Going to try this as a test:
+(helm-mode -1)
 
 (provide 'ivy-config)
 ;;; ivy_config.el ends here

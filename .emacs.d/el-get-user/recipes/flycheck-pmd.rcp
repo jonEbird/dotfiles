@@ -1,0 +1,4 @@
+(:name chef-mode
+       :description "A PMD checker for Flycheck"
+       :type github
+       :pkgname "taktoa/flycheck-pmd")
