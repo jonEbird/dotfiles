@@ -4,6 +4,11 @@
 ;; ------------------------------
 (defalias 'elixir-repl 'elixir-mode-iex "Alias to the elixir iex REPL")
 
+;; Great tool for showing where else in the buffer the thing-at-point is located
+(require 'highlight-thing)
+(custom-set-faces
+ '(highlight-thing ((t (:inherit (quote holiday))))))
+
 (require 'flycheck)
 (setq flycheck-shellcheck-excluded-warnings '("SC2086"))
 

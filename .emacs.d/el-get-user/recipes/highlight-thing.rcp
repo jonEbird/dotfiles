@@ -1,0 +1,4 @@
+(:name highlight-thing
+       :description "Global minor mode to highlight thing under point."
+       :type github
+       :pkgname "fgeller/highlight-thing.el")

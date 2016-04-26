@@ -15,7 +15,8 @@
   (interactive)
   (hs-minor-mode)
   (flyspell-prog-mode)
-  (flycheck-mode 1))
+  (flycheck-mode 1)
+  (highlight-thing-mode))
 
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 

@@ -66,7 +66,7 @@
          ag helm-ag wdired org-bullets zeal-at-point org-download
          ace-window avy hydra use-package bb-mode swiper docker-tramp
          mtrace evil groovy-emacs-mode dired-hacks orgit flycheck-pmd
-         json-mode protobuf-mode)))
+         json-mode protobuf-mode highlight-thing)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
