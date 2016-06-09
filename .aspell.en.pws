@@ -1,4 +1,4 @@
-personal_ws-1.1 en 918 
+personal_ws-1.1 en 931 
 IntelliJ
 refactor
 cfg
@@ -127,6 +127,8 @@ GPT
 HOA
 GPU
 ortools
+JDK
+Charisis
 MQTT
 GSM
 Args
@@ -192,6 +194,7 @@ meetup
 DHCP
 neo
 syscall
+rbenv
 linaro
 imagemagick
 bootloader
@@ -304,6 +307,7 @@ sed
 scp
 SDK
 WCDMA
+Hipchat
 qmt
 OFDMA
 filelist
@@ -385,8 +389,8 @@ ntpdate
 Atlassian's
 tsc
 svn
-rhgb
 RHEL
+rhgb
 UML
 startup
 TSN
@@ -411,6 +415,7 @@ txt
 splunk
 precoding
 proc
+notificationRecipients
 enbmsim
 elip
 VPN
@@ -425,9 +430,11 @@ MacLaine
 interworking
 xml
 Gbps
+Yim
 Subchorionic
 updatesd
 hugepages
+stylecheck
 kworkers
 yml
 versioning
@@ -435,6 +442,7 @@ cd
 btcheckpoint
 ap
 automountMapName
+SHAs
 BT
 ldapsearch
 EPEL
@@ -630,6 +638,7 @@ netboot
 strobed
 businfo
 HWTYPE
+Vasilis
 cgroups
 sssd
 xmlns
@@ -734,6 +743,7 @@ whereever
 Wifi
 printk
 rebase
+schemaVersion
 IPMI
 crypto
 SQLAlechemy
@@ -855,6 +865,7 @@ jitter
 setuptools
 workflow
 haskell
+basename
 ltrace
 interruptible
 NAPI
@@ -883,6 +894,7 @@ tshark
 portfast
 tcpdump
 LLVM
+OpenStack
 ClockWorks
 jMock
 Xorg
@@ -895,6 +907,7 @@ ACK
 searchable
 decrement
 macstub
+submodules
 RedHat
 spinlock
 AFI

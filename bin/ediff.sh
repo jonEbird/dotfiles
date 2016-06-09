@@ -12,10 +12,10 @@ if [ ! ${#} -ge 2 ]; then
 fi
 
 # tools
-_EMACSCLIENT=/bin/emacsclient
-_BASENAME=/bin/basename
-_CP=/bin/cp
-_MKTEMP=/bin/mktemp
+_EMACSCLIENT=$(which emacsclient)
+_BASENAME=$(which basename)
+_CP=$(which cp)
+_MKTEMP=$(which mktemp)
 
 # args
 _LOCAL=${1}

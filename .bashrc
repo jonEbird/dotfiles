@@ -104,7 +104,7 @@ org-store-file () {
     local f fp
     for f in "$@"; do
         fp=$(cd "$(dirname "$f")"; pwd -P)
-        fp="file:~${fp#${HOME}}/$(basename "$f")"
+        fp="file+emacs:~${fp#${HOME}}/$(basename "$f")"
         emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename "$f")\"))"
     done
 }

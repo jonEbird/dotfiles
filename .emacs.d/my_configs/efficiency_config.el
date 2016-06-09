@@ -1,9 +1,8 @@
-; -*- emacs-lisp -*-
+'; -*- emacs-lisp -*-
 
 ; General custom config to help efficiency within the Editor. So, this
 ; could be many different things from project navigation, to custom
 ; function with key bindings, etc.
-
 (require 'use-package)
 
 ;; Git Setup
@@ -103,6 +102,19 @@
       projectile-tags-file-name "GTAGS")
 
 (add-to-list 'projectile-globally-ignored-modes "helm.*")
+
+;; Disable the mode-line while using `smart-mode-line' since it will also
+;; show the name of the project you are working within in the mode-line
+;; Use this if you just want to shorten the name part:
+;;   (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name))))
+(setq projectile-mode-line '(:eval ""))
+
+;; Remapping isearch-forward-regexp to be another key for the common ag
+;; search within the Project
+(global-set-key (kbd "C-M-s")
+                (lookup-key projectile-command-map (kbd "s s")))
+
+
 
 ; Launch a unique shell for the particular session or project
 (defun jsm/unique-shell (&optional directory)
@@ -435,10 +447,10 @@ other-window split style"
 (require 'wdired)
 
 ;;narrow dired to match filter
-(use-package dired-narrow
-  :ensure t
-  :bind (:map dired-mode-map
-              ("/" . dired-narrow)))
+;; (use-package dired-narrow
+;;   :ensure t
+;;   :bind (:map dired-mode-map
+;;               ("/" . dired-narrow)))
 
 ;; Reusing buffers is about using `find-alternative-file'
 (add-hook 'dired-mode-hook
@@ -506,6 +518,16 @@ other-window split style"
 ;; use the following F13 key (DAS keyboard) to toggle between evil-mode.
 (use-package evil
   :bind ("<f13>" . evil-mode))
+
+;; Quickly launch Google searches
+(require 'google-this)
+(global-set-key (kbd "C-x g") 'google-this-mode-submap)
+(google-this-mode 1)
+(add-to-list 'guide-key/guide-key-sequence "C-x g")
+
+;; Highlight TODOs, FIXMEs, etc
+(require 'hl-todo)
+(global-hl-todo-mode)
 
 (provide 'efficiency_config)
 ;;; efficiency_config.el ends here

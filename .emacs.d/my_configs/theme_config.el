@@ -43,7 +43,8 @@
       sml/mode-width      'full
       sml/name-width      25
       sml/hidden-modes    '(" hl-p" " Undo-Tree" " Guide" " pair" " ARev" " GitGutter" " Helm"
-                            " Paredit" " fs" " ElDoc" " WS" " Fly" " Abbrev" " Gtags" " HelmGtags" " MRev"))
+                            " Paredit" " fs" " ElDoc" " WS" " Fly" " Abbrev" " Gtags" " HelmGtags" " MRev"
+                            " Google" " Wrap" " AC" " ivy"))
 (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
 (sml/setup)
 

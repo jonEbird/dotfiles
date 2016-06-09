@@ -16,7 +16,8 @@
   (hs-minor-mode)
   (flyspell-prog-mode)
   (flycheck-mode 1)
-  (highlight-thing-mode))
+  (highlight-thing-mode)
+  (rainbow-delimiters-mode))
 
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 

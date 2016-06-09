@@ -333,22 +333,22 @@ p code, li code {
 ;; Blogging
 ;; --------------------------------------------------
 ;; Setting up org2blog
-; Installed via ELPA
-(require 'org2blog-autoloads)
-(require 'netrc)
-; netrc entry would look like:
-; machine jonebird login admin password myrealpassword
-(setq blog (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebird" t))
-(setq org2blog/wp-blog-alist
-      '(("jonebird.com"
-         :url "https://jonebird.com/xmlrpc.php"
-         :username (netrc-get blog "login")
-         :password (netrc-get blog "password")
-         :tags-as-categories t)))
-; (org2blog/wp-login)
-; (setq org-insert-heading-hook nil) ; messes up org2blog
-; Preview: M-x org2blog/wp-post-subtree
-; Publish: C-u M-x org2blog/wp-post-subtree
+;; ; Installed via ELPA
+;; (require 'org2blog-autoloads)
+;; (require 'netrc)
+;; ; netrc entry would look like:
+;; ; machine jonebird login admin password myrealpassword
+;; (setq blog (netrc-machine (netrc-parse "~/.netrc.gpg") "jonebird" t))
+;; (setq org2blog/wp-blog-alist
+;;       '(("jonebird.com"
+;;          :url "https://jonebird.com/xmlrpc.php"
+;;          :username (netrc-get blog "login")
+;;          :password (netrc-get blog "password")
+;;          :tags-as-categories t)))
+;; ;; (org2blog/wp-login)
+;; ;; (setq org-insert-heading-hook nil) ; messes up org2blog
+;; ;; Preview: M-x org2blog/wp-post-subtree
+;; ;; Publish: C-u M-x org2blog/wp-post-subtree
 
 ;; --------------------------------------------------
 ;; Additional Hacks

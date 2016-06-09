@@ -1,0 +1,4 @@
+(:name hl-todo
+       :description "Highlight TODO keywords"
+       :type github
+       :pkgname "tarsius/hl-todo")

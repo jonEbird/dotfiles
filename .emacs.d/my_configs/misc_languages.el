@@ -7,7 +7,7 @@
 ;; Great tool for showing where else in the buffer the thing-at-point is located
 (require 'highlight-thing)
 (custom-set-faces
- '(highlight-thing ((t (:inherit (quote holiday))))))
+ '(highlight-thing ((t (:inherit 'underline)))))
 
 (require 'flycheck)
 (setq flycheck-shellcheck-excluded-warnings '("SC2086"))

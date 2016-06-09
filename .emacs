@@ -322,6 +322,9 @@
 (global-set-key (kbd "M-h") 'jsm:highlight-current-word)
 (global-set-key (kbd "s-h") 'jsm:highlight-current-word)
 
+;; And speaking of highlighting results
+(setq grep-highlight-matches t)
+
 ;; (unhighlight-regexp t)
 
 (defun jsm:kill-ring-sexp(&optional arg)
@@ -392,19 +395,20 @@
                         "org_config"
                         "tramp_config"
                         ; "erc_config"
-                        "misc_languages"
-                        "efficiency_config"
-                        "theme_config"
                         ;; Pick one: ido or helm or ivy
                         ; "ido_config"
                         ; "helm_config"
                         "ivy_config"
+                        "misc_languages"
+                        "efficiency_config"
+                        "theme_config"
                         "email_config"
                         ; "elip_edb"
                         "java_config"
                         "c-c++_tags_config"
                         "python_config"
                         "php_config"
+                        "ruby_config"
                         "linux_config"
                         "windows_config"
                         "mac_config"

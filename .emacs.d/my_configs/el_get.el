@@ -22,22 +22,23 @@
 (add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
 
 ; Establish that some packages come from ELPA, etc.
-(setq
- el-get-sources
- '(el-get                   ; self-hosting
-   (:name cups
-    :type elpa)
-   (:name etags-table
-    :type elpa)
-   (:name xml-rpc
-    :type elpa)
-   (:name org2blog
-    :type elpa)
-   (:name org-mime
-    :type elpa)
-   (:name guide-key
-    :type elpa)
-   ))
+;; (setq
+;;  el-get-sources
+;;  '(el-get                   ; self-hosting
+;;    (:name cups
+;;     :type elpa)
+;;    (:name etags-table
+;;     :type elpa)
+;;    (:name xml-rpc
+;;     :type elpa)
+;;    (:name org2blog
+;;     :type elpa)
+;;    (:name org-mime
+;;     :type elpa)
+;;    (:name guide-key
+;;     :type elpa)
+;;    ))
+(setq el-get-sources nil)
 
 ; (el-get 'sync)
 
@@ -51,11 +52,11 @@
       (append
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
-       '(cups ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
+       '(ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
          lua-mode markdown-mode google-maps htmlize ldap-mode url-dav
          org-caldav confluence-el expand-region iedit jedi mu4e
          flx paredit ido-vertical-mode dash ; php-mode-improved
-         multiple-cursors popwin guide-key visual-regexp projectile
+         multiple-cursors popwin popup guide-key visual-regexp projectile
          ack-and-a-half cl-lib autopair yasnippet yasnippet-snippets
          auto-complete-clang gtags multiple-cursors magit git-gutter
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
@@ -66,7 +67,8 @@
          ag helm-ag wdired org-bullets zeal-at-point org-download
          ace-window avy hydra use-package bb-mode swiper docker-tramp
          mtrace evil groovy-emacs-mode dired-hacks orgit flycheck-pmd
-         json-mode protobuf-mode highlight-thing)))
+         json-mode protobuf-mode highlight-thing google-this mustache-mode
+         Enhanced-Ruby-Mode robe-mode feature-mode hl-todo)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
