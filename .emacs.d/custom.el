@@ -38,6 +38,17 @@
       (2.5 . 4.0)
       (2.36 . 3.86)
       (2.6 . 4.14)))))
+ '(org-emphasis-alist
+   (quote
+    (("`" org-code verbatim)
+     ("*" bold)
+     ("/" italic)
+     ("_" underline)
+     ("=" org-verbatim verbatim)
+     ("~" org-code verbatim)
+     ("+"
+      (:strike-through t)))))
+ '(package-selected-packages (quote (helpful queue let-alist)))
  '(safe-local-variable-values
    (quote
     ((whitespace-style face tabs trailing lines-tail)
@@ -73,9 +84,13 @@
  ;; If there is more than one, they won't work right.
  '(ediff-current-diff-C ((t (:background "gold4"))))
  '(ediff-fine-diff-B ((t (:background "dark green"))))
+ '(enh-ruby-op-face ((t (:foreground "gold4"))))
+ '(enh-ruby-string-delimiter-face ((t (:foreground "light green"))))
  '(flyspell-incorrect ((t (:inherit error :foreground "firebrick2" :inverse-video nil :underline nil :slant normal :weight normal))))
+ '(highlight-thing ((t (:inherit (quote hydra-face-pink)))))
  '(org-code ((t (:inherit shadow :foreground "forest green"))))
  '(org-level-5 ((t (:inherit outline-5 :foreground "dark orange"))))
  '(org-level-6 ((t (:inherit outline-6 :foreground "gold"))))
+ '(org-todo ((t (:background "firebrick" :foreground "#002b36" :weight bold))))
  '(org-verbatim ((t (:inherit shadow :foreground "dark green" :underline t))))
  '(sh-heredoc ((t (:foreground "#2aa198")))))

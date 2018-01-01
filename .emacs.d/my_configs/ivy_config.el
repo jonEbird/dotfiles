@@ -7,27 +7,6 @@
 
 ;;; Code:
 
-(require 'ivy)
-
-(ivy-mode 1)
-
-;; Some standard key bindings
-(global-set-key (kbd "<f9>") 'ivy-resume)
-(define-key ivy-minibuffer-map (kbd "C-w") 'ivy-yank-word)
-
-;; Swap TAB and C-j. The `ivy-alt-done' will immediately select the current
-;; target and continue wheras the `ivy-partial-or-done' will only take it
-;; if it is the only remaining selection. Essentially, Abo thinks you
-;; should get used to used C-j when you've decided what to select but I
-;; still like TAB for that, so I'm switching these.
-(define-key ivy-minibuffer-map (kbd "TAB") 'ivy-alt-done)
-(define-key ivy-minibuffer-map (kbd "C-j") 'ivy-partial-or-done)
-
-;; Integration with other Modes
-(setq projectile-completion-system 'ivy
-      magit-completing-read-function 'ivy-completing-read
-      mu4e-completing-read-function 'ivy-completing-read)
-
 ;; recentf integration already exists by-default in the 'ivy-switch-buffer
 ;; Just creating an explicit call for recentf file opens
 (defun ivy-recentf-open ()
@@ -37,76 +16,71 @@
       (message "Opening file...")
     (message "Aborting")))
 
-(global-set-key (kbd "C-x C-r") 'ivy-recentf-open)
+(use-package ivy
+  :custom ((projectile-completion-system 'ivy)
+           (magit-completing-read-function 'ivy-completing-read)
+           (mu4e-completing-read-function 'ivy-completing-read)
+           (counsel-find-file-at-point t)
+           (ivy-use-selectable-prompt t))
+  :config (progn
+            (ivy-mode 1)
+            (ivy-set-sources
+             'counsel-find-file
+             '((original-source)
+               (recentf-subset)
+               (my-config-files))))
+  :bind (("<f9>" . ivy-resume)
+         ("C-x C-r" . ivy-recentf-open)
+         ("C-x C-f" . counsel-find-file)
+         ("M-i" . counsel-imenu)
+         :map ivy-minibuffer-map
+         ("C-w" . ivy-yank-word)
+         ("TAB" . ivy-alt-done)
+         ("C-j" . ivy-partial-or-done)
+         :map org-mode-map
+         ("C-c h i" . counsel-org-goto)))
 
-;; Counsel Setting
-(setq counsel-find-file-at-point t)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
-;; ;; Found the helm-org-*-headings functions via comments discussion at:
-;; ;; http://irreal.org/blog/?p=4170
-;; (defun helm-org-in-buffer-headings ()
-;;   "Preconfigured helm for org buffer headings."
+;; Swap TAB and C-j. The `ivy-alt-done' will immediately select the current
+;; target and continue wheras the `ivy-partial-or-done' will only take it
+;; if it is the only remaining selection. Essentially, Abo thinks you
+;; should get used to used C-j when you've decided what to select but I
+;; still like TAB for that, so I'm switching these.
+;; (define-key ivy-minibuffer-map (kbd "TAB") 'ivy-alt-done)
+;; (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-partial-or-done)
+
+
+;; (defun jsm/swipe-headers ()
 ;;   (interactive)
-;;   (let ((helm-org-headings--nofilename t))
-;;     (helm :sources (helm-source-org-headings-for-files
-;;                     (list (current-buffer)))
-;;           :candidate-number-limit 99999
-;;           :buffer "*helm org inbuffer*")))
+;;   (swiper "^\* "))
+;; (define-key org-mode-map (kbd "C-c h i") 'jsm/swipe-headers)
 
-;; ;; http://irreal.org/blog/?p=4170
-;; (defun helm-org-search-headers (arg)
-;;   (interactive "P")
-;;   (cond ((equal arg nil) (call-interactively 'helm-semantic-or-imenu))
-;;         ((equal arg '(4)) (helm-org-in-buffer-headings))
-;;         ((equal arg '(16)) (helm-org-agenda-files-headings))))
-;; (define-key org-mode-map (kbd "C-c h i") 'helm-org-search-headers)
+;; With Ivy v0.10.0 there is a new function I can use
+; (define-key org-mode-map (kbd "C-c h i") 'counsel-org-goto)
 
-;; (org-map-region (lambda () t) (point-min) (point-max))
-;; (call (lambda () t))
-
-
-;; (ivy-read "Heading:"
-;;           (org-element-map (org-element-parse-buffer) 'headline (lambda (hl) hl))
-;;           )
-;; (setq org-goto-max-level 5)
-
-;; (cfunc (if (and org-refile-use-outline-path
-;;                 org-outline-path-complete-in-steps)
-;;            'org-olpath-completing-read
-;;          'org-icompleting-read))
-
-
-;; (org-element-map
-;;     (org-element-parse-buffer 'headline) 'headline
-;;   (lambda (headline)
-;;     (let ((title  (org-element-property :title headline)))
-;;       title)))
-
-;; (defun helm-org-search-headers (arg)
-;;   (interactive "P")
-;;   (cond ((equal arg nil) (call-interactively 'helm-semantic-or-imenu))
-;;         ((equal arg '(4)) (helm-org-in-buffer-headings))
-;;         ((equal arg '(16)) (helm-org-agenda-files-headings))))
-;; (define-key org-mode-map (kbd "C-c h i") 'helm-org-search-headers)
-
-(defun jsm/swipe-headers ()
+;; The bindings for this function is set with the rest of the projectile config
+(defun jsm/projectile-counsel-ag ()
+  "Run counsel-ag within projectile root while ignoring git submodule paths."
   (interactive)
-  (swiper "^\* "))
+  (let ((default-directory (projectile-project-root))
+        (agignore-cmd "git config --file .gitmodules --get-regexp path | awk '{ print $2 }' > .agignore"))
+    (shell-command agignore-cmd nil nil)
+    (counsel-ag (thing-at-point 'symbol) (projectile-project-root))))
 
-(define-key org-mode-map (kbd "C-c h i") 'jsm/swipe-headers)
+;; Switching and opening files should always include recentf values
+;; (kbd "C-x b")
+;; (kbd "C-x C-f")
+(defun recentf-subset ()
+  (cl-subseq recentf-list 0 30))
 
-(define-key projectile-command-map (kbd "s s")
-  (lambda () (interactive) (counsel-ag nil (projectile-project-root))))
-
-;; Use counsel-imenu everywhere
-;; ------------------------------
-(global-set-key (kbd "M-i") 'counsel-imenu)
+(defun my-config-files ()
+  "List my elisp config files."
+  (file-expand-wildcards (expand-file-name "~/.emacs.d/my_configs/*.el") t))
 
 ;; Better command issuing
 ;; ------------------------------
-(require 'smex)
-(global-set-key (kbd "M-x") 'counsel-M-x)
+(use-package smex
+  :bind ("M-x" . counsel-M-x))
 
 ;; Via Ben Maughan on mu4e ML
 ;; Based on http://kitchingroup.cheme.cmu.edu/blog/2015/03/14/A-helm-mu4e-contact-selector/
@@ -134,9 +108,6 @@
         (unless (equal contact "")
           (kill-region start end)
           (insert contact))))))
-
-;; FIXME: Somewhere helm is being activated. Going to try this as a test:
-(helm-mode -1)
 
 (provide 'ivy-config)
 ;;; ivy_config.el ends here

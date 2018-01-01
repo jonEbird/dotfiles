@@ -5,11 +5,6 @@
 ;; Configure development for Java
 
 ;;; Code:
-(setq flycheck-pmd-rulesets
-      '("java-basic" "java-design" "java-imports" "java-braces" "java-codesize" "java-unusedcode"))
-(require 'flycheck-pmd)
-(flycheck-pmd-setup)
-
 (defun my-java-mode-hook ()
   "Minor setup when entering Java mode."
   (interactive)
@@ -17,15 +12,18 @@
   (flyspell-prog-mode)
   (flycheck-mode 1)
   (highlight-thing-mode)
-  (rainbow-delimiters-mode))
+  (rainbow-delimiters-mode)
+  (flycheck-pmd-setup))
 
 (add-hook 'java-mode-hook 'my-java-mode-hook)
 
-;; (use-package java
-;;              :config )
+(use-package flycheck-pmd
+  :custom (flycheck-pmd-rulesets
+           '("java-basic" "java-design" "java-imports" "java-braces" "java-codesize" "java-unusedcode"))
+  :hook (java-mode . flycheck-pmd-setup))
 
-(require 'mustache-mode)
-(add-to-list 'auto-mode-alist '("\\.mustache" . mustache-mode))
+(use-package mustache-mode
+  :mode ("\\.mustache" . mustache-mode))
 
 (provide 'java_config)
 ;;; java_config.el ends here

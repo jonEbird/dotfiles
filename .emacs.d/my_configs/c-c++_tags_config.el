@@ -75,10 +75,9 @@
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook-func)
 
 ; Auto-complete support for C++
-(require 'auto-complete-clang)
-(add-hook 'c++-mode-hook
-          '(lambda ()
-             (define-key c++-mode-map (kbd "C-M-<return>") 'ac-complete-clang)))
+(use-package auto-complete-clang
+  :hook (c++-mode . (lambda ()
+                      (define-key c++-mode-map (kbd "C-M-<return>") 'ac-complete-clang))))
 
 ; ----------------------------------------------------------------------
 ; Source Code Navigation - Aka Tags
@@ -92,7 +91,11 @@
 
 (setq large-file-warning-threshold (* 150 1000 1000)) ; 150M
 
-(require 'gtags)
+(use-package gtags
+  :custom (projectile-tags-command "gtags")
+  :hook (gtags-select-mode . (lambda ()
+                               (setq hl-line-face 'underline)
+                               (hl-line-mode 1))))
 ; (add-hook 'c-mode-common-hook '(lambda () (gtags-mode 1)))
 ; gtags-find-tag (C-c t) - goes to function def
 ; gtags-find-rtag (C-c r) - references to function (caller/callee?)
@@ -103,13 +106,7 @@
 ; M-* pop-tag-mark - Pop back to where M-. was last invoked
 ; M-, tags-loop-continue - continues a tags-search or tags-query-replace
 
-(add-hook 'gtags-select-mode-hook
-  '(lambda ()
-     (setq hl-line-face 'underline)
-     (hl-line-mode 1)))
-
 ; Update the Projectile command for generating tags
-(setq projectile-tags-command "gtags")
 
 ;; Add missing VC commands
 (global-set-key (kbd "C-x v f") 'vc-git-grep)

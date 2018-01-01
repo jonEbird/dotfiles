@@ -11,12 +11,12 @@
 ;    Good for repeating tasks where you've used checkboxes
 ;    and want them de-selected when marking the task as done.
 ;    http://orgmode.org/worg/org-contrib/#repofile-contrib-lisp-org-checklist.el
-(load-file (expand-file-name "~/.emacs.d/org-checklist.el"))
+;; (load-file (expand-file-name "~/.emacs.d/org-checklist.el"))
 
 ;; ;; org-jira
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
-(require 'org-jira)
-(setq jiralib-url "https://crd-jira.qualcomm.com/jira")
+;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/org-jira/"))
+;; (require 'org-jira)
+;; (setq jiralib-url "https://crd-jira.qualcomm.com/jira")
 
 ;; --------------------------------------------------
 ;; Basic org configuration
@@ -45,7 +45,11 @@
 (setq org-clock-into-drawer t)
 ; Face it, your spelling sucks. You /need/ flyspell-mode on!
 ; FIXME: flyspell is killing org-archive on C-c $
-(require 'org-bullets)
+(use-package org-bullets)
+
+;; Let's make the document look nicer while editing
+(setq org-hide-emphasis-markers t)
+
 (defun my-org-mode-settings ()
   (interactive)
   ;; Spelling
@@ -55,7 +59,9 @@
   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
   (add-to-list 'ispell-skip-region-alist '("~" "~"))
   (add-to-list 'ispell-skip-region-alist '("=" "="))
+  (add-to-list 'ispell-skip-region-alist '("`" "`"))
   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
+  (setq fill-column 100)
   ;; Other hacks
   (flycheck-mode -1)
   (org-bullets-mode 1))
@@ -80,7 +86,8 @@
 ; Export settings
 (setq org-use-sub-superscripts nil
       org-export-with-sub-superscripts nil
-      org-export-headline-levels 8)
+      org-export-headline-levels 8
+      org-html-htmlize-output-type 'inline-css)
 ; Don't remove the highlighting after an occur search (C-c / /)
 (setq org-remove-highlights-with-change nil)
 ; Setup additional colors for the various TODO states
@@ -113,13 +120,24 @@
       org-src-tab-acts-natively t
       org-confirm-babel-evaluate nil)
 
-; Add a new quick template
+;; Add a new quick template
+;; For the record, I hate the new template system (C-c C-x w)
 (add-to-list 'org-structure-template-alist
-             '("sh" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-             '("cj" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"clojure\">\n\n</src>"))
-(add-to-list 'org-structure-template-alist
-             '("java" "#+BEGIN_SRC java -n -r\n?\n#+END_SRC" "<src lang=\"java\">\n\n</src>"))
+             '(?S . "src shell"))
+;; (add-to-list 'org-structure-template-alist
+;;              '("sh" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
+;; (add-to-list 'org-structure-template-alist
+;;              '("cj" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"clojure\">\n\n</src>"))
+;; (add-to-list 'org-structure-template-alist
+;;              '("java" "#+BEGIN_SRC java -n -r\n?\n#+END_SRC" "<src lang=\"java\">\n\n</src>"))
+
+;; In an effort to fix the poor new template system, introducing my own fix:
+(defun jsm/org-src-block ()
+  "Better src block completion experience"
+  (interactive)
+  (org-insert-structure-template
+   (concat "src " (completing-read "Source type: " org-src-lang-modes))))
+(define-key org-mode-map (kbd "C-c s") 'jsm/org-src-block)
 
 ; org-babel configuration
 (org-babel-do-load-languages
@@ -133,6 +151,7 @@
    (gnuplot . t)
    (clojure . t)
    (sh . t)
+   (shell . t)
    (ledger . t)
    (org . t)
    (plantuml . t)
@@ -143,7 +162,9 @@
 (setq org-plantuml-jar-path "~/bin/java/plantuml.jar")
 
 ;; Exporting - Extras
-; (require 'ox-taskjuggler)
+;; (require 'ox-taskjuggler)
+(use-package ox-md)
+(use-package ox-rst)
 
 ;; Custom HTML exporting
 (setq org-html-postamble t
@@ -230,6 +251,7 @@ p code, li code {
       org-agenda-todo-ignore-deadlines "near"
       org-deadline-warning-days 30
       org-agenda-text-search-extra-files (list 'agenda-archives)
+      org-agenda-show-future-repeats 'next
       )
 ; Refiling C-c C-w
 ;  This allows for file like pathing for refiling and lets me pick heading and subheading (level <= 2)
@@ -263,8 +285,10 @@ p code, li code {
          (file "~/org/projects.tmplt") )
         ("m" "Meeting or Consultation" entry (file+headline "~/org/meetings.org" "Meetings")
          (file "~/org/meetings.tmplt") )
-        ("s" "Support Production or Oncall Consultation" entry (file+headline "~/org/projects.org" "Support Production")
+        ("s" "Support Production" entry (file+olp "~/org/projects.org" "Support Production")
          (file "~/org/support.tmplt") )
+        ("o" "Oncall Entry" entry (file+olp+datetree "~/org/projects.org" "Oncall")
+         (file "~/org/oncall.tmplt") :clock-in t :tree-type 'week)
         ("i" "Information or Ideas" entry (file+headline "~/org/info.org" "Incoming Ideas")
          (file "~/org/info.tmplt") )
         ("k" "Kudos to You" entry (file+olp "~/org/info.org" "Development Planning" "Kudos")
@@ -401,6 +425,9 @@ p code, li code {
 (define-key org-mode-map "\C-ci" 'org-work-checkin)
 (define-key org-mode-map "\C-co" 'org-work-checkout)
 
+;; I often like to create an indented sub-item and shift from '-' to '+'
+; (defun jsm/org-indent-subitem)
+
 ;; Presentations via S5 for your org file
 ;; (load-file (expand-file-name "~/.emacs.d/org-S5/org-export-as-s5.el"))
 ;; Find further S5 themes:
@@ -425,10 +452,8 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 
 ;; Trying Reveal.js for presentations
 ;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
-(require 'ox-reveal)
-; I have cloned reveal as a submodule
-;; (setq org-reveal-root (concat "file://" (expand-file-name "~/.emacs.d/org-reveal/")))
-(setq org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/")
+(use-package ox-reveal
+  :custom (org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/"))
 
 ;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
 ;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then
@@ -537,14 +562,44 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
                                          "☐")
                          nil)))))
 
-; Allow linking to manual pages
-(require 'org-man)
+;; Allow linking to manual pages
+(use-package org-man)
 
-; org-protocol setup
-(require 'org-protocol)
+;; org-protocol setup
+(use-package org-protocol)
 
-; org-drill support
-(require 'org-drill)
+;; org-drill support
+(use-package org-drill)
+
+;; Add the wonderful org-mac-link
+(use-package org-mac-link)
+
+(if (eq system-type 'darwin)
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (define-key org-mode-map (kbd "C-c g") 'org-mac-grab-link))))
+
+;; Improved org-mac apple script functions
+(defun org-as-get-selected-mail ()
+  "AppleScript to create links to selected messages in Mail.app."
+  (do-applescript
+   (concat
+    "tell application \"Mail\"\n"
+    "set odate to date \"Friday, January 12, 2001 at 12:00:01 AM\"\n"
+    "set selectedMessages to selection\n"
+    "repeat with i from 1 to (count of selectedMessages)\n"
+      "tell item i of selectedMessages\n"
+        "set messageid to message id\n"
+        "set subjectstr to subject\n"
+        "set dstr to date received\n"
+        "if dstr > odate then\n"
+          "set theLink to \"message://\" & messageid & \"::split::\" & subjectstr\n"
+          "set odate to dstr\n"
+        "end if\n"
+        "end tell\n"
+    "end repeat\n"
+    "return theLink\n"
+    "end tell")))
 
 ;; org-download
 ;; (require 'org-download)

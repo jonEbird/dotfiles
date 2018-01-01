@@ -1,6 +1,6 @@
 ; -*- emacs-lisp -*-
 
-(require 'rainbow-delimiters)
+(use-package rainbow-delimiters)
 
 (defun jsm/lisp-modes-hook ()
   "Hook this single function to the lisp-like modes"

@@ -1,0 +1,42 @@
+# Bash Completion
+if [ -f /opt/homebrew/etc/bash_completion ]; then
+    . /opt/homebrew/etc/bash_completion
+fi
+
+# Add basic brew bin location to the top of the PATH
+PATH=/opt/homebrew/bin:$PATH
+
+# For the benefit of my alias in .bashrc:
+export LS=gls
+
+# Coreutils
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/opt/homebrew/opt/coreutils/share/man:$MANPATH"
+
+# Python
+PYBASE=/opt/homebrew/opt/python
+PATH="$PYBASE/bin:$PATH"
+export MANPATH="$PYBASE/share/man:$MANPATH"
+VIRTUALENVWRAPPER_PYTHON="/opt/homebrew/bin/python"
+# if ! [[ -h "$PYBASE/bin/python" ]]; then
+#     ln -s "$(readlink "$PYBASE/bin/python2.7")" "$PYBASE/bin/python"
+# fi
+# Miniconda
+# export PATH=/Users/jonmiller/miniconda2/bin:$PATH
+
+# Coreutils
+PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/opt/homebrew/opt/coreutils/share/man:$MANPATH"
+
+# Findutils
+PATH="/opt/homebrew/opt/findutils/libexec/gnubin:$PATH"
+MANPATH="/opt/homebrew/opt/findutils/libexec/gnuman:$MANPATH"
+
+# Go environment setup
+export GOROOT=/opt/homebrew/opt/go/libexec
+export GOPATH=$HOME/go
+[[ -d $GOPATH ]] || mkdir $GOPATH
+export PATH=$PATH:$GOPATH/bin
+
+# Other Mac specific items
+alias cal='gcal'

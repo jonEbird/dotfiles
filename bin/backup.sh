@@ -169,7 +169,7 @@ if [ -z "$DESTINATION" ]; then
     fi
 else
     if [ ! -e $CONFIG_LOC ]; then
-        mkdir -p $(dirname $CONFIG_LOC) >/dev/null 2>&1
+        mkdir -p "$(dirname $CONFIG_LOC)" >/dev/null 2>&1
         echo "$1" > $CONFIG_LOC
     fi
 fi

@@ -17,6 +17,9 @@
 (defvar jsm:hiding-others t
   "Toggle variable to control `jsm:hide-other-windows' from firing or not.")
 
+;; TODO: Move the list of applications to NOT hide into a list and
+;; dynamically (macro) insert the extra 'and not \"<name>\"' text into the
+;; AppleScript
 (defun jsm:hide-other-windows ()
   "Hide all other windows."
   (interactive)
@@ -25,9 +28,23 @@
 tell application \"System Events\"
     set visible of every process whose ¬
         visible is true and ¬
-        frontmost is false ¬
+        frontmost is false and ¬
+        name is not \"VLC\" and ¬
+        name is not \"Jabber Video\" and ¬
+        name is not \"Sling\" ¬
     to false
 end tell")))
+
+(defun jsm:toggle-hiding ()
+  "Toggle `jsm:hiding-others' variable between nil and t."
+  (interactive)
+  (if jsm:hiding-others
+      (progn
+        (setq jsm:hiding-others nil)
+        (message "Disabled hiding other windows"))
+    (setq jsm:hiding-others t)
+    (message "Enabled hiding other windows")
+    (jsm:hide-other-windows)))
 
 ;; http://qwan.org/2011/09/01/reloading-a-page-in-chrome-from-aquamacs/
 (defun mayoff:open-url-in-chrome (url)
@@ -41,7 +58,7 @@ end tell")))
   4. If Chrome has no tab showing URL, I tell Chrome to make a new tab (in
      the front window) showing URL."
   (when (symbolp url)
-                                        ; User passed a symbol instead of a string.  Use the symbol name.
+    ;; User passed a symbol instead of a string.  Use the symbol name.
     (setq url (symbol-name url)))
   (do-applescript (format "
 tell application \"Google Chrome\"
@@ -86,8 +103,10 @@ end tell
   ;; `exec-path-from-shell-copy-env'
   ;; (add-to-list 'exec-path "/usr/local/bin")
 
-  (setq browse-url-generic-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-	browse-url-browser-function 'browse-url-generic)
+  ;; (setq browse-url-generic-program "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  ;;       browse-url-browser-function 'browse-url-generic)
+  (setq browse-url-generic-program nil
+        browse-url-browser-function 'browse-url-default-browser)
 
   (setq mac-command-modifier 'meta
         mac-option-modifier 'super

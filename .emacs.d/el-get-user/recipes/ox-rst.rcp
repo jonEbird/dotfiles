@@ -1,0 +1,4 @@
+(:name ox-rst
+       :description "reStructuredText Back-End for Org-Mode Export Engine"
+       :type github
+       :pkgname "masayuko/ox-rst")

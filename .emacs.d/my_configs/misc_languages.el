@@ -5,26 +5,36 @@
 (defalias 'elixir-repl 'elixir-mode-iex "Alias to the elixir iex REPL")
 
 ;; Great tool for showing where else in the buffer the thing-at-point is located
-(require 'highlight-thing)
-(custom-set-faces
- '(highlight-thing ((t (:inherit 'underline)))))
+(use-package highlight-thing
+  :custom-face (highlight-thing ((t (:inherit 'underline)))))
+; (require 'highlight-thing)
+;; (custom-set-faces
+;;  '(highlight-thing ((t (:inherit 'underline)))))
 
-(require 'flycheck)
-(setq flycheck-shellcheck-excluded-warnings '("SC2086"))
+(use-package flycheck
+  :custom ((flycheck-shellcheck-excluded-warnings '("SC2086"))
+           (flycheck-idle-change-delay 15))
+  :hook (c-mode-hook c++-mode-hook python-mode-hook
+                     emacs-lisp-mode-hook shell-mode-hook
+                     prog-mode-hook)
+  :config (cond ((boundp 'helm-mode)
+                 (setq flycheck-completion-system 'nil))
+                ((boundp 'ido-mode)
+                 (setq flycheck-completion-system 'ido))))
 
 ;; (require 'thrift)
 
 ;; bb-mode for bitbake recipes
-(require 'bb-mode)
-(setq auto-mode-alist (cons '("\\.bb$" . bb-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.inc$" . bb-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.bbappend$" . bb-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.bbclass$" . bb-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("\\.conf$" . bb-mode) auto-mode-alist))
+(use-package bb-mode
+  :mode (("\\.bb$" . bb-mode)
+         ("\\.inc$" . bb-mode)
+         ("\\.bbappend$" . bb-mode)
+         ("\\.bbclass$" . bb-mode)
+         ("\\.conf$" . bb-mode)))
 
-;; Enable flycheck for comments in other languages
-(dolist (hook
-         '(c-mode-hook c++-mode-hook python-mode-hook
-                       emacs-lisp-mode-hook shell-mode-hook
-                       prog-mode-hook))
-  (add-hook hook 'flyspell-prog-mode 'append))
+;; Javascript
+(setq js-indent-level 2)
+
+;; yaml
+(use-package flycheck-yamllint
+  :hook (flycheck-mode . flycheck-yamllint-setup))

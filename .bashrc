@@ -2,46 +2,12 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+    . /etc/bashrc
 fi
-
-# Tracktime Integration - Couple known locations
-TRACKTIME_LOCATIONS="~/projects/tracktime ~/tracktime"
-for tracktime in $TRACKTIME_LOCATIONS; do
-    if [ -f ${tracktime}/completion.bash ]; then
-	eval source ${tracktime}/completion.bash ${tracktime} ${HOME}/projects
-	break
-    fi
-done
 
 # Keep the admin commands in my PATH and ~/bin
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
-
-if which brew >/dev/null 2>&1 && [[ $(uname) == "Darwin" ]]; then
-
-    # Bash Completion
-    if [ -f $(brew --prefix)/etc/bash_completion ]; then
-        . $(brew --prefix)/etc/bash_completion
-    fi
-
-    # Coreutils
-    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-    export MANPATH="$(brew --prefix coreutils)/share/man:$MANPATH"
-
-    # Findutils
-    PATH="$(brew --prefix findutils)/libexec/gnubin:$PATH"
-    MANPATH="$(brew --prefix findutils)/libexec/gnuman:$MANPATH"
-
-    # Go environment setup
-    export GOROOT=$(brew --prefix go)/libexec
-    export GOPATH=$HOME/go
-    [[ -d $GOPATH ]] || mkdir $GOPATH
-    export PATH=$PATH:$GOPATH/bin
-
-    # Other Mac specific items
-    alias cal='gcal'
-fi
 
 # PS1 and related Status
 if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
@@ -60,7 +26,7 @@ fi
 
 gitps1() {
     _git_repo() {
-        basename $(git remote -v | awk '/^origin.*(fetch)/{ print $2 }') | sed 's/\.git//g'
+        basename "$(git remote -v | awk '/^origin.*(fetch)/{ print $2 }')" | sed 's/\.git//g'
     }
 
     if [ -r ~/git-prompt.sh ]; then
@@ -70,9 +36,23 @@ gitps1() {
     fi
 }
 
-if docker-machine ls -q 2>/dev/null | grep -E '^default$' >/dev/null; then
-    eval "$(docker-machine env default)"
-fi
+gpr() {
+    # Create a pull request from the current feature branch
+    local symbolic_rev
+    symbolic_rev=$(git rev-parse --abbrev-ref HEAD)
+    if [[ $symbolic_rev == HEAD ]]; then
+        echo "Cannot create PR in detached HEAD mode." && return 1
+    elif [[ $symbolic_rev =~ ^dev$|^master$|^release$ ]]; then
+        echo "Not creating PR from '$symbolic_rev'. Please use a feature branch instead." && return 2
+    fi
+    git push origin "$symbolic_rev" -u
+    hub compare "jonmiller:$symbolic_rev"
+}
+
+# # Moved to using Native Docker for Mac
+# if docker-machine ls -q 2>/dev/null | grep -E '^default$' >/dev/null; then
+#     eval "$(docker-machine env default)"
+# fi
 
 export HISTSIZE=100000
 export MPD_HOST=sajou
@@ -94,9 +74,10 @@ alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
 alias ag='ag --color-match 4\;37 '
-alias ls='ls --color=auto -F '
+alias ls="\${LS:-ls} --color=auto -F "
+alias tree='tree --charset=ascii '
 alias magit='emacsclient -a emacs -e "(magit-status \"$(git rev-parse --show-toplevel)\")"'
-function projectile() {
+projectile() {
     local project_dir="${1:-$(pwd)}"
     emacsclient -a emacs -e "(projectile-add-known-project \"${project_dir%%/}/\")"
 }
@@ -150,3 +131,6 @@ fi
 [ -f ~/.proxy ] && source ~/.proxy
 [ -f ~/.bash_profile.workstation  ] && source ~/.bash_profile.workstation
 [ -f ~/.bash_profile.work ] && source ~/.bash_profile.work
+PATH=$PATH:~/repos/rio/rio-cli/bin
+eval "$(rbenv init - 2>&-)"
+PATH=$PATH:~/repos/pe-infra/rio-toolbox/ciborg

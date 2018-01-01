@@ -1,0 +1,4 @@
+(:name chef-mode
+       :description "Emacs support for highighting python coverage results"
+       :type github
+       :pkgname "mattharrison/pycoverage.el")

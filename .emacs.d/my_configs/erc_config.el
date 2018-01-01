@@ -1,7 +1,7 @@
 ; -*- emacs-lisp -*-
 
-(require 'erc)
-(require 'netrc)
+(use-package erc)
+(use-package netrc)
 
 ; Set which modules to load
 (setq erc-modules '( pcomplete autojoin button completion fill
@@ -118,13 +118,13 @@
 (defun irc-work ()
   (interactive)
   (jsm/set-irc-creds)
-  (erc-tls :server "localhost" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
+  (erc-tls :server "localhost" :port 6668 :full-name (netrc-get jonebird-irc-creds "login")
            :password (netrc-get jonebird-irc-creds "password") :nick "jonEbird"))
 
 (defun irc-home ()
   (interactive)
   (jsm/set-irc-creds)
-  (erc-tls :server "jonebird.com" :port 6667 :full-name (netrc-get jonebird-irc-creds "login")
+  (erc-tls :server "jonebird.com" :port 6668 :full-name (netrc-get jonebird-irc-creds "login")
            :password (netrc-get jonebird-irc-creds "password") :nick "jon"))
 
 (defun irc-qualcomm ()
@@ -140,3 +140,10 @@
   (jsm/set-irc-creds)
   (erc-tls :server "chat.freenode.net" :port 6697 :full-name "Jon Miller"
            :nick "jonEbird"))
+
+;; irc.apple.com
+(defun irc-apple ()
+  (interactive)
+  ;; (jsm/set-irc-creds)
+  (erc-tls :server "irc.apple.com" :port 6697 :full-name "Jon Miller"
+           :nick "jonmiller"))

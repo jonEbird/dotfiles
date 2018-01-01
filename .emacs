@@ -1,12 +1,20 @@
 ;; .emacs
 ;; Jon Miller <jonEbird at gmail.com>
 
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+; (package-initialize)
+
 ;; --------------------------------------------------
 ;; Basic variable configurations
 ;; --------------------------------------------------
-
 ;; Extra load path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp/"))
+
+;; Require cl early on since it's used in many places
+(require 'cl)
 
 ; turn off the toolbar and menu bar
 (tool-bar-mode -1)
@@ -41,23 +49,30 @@
 ; Shorten the yes-or-no question
 (defalias 'yes-or-no-p 'y-or-n-p)
 (defalias 'repl 'ielm "Alias to the elisp REPL")
+(defadvice save-buffers-kill-emacs (around no-query-kill-emacs activate)
+  "Prevent annoying \"Active processes exist\" query when you quit Emacs."
+  (flet ((process-list ())) ad-do-it))
 
 ; Useful for conditional variables
 (defvar my-hostname
-  (or (getenv "HOSTNAME") (getenv "COMPUTERNAME") "unknown")
-  "hostname of this machine")
+  (or
+   (getenv "HOSTNAME")
+   (getenv "COMPUTERNAME")
+   (shell-command-to-string "printf %s \"$(uname -n)\"")
+   "unknown")
+  "Hostname of this machine.")
 
-; Session Save Support - Desktop and Savehist
-(require 'desktop)
+;; Session Save Support - Desktop and Savehist
+;; -------------------------------------------
+;; (require 'desktop)
+;; (add-to-list 'desktop-globals-to-save 'file-name-history)
 (require 'savehist)
 (setq history-length 250
       desktop-base-file-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname)
       desktop-base-lock-name (concat (expand-file-name "~/.emacs.d/desktop.") my-hostname ".lock")
       savehist-file (concat (expand-file-name "~/.emacs.d/history.") my-hostname))
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 (savehist-mode 1)
-
-(add-to-list 'desktop-globals-to-save 'file-name-history)
 
 ; ELPA package support
 (when (>= emacs-major-version 24)
@@ -65,6 +80,10 @@
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
   ; (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
+  )
+
+(when (>= emacs-major-version 25)
+  (setq search-default-mode 'case-fold-search)
   )
 
 ;; Extra add-ons - Typcially from git submodules
@@ -75,7 +94,8 @@
 ;;       nyan-animate-nyancat 't
 ;;       nyan-bar-length 20)
 
-;; Always show columns too
+;; Always show columns too and set the default fill width to 90
+(setq fill-column 90)
 (column-number-mode)
 
 ;; Support an easier way to remember how to zoom in/out font size
@@ -85,6 +105,8 @@
 
 ;; Quickly kill a buffer
 (global-set-key (kbd "M-k") (lambda () (interactive) (kill-buffer nil)))
+;; Or just bury it?
+(global-set-key [C-M-backspace] (lambda () (interactive) (bury-buffer nil)))
 
 ;; Banish the mouse
 (mouse-avoidance-mode 'none)
@@ -116,12 +138,32 @@
 ;; Transparency
 (defun toggle-transparency ()
   (interactive)
-  (if (/=
-       (cadr (frame-parameter nil 'alpha))
-       100)
-      (set-frame-parameter nil 'alpha '(100 100))
-    (set-frame-parameter nil 'alpha '(90 50))))
+  (let* ((alpha-frame-parameter (frame-parameter nil 'alpha))
+         (alpha-transparency
+          (if (eq alpha-frame-parameter nil)
+              100
+            (cadr alpha-frame-parameter))))
+    (if (/= alpha-transparency 100)
+        (set-frame-parameter nil 'alpha '(100 100))
+      (set-frame-parameter nil 'alpha '(90 50)))))
+(toggle-transparency)
 (global-set-key (kbd "C-c t") 'toggle-transparency)
+
+;; Setup my preferred frame geometry upon startup
+;; TODO: Consider using (display-monitor-attributes-list) or (frame-monitor-attributes)
+(defun jsm/set-frame-geometry ()
+  "Re-size and move frame to my pre-set values for monitor or laptop viewing."
+  (interactive)
+  (let* ((large (> (x-display-pixel-width) 2000))
+         (frame-height (if large 80 50))  ;; was 75 50
+         (frame-width (if large 280 178)) ;; was 260 178
+         (x-offset 0)
+         (y-offset 0))
+    (set-frame-height (selected-frame) frame-height)
+    (set-frame-width (selected-frame) frame-width)
+    (set-frame-position (selected-frame) x-offset y-offset)))
+
+(jsm/set-frame-geometry)
 
 ;; I may enable flyspell-mode. When I do, let's kill the underline.
 (defvar flyspell-issue-welcome-flag nil)
@@ -372,48 +414,57 @@
 ;; Taken from InitSplit (http://www.emacswiki.org/emacs/InitSplit)
 ;;  then modified slightly to test for the existence of config files
 ; default emacs configuration directory
-(defconst jsm:emacs-config-dir "~/.emacs.d/my_configs/" "")
+(defconst jsm:emacs-config-dir "~/.emacs.d/my_configs/"
+  "Directory path to my configs.")
 
 ;; Utility function to auto-load my package configurations
-(defun jsm:load-config-file (filelist)
-  (dolist (file filelist)
-    (let ((fullpath (expand-file-name
-		     (concat jsm:emacs-config-dir file ".el"))))
-      (if (file-exists-p fullpath)
-	  (with-demoted-errors "Error: %S"
-            (load fullpath))
-	(message "Could NOT load config file:%s" file))
-      )))
+(defun jsm:load-config-file (config)
+  "Load separate CONFIG file."
+  (let ((fullpath (expand-file-name
+                   (concat jsm:emacs-config-dir config ".el"))))
+    (if (file-exists-p fullpath)
+        (with-demoted-errors "Error: %S"
+          (load fullpath))
+      (message "Could NOT load config file:%s" config))))
 
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/el-get/google-maps"))
+(defun jsm:profile-config-file (config)
+  "Profile one of your separate CONFIG files."
+  (interactive "s")
+  (let ((profile-dotemacs-file
+         (expand-file-name (concat jsm:emacs-config-dir config ".el"))))
+    (profile-dotemacs)))
 
-;; load my configuration files
-(jsm:load-config-file '("el_get"
-                        "lisp_config"
-                        ;; "yasnippet_config"
-                        "backup_config"
-                        "org_config"
-                        "tramp_config"
-                        ; "erc_config"
-                        ;; Pick one: ido or helm or ivy
-                        ; "ido_config"
-                        ; "helm_config"
-                        "ivy_config"
-                        "misc_languages"
-                        "efficiency_config"
-                        "theme_config"
-                        "email_config"
-                        ; "elip_edb"
-                        "java_config"
-                        "c-c++_tags_config"
-                        "python_config"
-                        "php_config"
-                        "ruby_config"
-                        "linux_config"
-                        "windows_config"
-                        "mac_config"
-                        ;; "screencast"
-                        ))
+;; (jsm:profile-config-file "el_get")
+;; (jsm:profile-config-file "org_config")
+;; (jsm:profile-config-file "efficiency_config")
+
+;; Leaving these as separate function calls provides for better profiling
+(jsm:load-config-file "el_get")
+(jsm:load-config-file "lisp_config")
+;; (jsm:load-config-file "yasnippet_config")
+(jsm:load-config-file "backup_config")
+(jsm:load-config-file "org_config")
+(jsm:load-config-file "tramp_config")
+(jsm:load-config-file "erc_config")
+;; Pick one: ido or helm or ivy
+;; (jsm:load-config-file "ido_config")
+;; (jsm:load-config-file "helm_config")
+(jsm:load-config-file "ivy_config")
+(jsm:load-config-file "misc_languages")
+(jsm:load-config-file "efficiency_config")
+(jsm:load-config-file "theme_config")
+(jsm:load-config-file "email_config")
+;;(jsm:load-config-file "elip_edb")
+(jsm:load-config-file "java_config")
+(jsm:load-config-file "c-c++_tags_config")
+(jsm:load-config-file "python_config")
+(jsm:load-config-file "php_config")
+(jsm:load-config-file "ruby_config")
+(jsm:load-config-file "linux_config")
+(jsm:load-config-file "windows_config")
+(jsm:load-config-file "mac_config")
+(jsm:load-config-file "company_config")
+;; (jsm:load-config-file "screencast")
 
 (provide '.emacs)
 ;;; .emacs ends here

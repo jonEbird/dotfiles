@@ -12,23 +12,21 @@
 	t = describe --abbrev=0 --tags
 	id = log -1 --pretty=format:'%C(cyan)%H%Creset (%C(yellow)%h%Creset)'
 	nix = "!f() { git rebase -p --onto $1^ $1; }; f"
+        br = branch -vv
+        st = status
+        top = "!f() { git shortlog -sn | head -${1:-20}; }; f"
+        # Prepping release notes
+        gl = "!f() { git log --pretty=format:'* %Cred%h%Creset - %s %n%w(76,4,4)%b%n' --abbrev-commit $@ | perl -0 -p -e 's|([<>])|\\1|g ; s|\\s+\\*|\\n\\n*|g'; }; f"
+        # apply-url = "!f() { curl -s $1 2>&- | git apply ${@:2}; }; f"
+        # am-url = "!f() { curl -s $1 2>&- | git am ${@:2}; }; f"
+	paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git apply ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
+	am-paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git am ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
 [push]
 	default = simple
-
-[diff]
-	tool = ediff
-	guitool = ediff
-
-[difftool "ediff"]
-	cmd = ediff.sh $LOCAL $REMOTE $MERGED
-
-[merge]
-	tool = ediff
-
-[mergetool "ediff"]
-	cmd = ediff.sh $LOCAL $REMOTE $MERGED $BASE
-	trustExitCode = true
-[filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+[url "git@gitlab.sd.apple.com:"]
+	insteadOf = https://gitlab.sd.apple.com/
+[hub]
+	host = github.pie.apple.com
+[core]
+	ignorecase = false
+	excludesfile = ~/.gitignore_global

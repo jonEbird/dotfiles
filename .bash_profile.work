@@ -48,17 +48,22 @@ mv2workspace() {
 
 ssh-fixid() {
     # Fixes an ssh-rsa fingerprint if necessary
-    local lkey= rkey= host=
+    local lkey='' rkey='' host=''
     if [ -z "$1" ]; then
-        echo "Usage: ssh-fixid <host> [hostB...]" 1>&2
+        echo "Usage: ssh-fixid <host>|<linenum> [hostB|linenum2...]" 1>&2
         return 1
     fi
-    for host in $*; do
-        lkey=$(ssh-keygen  -t ssh-rsa -F $host 2>&1 | egrep -v '^#')
-        rkey=$(ssh-keyscan -t ssh-rsa    $host 2>&1 | egrep -v '^#')
-        if [ "$lkey" != "$rkey" -a -n "$lkey" -a -n "$rkey" ]; then
-            ssh-keygen -R $host >/dev/null 2>&1
-            echo "$rkey" >> ~/.ssh/known_hosts
+    for host in "$@"; do
+        if [[ $host =~ [0-9]* ]]; then
+            echo "Removing line $host from known_hosts"
+            sed -i "${host}d" ~/.ssh/known_hosts
+        else
+            lkey=$(ssh-keygen  -t ssh-rsa -F $host 2>&1 | egrep -v '^#')
+            rkey=$(ssh-keyscan -t ssh-rsa    $host 2>&1 | egrep -v '^#')
+            if [ "$lkey" != "$rkey" ] && [ -n "$lkey" ] && [ -n "$rkey" ]; then
+                ssh-keygen -R $host >/dev/null 2>&1
+                echo "$rkey" >> ~/.ssh/known_hosts
+            fi
         fi
     done
 }
@@ -68,7 +73,7 @@ group() {
         echo "Need to set \$SERVERS first."
         return 1
     fi
-    if [ "$1" == "--fix" -o "$1" == "--clean" ]; then
+    if [ "$1" == "--fix" ] || [ "$1" == "--clean" ]; then
         ssh-fixid $SERVERS
         shift
     fi
@@ -139,7 +144,7 @@ group() {
         *)
             for S in $SERVERS; do
                 echo "--- $S ---"
-                ssh root@$S $@
+                ssh $S "$@" # 2>&1 | grep -v 'Killed by signal 1.'
             done
     esac
 }

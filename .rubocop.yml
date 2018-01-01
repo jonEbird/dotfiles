@@ -1,0 +1,23 @@
+# Docs at http://rubocop.readthedocs.io/en/latest/configuration/
+# Sample, full config: https://github.com/bbatsov/rubocop/blob/master/config/default.yml
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'gems/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+  TargetRubyVersion: 2.3
+
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 30
+
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/LineLength:
+  Max: 100
+
+Style/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space

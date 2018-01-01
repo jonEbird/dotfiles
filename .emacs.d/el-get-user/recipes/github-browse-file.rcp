@@ -1,0 +1,4 @@
+(:name github-browse-file
+       :description "View the file you're editing in Emacs on GitHub"
+       :type github
+       :pkgname "osener/github-browse-file")

@@ -1,15 +1,18 @@
 ; -*- emacs-lisp -*-
 
+(require 'dired)
+
 (defun my-make-backup-file-name (file-name)
   "Create the non-numeric backup file name for `file-name'.\n
    This customized version of this function is useful to keep all backups
    in one place, instead of all over the filesystem."
-  (require 'dired)
-  (message (concat "make-backup: " file-name))
-  (if (not (file-exists-p "~/.backups"))
-      (make-directory (expand-file-name "~/.backups/") 't))
-  (concat (expand-file-name "~/.backups/")
-	  (dired-replace-in-string "/" "|" file-name)))
+  (let ((file-name-sanitized
+         (dired-replace-in-string "%" "" file-name)))
+    (message (concat "make-backup: " file-name-sanitized))
+    (if (not (file-exists-p "~/.backups"))
+        (make-directory (expand-file-name "~/.backups/") 't))
+    (concat (expand-file-name "~/.backups/")
+            (dired-replace-in-string "/" "|" file-name-sanitized))))
 
 ;; Set different methods depending on what system
 (if (eq system-type 'windows-nt)

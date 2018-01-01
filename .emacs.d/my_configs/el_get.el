@@ -54,7 +54,7 @@
 
        '(ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
          lua-mode markdown-mode google-maps htmlize ldap-mode url-dav
-         org-caldav confluence-el expand-region iedit jedi mu4e
+         org-caldav confluence-el expand-region iedit jedi mu4e org-mime
          flx paredit ido-vertical-mode dash ; php-mode-improved
          multiple-cursors popwin popup guide-key visual-regexp projectile
          ack-and-a-half cl-lib autopair yasnippet yasnippet-snippets
@@ -62,14 +62,24 @@
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
          rpm-spec-mode cider rainbow-delimiters elixir org-reveal
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
-         helm helm-git-grep helm-mu color-theme-zenburn dockerfile-mode
-         helm-gtags command-log-mode helm-swoop key-chord flycheck
-         ag helm-ag wdired org-bullets zeal-at-point org-download
+         ;; helm helm-git-grep helm-mu helm-gtags helm-swoop helm-ag
+         color-theme-zenburn dockerfile-mode command-log-mode key-chord
+         flycheck ag wdired org-bullets zeal-at-point org-download
          ace-window avy hydra use-package bb-mode swiper docker-tramp
          mtrace evil groovy-emacs-mode dired-hacks orgit flycheck-pmd
          json-mode protobuf-mode highlight-thing google-this mustache-mode
-         Enhanced-Ruby-Mode robe-mode feature-mode hl-todo)))
+         rbenv robe-mode inf-ruby feature-mode hl-todo flycheck-yamllint
+         company-mode company-inf-ruby readline-complete ruby-tools yari
+         solarized-emacs git-timemachine puppet-mode web-mode ox-rst
+         github-browse-file go-mode profile-dotemacs)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
+(el-get-bundle jedi-core)
+(el-get-bundle company-jedi :depends (company-mode))
+(el-get-bundle helpful)
+
 (el-get 'sync jsm-packages)
+
+;; Necessary to keep some packages loaded
+(package-initialize)

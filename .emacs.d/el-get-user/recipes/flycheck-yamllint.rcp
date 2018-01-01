@@ -1,0 +1,4 @@
+(:name flycheck-yamllint
+       :description "Flycheck YAMLLint integration"
+       :type github
+       :pkgname "krzysztof-magosa/flycheck-yamllint")
