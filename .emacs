@@ -262,10 +262,6 @@
 ;; Games setup
 (defvar tetris-score-file (expand-file-name "~/.emacs.d/tetris-scores"))
 
-;; Move customizations to a separate file
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-
 ;; --------------------------------------------------
 ;; Key (re)assignments
 ;; --------------------------------------------------
@@ -465,6 +461,11 @@
 (jsm:load-config-file "mac_config")
 (jsm:load-config-file "company_config")
 ;; (jsm:load-config-file "screencast")
+
+;; Move customizations to a separate file
+;; Running this after any of the other configs so our custom items aren't actually overridden
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 (provide '.emacs)
 ;;; .emacs ends here

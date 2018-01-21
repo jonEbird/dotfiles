@@ -17,6 +17,7 @@
   (interactive)
   (hs-minor-mode)
   (flyspell-prog-mode)
+  (flycheck-mode 1)
   (highlight-thing-mode)
   (ac-flyspell-workaround))
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PATH="/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/sbin:/usr/sbin"
+PATH="/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin"
 TMP=/tmp/.events$$_
 
 EVENTS=${TMP}events

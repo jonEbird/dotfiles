@@ -48,5 +48,8 @@
 (add-to-list 'sml/replacer-regexp-list '("^/repos/" ":Repo:"))
 (sml/setup)
 
+;; Extra customization for look and feel
+(set-face-attribute 'org-code nil :foreground "forest green")
+
 (provide 'theme_config)
 ;;; theme_config.el ends here

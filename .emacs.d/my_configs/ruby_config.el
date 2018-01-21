@@ -67,6 +67,7 @@
   (highlight-thing-mode)
   (ac-flyspell-workaround)
   (flyspell-prog-mode)
+  (flycheck-mode 1)
   (rainbow-delimiters-mode)
   (inf-ruby-minor-mode +1)
   (ruby-tools-mode +1)
