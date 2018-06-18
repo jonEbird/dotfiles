@@ -88,6 +88,8 @@
              "C-c h" ; help
              "C-x g" ; google-this
              "C-c @" ; hide-show
+             "C-c C-v" ; ensime
+             "C-c C-b" ; sbt
              ))
   :config (guide-key-mode 1))
 

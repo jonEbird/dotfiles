@@ -85,6 +85,7 @@
   (require 'package)
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("ELPA" . "http://tromey.com/elpa/"))
+  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
   ; (add-to-list 'package-archives '("MELPA" . "http://melpa.milkbox.net/packages/"))
   )
 
@@ -467,6 +468,7 @@
 (jsm:load-config-file "email_config")
 ;;(jsm:load-config-file "elip_edb")
 (jsm:load-config-file "java_config")
+(jsm:load-config-file "scala_config")
 (jsm:load-config-file "c-c++_tags_config")
 (jsm:load-config-file "python_config")
 (jsm:load-config-file "php_config")

@@ -59,6 +59,8 @@ alias gerp='grep '
 alias grpe='grep '
 alias sudo='sudo '
 alias ag='ag --color-match 4\;37 '
+export LS=gls
+PATH=/opt/homebrew/opt/python/bin:$PATH
 alias ls="\${LS:-ls} --color=auto -F "
 alias tree='tree --charset=ascii '
 alias magit='emacsclient -a emacs -e "(magit-status \"$(git rev-parse --show-toplevel)\")"'
