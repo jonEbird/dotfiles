@@ -1,0 +1,4 @@
+(:name ripgrep
+       :description "Emacs front-end for ripgrep, a command line search tool"
+       :type github
+       :pkgname "nlamirault/ripgrep.el")

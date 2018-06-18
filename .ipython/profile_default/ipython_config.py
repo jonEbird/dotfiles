@@ -36,7 +36,7 @@ c.InteractiveShellApp.exec_lines = [ 'import os, sys' ]
 # c.InteractiveShellApp.file_to_run = ''
 
 # Suppress warning messages about legacy config files
-c.InteractiveShellApp.ignore_old_config = True
+# c.InteractiveShellApp.ignore_old_config = True
 
 #------------------------------------------------------------------------------
 # TerminalIPythonApp configuration
@@ -65,7 +65,7 @@ c.InteractiveShellApp.ignore_old_config = True
 # c.TerminalIPythonApp.pylab = None
 
 # Suppress warning messages about legacy config files
-c.TerminalIPythonApp.ignore_old_config = True
+# c.TerminalIPythonApp.ignore_old_config = True
 
 # Create a massive crash report when IPython enconters what may be an internal
 # error.  The default is to append a short message to the usual traceback
@@ -157,7 +157,7 @@ c.TerminalIPythonApp.ignore_old_config = True
 # forces a full reload of modules whose code may have changed, which the default
 # reload() function does not.  When deep_reload is off, IPython will use the
 # normal reload(), but deep_reload will still be available as dreload().
-c.TerminalInteractiveShell.deep_reload = True
+# c.TerminalInteractiveShell.deep_reload = True
 
 # Make IPython automatically call any callable object even if you didn't type
 # explicit parentheses. For example, 'str 43' becomes 'str(43)' automatically.
@@ -391,7 +391,7 @@ if 'VIRTUAL_ENV' in environ:
                        'python%d.%d' % version_info[:2],
                        'site-packages')
     site.addsitedir(virtual_env)
-    print 'VIRTUAL_ENV ->', virtual_env
+    print('VIRTUAL_ENV ->', virtual_env)
     del virtual_env
 del site, environ, join, version_info
 # Also see: http://isbullsh.it/2012/04/Embed-ipython-in-virtualenv/

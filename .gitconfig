@@ -16,7 +16,7 @@
         st = status
         top = "!f() { git shortlog -sn | head -${1:-20}; }; f"
         # Prepping release notes
-        gl = "!f() { git log --pretty=format:'* %Cred%h%Creset - %s %n%w(76,4,4)%b%n' --abbrev-commit $@ | perl -0 -p -e 's|([<>])|\\1|g ; s|\\s+\\*|\\n\\n*|g'; }; f"
+        gl = "!f() { git log --no-merges --pretty=format:'* %Cred%h%Creset - %s %n%w(76,4,4)%b%n' --abbrev-commit $@ | perl -0 -p -e 's|([<>])|\\1|g ; s|\\s+\\*|\\n\\n*|g'; }; f"
         # apply-url = "!f() { curl -s $1 2>&- | git apply ${@:2}; }; f"
         # am-url = "!f() { curl -s $1 2>&- | git am ${@:2}; }; f"
 	paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git apply ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
@@ -29,4 +29,4 @@
 	host = github.pie.apple.com
 [core]
 	ignorecase = false
-	excludesfile = ~/.gitignore_global
+	excludesfile = ~/.gitignore

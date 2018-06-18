@@ -9,21 +9,6 @@ fi
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
 
-# PS1 and related Status
-if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
-    if [ -n "$EMACS_PS1" ]; then
-        PS1="$EMACS_PS1"
-    else
-        PS1="\W $ "
-    fi
-    export PAGER=emacspager
-    export TERM=eterm-color
-else
-    # Standard PS1
-    PS1="[\u@\h \W]\$ "
-    export TERM="xterm-256color"
-fi
-
 gitps1() {
     _git_repo() {
         basename "$(git remote -v | awk '/^origin.*(fetch)/{ print $2 }')" | sed 's/\.git//g'
@@ -57,7 +42,7 @@ gpr() {
 export HISTSIZE=100000
 export MPD_HOST=sajou
 export MPD_PORT=6600
-export EDITOR=emacsclient
+export EDITOR=less  # emacsclient
 export PYTHONSTARTUP=~/.pythonrc
 export PAGER=less
 export LANG=en_US.UTF-8
@@ -90,6 +75,24 @@ org-store-file () {
     done
 }
 alias ppjson="python -m json.tool"
+
+# PS1 and related Status
+if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
+    if [ -n "$EMACS_PS1" ]; then
+        PS1="$EMACS_PS1"
+    else
+        PS1="\W $ "
+    fi
+    # export PAGER=emacspager
+    export TERM=eterm-color
+    # Using virtualenvwrapper Emacs package which sets this
+    unset VIRTUAL_ENV
+    PATH=$(echo $PATH | sed 's/:/\n/g' | grep -v "^$WORKON_HOME" | tr '\n' ':' | sed 's/:$//g')
+else
+    # Standard PS1
+    PS1="[\u@\h \W]\$ "
+    export TERM="xterm-256color"
+fi
 
 # f-u flow control
 stty -ixon >/dev/null 2>&1

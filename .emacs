@@ -20,6 +20,9 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+;; https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
+(setq auto-window-vscroll nil)
+
 ; tabs are evil
 (setq-default indent-tabs-mode nil)
 
@@ -45,6 +48,9 @@
 
 ; always end a file with a newline
 (setq require-final-newline 't)
+
+;; compilation windows should scroll to first error
+(setq compilation-scroll-output 'first-error)
 
 ; Shorten the yes-or-no question
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -148,6 +154,10 @@
       (set-frame-parameter nil 'alpha '(90 50)))))
 (toggle-transparency)
 (global-set-key (kbd "C-c t") 'toggle-transparency)
+
+;; Replace old linenum with native support from v26 onward
+;; (setq display-line-numbers t)
+;; Actually it's just: (display-line-numbers-mode)
 
 ;; Setup my preferred frame geometry upon startup
 ;; TODO: Consider using (display-monitor-attributes-list) or (frame-monitor-attributes)
@@ -430,6 +440,11 @@
          (expand-file-name (concat jsm:emacs-config-dir config ".el"))))
     (profile-dotemacs)))
 
+;; Move customizations to a separate file
+;; Running this after any of the other configs so our custom items aren't actually overridden
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+
 ;; (jsm:profile-config-file "el_get")
 ;; (jsm:profile-config-file "org_config")
 ;; (jsm:profile-config-file "efficiency_config")
@@ -456,16 +471,12 @@
 (jsm:load-config-file "python_config")
 (jsm:load-config-file "php_config")
 (jsm:load-config-file "ruby_config")
+(jsm:load-config-file "shell_config")
 (jsm:load-config-file "linux_config")
 (jsm:load-config-file "windows_config")
 (jsm:load-config-file "mac_config")
 (jsm:load-config-file "company_config")
 ;; (jsm:load-config-file "screencast")
-
-;; Move customizations to a separate file
-;; Running this after any of the other configs so our custom items aren't actually overridden
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
 
 (provide '.emacs)
 ;;; .emacs ends here

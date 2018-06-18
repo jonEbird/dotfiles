@@ -53,11 +53,11 @@
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
        '(ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
-         lua-mode markdown-mode google-maps htmlize ldap-mode url-dav
+         lua-mode markdown-mode htmlize ldap-mode url-dav
          org-caldav confluence-el expand-region iedit jedi mu4e org-mime
          flx paredit ido-vertical-mode dash ; php-mode-improved
          multiple-cursors popwin popup guide-key visual-regexp projectile
-         ack-and-a-half cl-lib autopair yasnippet yasnippet-snippets
+         ack-and-a-half cl-lib yasnippet yasnippet-snippets
          auto-complete-clang gtags multiple-cursors magit git-gutter
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
          rpm-spec-mode cider rainbow-delimiters elixir org-reveal
@@ -71,13 +71,16 @@
          rbenv robe-mode inf-ruby feature-mode hl-todo flycheck-yamllint
          company-mode company-inf-ruby readline-complete ruby-tools yari
          solarized-emacs git-timemachine puppet-mode web-mode ox-rst
-         github-browse-file go-mode profile-dotemacs)))
+         github-browse-file go-mode profile-dotemacs slack emacs-jabber
+         google-c-style realgud smartparens emacs-neotree all-the-icons
+         virtualenvwrapper ripgrep define-word)))
 ; term+ term+ki term+mux faux-screen
 ; auto-complete-etags elip powerline
 
 (el-get-bundle jedi-core)
 (el-get-bundle company-jedi :depends (company-mode))
 (el-get-bundle helpful)
+(el-get-bundle meghanada)
 
 (el-get 'sync jsm-packages)
 

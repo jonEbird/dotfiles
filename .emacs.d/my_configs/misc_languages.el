@@ -4,12 +4,19 @@
 ;; ------------------------------
 (defalias 'elixir-repl 'elixir-mode-iex "Alias to the elixir iex REPL")
 
+;; Taken from phi-search (phi-search-match-face)
+(defface my-highlight-face
+  '((((background light)) (:background "#b5dee9"))
+    (t (:background "#194854")))
+  "Face used to highlight things.")
+
 ;; Great tool for showing where else in the buffer the thing-at-point is located
 (use-package highlight-thing
-  :custom-face (highlight-thing ((t (:inherit 'underline)))))
-; (require 'highlight-thing)
-;; (custom-set-faces
-;;  '(highlight-thing ((t (:inherit 'underline)))))
+  :custom ((highlight-thing-case-sensitive-p nil)
+           (highlight-thing-ignore-list '("False" "True" "import" "private" "public" "final" "return"))
+           (highlight-thing-exclude-thing-under-point t))
+  :custom-face (highlight-thing ((t (:inherit 'my-highlight-face)))))
+
 
 (use-package flycheck
   :custom ((flycheck-shellcheck-excluded-warnings '("SC2086"))

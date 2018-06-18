@@ -1,8 +1,13 @@
 # .bash_profile
 
+# Un-comment for profiling
+# PS4='+ $(date "+%s.%N")\011 '
+# exec 3>&2 2>/tmp/bashstart.$$.log
+# set -x
+
 # Get the aliases and functions
 if [ -f ~/.bashrc ]; then
-	. ~/.bashrc
+    . ~/.bashrc
 fi
 
 # User specific environment and startup programs
@@ -11,6 +16,10 @@ fi
 epoch2date() {
     date --date="@${1:-0}" +"${2:-%c}"
 }
+
+# TZ conversion functions
+utc-to-pacific() { TZ=America/Los_Angeles date --date="TZ=\"GMT\" $*" +"%H:%M %Z"; }
+pacific-to-utc() { TZ=GMT date --date="TZ=\"America/Los_Angeles\" $*" +"%H:%M %Z"; }
 
 pathgrep() { echo $PATH | sed 's/:/ /g' | xargs ls 2>/dev/null | grep -i ${1:-.}; }
 
@@ -50,14 +59,75 @@ if [ -d ~/.bash_profile.${MACHINE}.d ]; then
     done
 fi
 
-# Startup docker machine if necessary
-if command -v docker-machine >/dev/null; then
-    if [[ $(docker-machine status default) == "Stopped" ]]; then
-        docker-machine start default >/dev/null
-    fi
+using-brew() {
+    # Check if this is a Mac machine using Homebrew
+    which brew >/dev/null 2>&1 && [[ $(uname) == "Darwin" ]]
+}
+
+brew-profile-is-stale() {
+    # check if the cached brew profile content needs to be updated
+    # Return true (0) if we need to update the cached profile
+    local boot_time_s brew_profile_s
+    boot_time_s=$(date --date="$(ps -o lstart -p 1 | tail -1)" +%s)
+    # BSD style 'stat' command in use here
+    brew_profile_s=$(/usr/bin/stat -f %m ~/.bash_profile.brew 2>&-)
+    [[ -z "$brew_profile_s" ]] && return 0
+    [[ $boot_time_s -gt $brew_profile_s ]] && return 0
+    return 1
+}
+
+# Let's only do the heavy brew stuff once per reboot
+if using-brew; then
+    if brew-profile-is-stale; then
+        cat <<EOF > ~/.bash_profile.brew
+# Bash Completion
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
 fi
 
-# Evil RVM
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+# Add basic brew bin location to the top of the PATH
+PATH=$(brew --prefix)/bin:\$PATH
+
+# For the benefit of my alias in .bashrc:
+export LS=gls
+
+# Coreutils
+PATH="$(brew --prefix coreutils)/libexec/gnubin:\$PATH"
+export MANPATH="$(brew --prefix coreutils)/share/man:\$MANPATH"
+
+# Python
+PYBASE=$(brew --prefix python)
+PATH="\$PYBASE/bin:\$PATH"
+export MANPATH="\$PYBASE/share/man:\$MANPATH"
+VIRTUALENVWRAPPER_PYTHON="$(command \which python)"
+# if ! [[ -h "\$PYBASE/bin/python" ]]; then
+#     ln -s "\$(readlink "\$PYBASE/bin/python2.7")" "\$PYBASE/bin/python"
+# fi
+# Miniconda
+# export PATH=/Users/jonmiller/miniconda2/bin:\$PATH
+
+# Coreutils
+PATH="$(brew --prefix coreutils)/libexec/gnubin:\$PATH"
+export MANPATH="$(brew --prefix coreutils)/share/man:\$MANPATH"
+
+# Findutils
+PATH="$(brew --prefix findutils)/libexec/gnubin:\$PATH"
+MANPATH="$(brew --prefix findutils)/libexec/gnuman:\$MANPATH"
+
+# Go environment setup
+export GOROOT=$(brew --prefix go)/libexec
+export GOPATH=\$HOME/go
+[[ -d \$GOPATH ]] || mkdir \$GOPATH
+export PATH=\$PATH:\$GOPATH/bin
+
+# Other Mac specific items
+alias cal='gcal'
+EOF
+    fi
+    source ~/.bash_profile.brew
+fi
+
+# Un-comment when profiling
+# set +x
+# exec 2>&3 3>&-
+eval "$(pyenv init -)"

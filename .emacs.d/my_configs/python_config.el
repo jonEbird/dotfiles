@@ -12,16 +12,34 @@
            (jedi:complete-on-dot t))
   :hook (python-mode . jedi:setup))
 
+(setq python--prettify-symbols-alist
+      '(("import pdb; pdb.set_trace()" . "🛑")
+        ("lambda" . 955)))
+
+(defun jsm:insert-python-breakpoint ()
+  "Insert typical Python breakpoint code."
+  (interactive)
+  (insert "import pdb; pdb.set_trace()"))
+
 (defun my-python-mode-hook ()
   "Minor setup when entering Python mode."
   (interactive)
   (hs-minor-mode)
   (flyspell-prog-mode)
   (flycheck-mode 1)
+  ;; (flycheck-select-checker 'python-pylint)  ;; use "C-c ! s" to select alt checker
+  (flycheck-select-checker 'python-flake8)
+  (git-gutter-mode 1)
   (highlight-thing-mode)
+  (prettify-symbols-mode)
   (ac-flyspell-workaround))
 
-(add-hook 'python-mode-hook 'my-python-mode-hook)
+(use-package python
+  :bind ("M-s s" . jsm:insert-python-breakpoint)
+  :custom (flycheck-python-pylint-executable
+           (concat "python " (locate-file "pylint" exec-path)))
+  :init
+  (add-hook 'python-mode-hook 'my-python-mode-hook))
 
 ;; Would have tried Steve Purcell's flymake-python-pyflakes had flycheck
 ;; not worked out for me.

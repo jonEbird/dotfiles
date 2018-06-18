@@ -3,7 +3,10 @@
 # Taken from http://www.dzone.com/snippets/remote-debugging-python-using
 #   Only added the SO_REUSEADDR socket option since I hit the breakpoint often
 
-import pdb, socket, sys
+import pdb
+import socket
+import sys
+
 
 class Rdb(pdb.Pdb):
     def __init__(self, port=4444):
@@ -27,12 +30,13 @@ class Rdb(pdb.Pdb):
 
     do_c = do_cont = do_continue
 
+
 # Example usage - connect with 'telnet <hostname> 4444'
 # https://github.com/nblock/pdb-cheatsheet
 #  Things to try:
 #   1. 'where' - shows a call stack
 #   2. 'list' - show current code surrounding point
-if __name__=='__main__':
+if __name__ == '__main__':
     def buggy_method():
         x = 3
         remote_debug = Rdb()

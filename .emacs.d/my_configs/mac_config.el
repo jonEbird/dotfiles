@@ -31,6 +31,7 @@ tell application \"System Events\"
         frontmost is false and ¬
         name is not \"VLC\" and ¬
         name is not \"Jabber Video\" and ¬
+        name is not \"Cisco Jabber\" and ¬
         name is not \"Sling\" ¬
     to false
 end tell")))

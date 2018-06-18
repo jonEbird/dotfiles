@@ -63,9 +63,17 @@
   "Run counsel-ag within projectile root while ignoring git submodule paths."
   (interactive)
   (let ((default-directory (projectile-project-root))
-        (agignore-cmd "git config --file .gitmodules --get-regexp path | awk '{ print $2 }' > .agignore"))
+        (ignore-cmd "git config --file .gitmodules --get-regexp path | awk '{ print $2 }' > .agignore"))
     (shell-command agignore-cmd nil nil)
-    (counsel-ag (thing-at-point 'symbol) (projectile-project-root))))
+    (counsel-ag (thing-at-point 'symbol) default-directory)))
+
+(defun jsm/projectile-counsel-rg ()
+  "Run counsel-rg within projectile root while ignoring git submodule paths."
+  (interactive)
+  (let ((default-directory (projectile-project-root))
+        (ignore-cmd "git config --file .gitmodules --get-regexp path | awk '{ print $2 }' > .ignore"))
+    (shell-command ignore-cmd nil nil)
+    (counsel-rg (thing-at-point 'symbol) default-directory)))
 
 ;; Switching and opening files should always include recentf values
 ;; (kbd "C-x b")

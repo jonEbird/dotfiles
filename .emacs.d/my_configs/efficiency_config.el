@@ -87,6 +87,7 @@
              "C-c p" "C-c p s" "C-c p 4" ; projectile
              "C-c h" ; help
              "C-x g" ; google-this
+             "C-c @" ; hide-show
              ))
   :config (guide-key-mode 1))
 
@@ -110,7 +111,6 @@
   (interactive)
   (funcall (faux-screen-utility-terminal "prj") (projectile-project-root)))
 
-
 (use-package projectile
   :custom ((projectile-enable-caching t)
            (projectile-indexing-method 'alien)
@@ -122,12 +122,24 @@
             (projectile-global-mode)
             (add-to-list 'projectile-globally-ignored-modes "helm.*")
             (add-to-list 'projectile-globally-ignored-modes "magit.*")
-            (add-to-list 'projectile-globally-ignored-directories "gems"))
-  :bind (("C-M-s" . jsm/projectile-counsel-ag)
+            (add-to-list 'projectile-globally-ignored-directories "gems")
+            (use-package ripgrep
+              :config
+              (def-projectile-commander-method ?A
+                "Find rg on project."
+                (call-interactively 'projectile-ripgrep))))
+  :bind (("C-M-s" . jsm/projectile-counsel-rg)
          :map projectile-command-map
               ("B" . 'github-browse)
               ("$" . 'projectile-utility-shell)
-              ("s s" . jsm/projectile-counsel-ag)))
+              ("s s" . jsm/projectile-counsel-rg)))
+
+;; Need to pass 't to compilation-start to enable comint minor mode for *compilation* buffer
+(defun projectile-run-compilation (cmd)
+  "Run external or Elisp compilation command CMD."
+  (if (functionp cmd)
+      (funcall cmd)
+    (compilation-start cmd t)))
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
@@ -209,9 +221,23 @@
 
 ;; I like using autopair for all modes
 ;; ------------------------------
-(use-package autopair
-  :custom (autopair-autowrap t)
-  :config (autopair-global-mode 1))
+;; (use-package autopair
+;;   :custom (autopair-autowrap t)
+;;   :config (autopair-global-mode 1))
+
+;; TODO: Other idea for org-mode is to hack defun ispell-command-loop to
+;;       add a new command option to "wrap(w)" or "codify(c)" the word and
+;;       let it wrap it with a either "~" or "=" values.
+
+;; Replaces the need for autopair
+(use-package elec-pair
+  :custom (electric-pair-pairs
+           '(
+             (?\" . ?\")
+             (?\{ . ?\})
+             (?\~ . ?\~)  ; This is for org-mode to wrap in verbatim
+             ))
+  :config (electric-pair-mode 1))
 
 ;; Moved onto using session over desktop.el
 ;; ------------------------------
@@ -391,7 +417,9 @@
           (key-chord-define-global "JI"  (switch-to-myfile-other-window "~/org/info.org"))
           (key-chord-define-global "JM"  (switch-to-myfile-other-window "~/org/meetings.org"))
           (key-chord-define-global "JT"  (switch-to-myfile-other-window "~/org/tasks.org"))
-          (key-chord-define-global "JS"  (switch-to-myfile-other-window "~/org/secret.gpg"))))
+          (key-chord-define-global "JS"  (switch-to-myfile-other-window "~/org/secret.gpg"))
+          (key-chord-define-global "HL"  (lambda () (interactive) (hs-hide-level 0)))
+          (key-chord-define-global "HS"  (lambda () (interactive) (hs-toggle-hiding)))))
 
 ;; IRC chat over a mosh connection to my VPS
 ;; Using `mtrace' for buffer notification
@@ -407,6 +435,8 @@
         (switch-to-buffer "*Shell mosh-irc*"))
     (funcall (faux-screen-utility-terminal "mosh-irc") (expand-file-name "~"))))
 (key-chord-define-global "CT" (lambda () (interactive) (mosh-irc)))
+
+(use-package define-word)
 
 ;; Dired Fixup
 ;; ------------------------------
@@ -493,8 +523,26 @@
 ;; Evil mode for my Boss For people that want to use my keyboard, to help
 ;; point out something that I'm editing but are unfortunately vim users,
 ;; use the following F13 key (DAS keyboard) to toggle between evil-mode.
-(use-package evil
-  :bind ("<f13>" . evil-mode))
+;; (use-package evil
+;;   :bind ("<f13>" . evil-mode))
+
+;; Instead lets use F13 for toggling tree view for navigation
+
+(defun neotree-project-dir ()
+  "Open NeoTree using the git root."
+  (interactive)
+  (let ((project-dir (projectile-project-root))
+        (file-name (buffer-file-name)))
+    (neotree-toggle)
+    (if project-dir
+        (if (neo-global--window-exists-p)
+            (progn
+              (neotree-dir project-dir)
+              (neotree-find file-name)))
+      (message "Could not find git project root."))))
+
+(use-package emacs-neotree
+  :bind ("<f13>" . neotree-project-dir))
 
 ;; Quickly launch Google searches
 (use-package google-this

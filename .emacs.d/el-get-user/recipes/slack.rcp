@@ -1,0 +1,5 @@
+(:name slack
+       :description "Slack client for Emacs"
+       :type github
+       :depends (websocket request oauth2 circe alert emojify)
+       :pkgname "yuya373/emacs-slack")
