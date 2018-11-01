@@ -32,6 +32,7 @@
   (git-gutter-mode 1)
   (highlight-thing-mode)
   (prettify-symbols-mode)
+  (setq fill-column 90)
   (ac-flyspell-workaround))
 
 (use-package python

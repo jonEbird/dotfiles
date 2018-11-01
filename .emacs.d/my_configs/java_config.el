@@ -42,6 +42,20 @@
   :commands
   (google-set-c-style))
 
+;; Kotlin support
+(defun my-kotlin-mode-hook ()
+  "Minor setup when entering Kotlin mode."
+  (interactive)
+  (hs-minor-mode)
+  (flyspell-prog-mode)
+  (flycheck-mode 1)
+  (highlight-thing-mode)
+  (rainbow-delimiters-mode)
+  (setq tab-width 4))
+
+(use-package kotlin-mode
+  :hook (kotlin-mode . my-kotlin-mode-hook))
+
 (use-package meghanada
   :defer t
   :init

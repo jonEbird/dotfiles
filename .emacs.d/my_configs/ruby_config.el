@@ -55,6 +55,12 @@
 ;; cucumber work
 (use-package feature-mode)
 
+(defun my-feature-mode-hook ()
+  (highlight-thing-mode)
+  (rainbow-delimiters-mode))
+
+(add-hook 'feature-mode-hook 'my-feature-mode-hook)
+
 ;; robe mode configuration
 (use-package robe
   :hook (robe-mode-hook . ac-robe-setup))

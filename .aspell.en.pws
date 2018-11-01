@@ -1,4 +1,4 @@
-personal_ws-1.1 en 1045 
+personal_ws-1.1 en 1052 
 IntelliJ
 refactor
 cfg
@@ -26,8 +26,8 @@ repeatability
 Zinq
 reinstall
 eslint
-CC'ed
 CCCN
+CC'ed
 foundational
 DDR
 runnable
@@ -35,13 +35,13 @@ DHA
 BRB
 cli
 JetBrains
-dev
 EDB
+dev
 BSC
 DFS
 lshw
-cmn
 AXI
+cmn
 initrd
 AWS
 BSP
@@ -97,10 +97,10 @@ DSL
 epc
 epg
 sudoers
-env
 erb
-ERC
+env
 FMC
+ERC
 pluggable
 GHE
 gid
@@ -132,8 +132,8 @@ chroot
 relinked
 ido
 gpg
-Jai
 HLD
+Jai
 Gemfile
 Traceback
 cronjobs
@@ -145,8 +145,8 @@ timeline
 Nvidia
 gitflow
 GPT
-HOA
 GPU
+HOA
 ortools
 JDK
 Charisis
@@ -168,8 +168,8 @@ IPC
 Makefile
 ansible
 Lync
-IPI
 GYN
+IPI
 cpack
 CPack
 lan
@@ -189,8 +189,8 @@ passphrase
 Bundler
 sourceforge
 Mormor
-JRE
 MCE
+JRE
 BPDU
 MDB
 pygccxml
@@ -216,8 +216,8 @@ nat
 fabio
 ksh
 structs
-syzygy
 SyZyGy
+syzygy
 NBU
 JWT
 meetup
@@ -235,8 +235,8 @@ KVM
 NFS
 QCOM
 LSF
-subtree's
 subtrees
+subtree's
 outliers
 LTE
 Carmel
@@ -351,8 +351,8 @@ Strom
 scp
 SDK
 WCDMA
-Hipchat
 HipChat
+Hipchat
 PRs
 qmt
 rio
@@ -365,6 +365,7 @@ syspart
 sha
 PTP
 QRC
+incrementing
 systemtap
 lspci
 misperforming
@@ -400,12 +401,12 @@ UDP
 uname
 SPG
 SNR
-SPI
 RSS
+SPI
 TLF
 uWSGI
-src
 TMC
+src
 wireshark
 UEs
 Moma's
@@ -413,8 +414,8 @@ setfacl
 cron
 sre
 FDMA
-SSD
 uid
+SSD
 sta
 Farmor
 ixgbe
@@ -429,20 +430,20 @@ repo
 docstrings
 SSN
 Children's
-TPE
 uio
+TPE
 DPDK
 handoffs
-SVG
 UMB
+SVG
 backtrace
 str
 ntpdate
 Atlassian's
 tsc
 svn
-RHEL
 rhgb
+RHEL
 UML
 startup
 parameterized
@@ -487,8 +488,8 @@ enbu
 MacLaine
 interworking
 xml
-dsid
 Gbps
+dsid
 dirname
 Yim
 Subchorionic
@@ -510,8 +511,8 @@ BT
 ldapsearch
 Redis
 EPEL
-FB
 DL
+FB
 fc
 parallelize
 architected
@@ -532,15 +533,15 @@ refactored
 SpaceWalk
 GV
 syslog
-ip
 gz
+ip
 HW
 LD
 kerberos
 zsh
 ZTE
-JS
 md
+JS
 installable
 struct
 xsltproc
@@ -548,8 +549,8 @@ artifactory
 nd
 subnet
 eICIC
-MQ
 LV
+MQ
 postinst
 timesource
 qa
@@ -567,8 +568,8 @@ sdcard
 debugfs
 scriptable
 ethernet
-py
 RO
+py
 Gradle's
 FMLA
 pagedrain
@@ -600,6 +601,7 @@ PyPi
 analytics
 recentf
 ccache
+uber
 Roos
 lockdown
 multiprotocol
@@ -610,8 +612,8 @@ FPGA
 journaling
 hideall
 backflow
-EUFI
 ESNs
+EUFI
 RPMs
 RPM's
 eval
@@ -693,6 +695,7 @@ deserialized
 blobstore
 LiftMaster
 excorporate
+parallelization
 braxton
 configOnly
 Yubikey
@@ -778,11 +781,11 @@ initramfs
 Romain
 mitchelh
 downlink
-openafs
 OpenAFS
+openafs
 grandmaster
-github
 GitHub
+github
 gitlab
 backend
 McQuire
@@ -802,8 +805,8 @@ Krasnyanskiy
 aggregator
 TSNC
 README
-SysRq
 sysrq
+SysRq
 LLMNR
 tuple
 VLAN
@@ -823,8 +826,8 @@ chmod
 paster
 VMDK
 vmstat
-Makefile's
 Makefiles
+Makefile's
 xargs
 Ashok
 Jira
@@ -837,6 +840,7 @@ TTUN
 html
 wordpress
 Donut
+Penrose
 printf
 localhost
 Craigslist
@@ -847,6 +851,7 @@ rebase
 schemaVersion
 IPMI
 comparables
+middleware
 crypto
 SQLAlechemy
 Wify
@@ -870,6 +875,7 @@ namespace
 LocalWords
 jonEbird
 AttributeError
+Kenpo's
 wlan
 LDIF
 downloadable
@@ -916,8 +922,8 @@ Logitech
 Vodatech
 accessor
 kthread
-SCons
 SCONs
+SCons
 vocoder
 Mallorca
 kickstarted
@@ -944,6 +950,7 @@ natively
 mkdir
 specfile
 Mbps
+transduction
 thirdParty
 kmod
 kexec
@@ -982,8 +989,8 @@ NAPI
 mutex
 retransmission
 utils
-cmake
 CMake
+cmake
 deployable
 filesystems
 Awaiz
@@ -1000,8 +1007,8 @@ sttsmsim
 bdist
 lockless
 gitignore
-bitbake
 BitBake
+bitbake
 tshark
 portfast
 tcpdump

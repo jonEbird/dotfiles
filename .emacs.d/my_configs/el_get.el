@@ -71,11 +71,12 @@
          rbenv robe-mode inf-ruby feature-mode hl-todo flycheck-yamllint
          company-mode company-inf-ruby readline-complete ruby-tools yari
          solarized-emacs git-timemachine puppet-mode web-mode ox-rst
-         github-browse-file go-mode profile-dotemacs slack emacs-jabber
+         github-browse-file profile-dotemacs slack
          google-c-style realgud smartparens emacs-neotree all-the-icons
-         virtualenvwrapper ripgrep define-word)))
-; term+ term+ki term+mux faux-screen
-; auto-complete-etags elip powerline
+         virtualenvwrapper ripgrep define-word kotlin-mode
+         go-mode go-company go-eldoc go-projectile go-test gotests-emacs flycheck-gometalinter)))
+;; term+ term+ki term+mux faux-screen
+;; auto-complete-etags elip powerline
 
 (el-get-bundle jedi-core)
 (el-get-bundle company-jedi :depends (company-mode))

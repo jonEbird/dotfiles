@@ -1,6 +1,7 @@
+# -*- conf -*-
 [user]
 	name = Jon Miller
-	email = jonEbird@gmail.com
+	email = jonmiller@apple.com
 [color]
 	ui = auto
 	interactive = auto
@@ -14,6 +15,10 @@
 	nix = "!f() { git rebase -p --onto $1^ $1; }; f"
         br = branch -vv
         st = status
+        co = checkout
+        # Good for finding odd references should you get "ambiguous reference" warning.
+        refs = show-refs
+        tagcommit = rev-list -n 1
         top = "!f() { git shortlog -sn | head -${1:-20}; }; f"
         # Prepping release notes
         gl = "!f() { git log --no-merges --pretty=format:'* %Cred%h%Creset - %s %n%w(76,4,4)%b%n' --abbrev-commit $@ | perl -0 -p -e 's|([<>])|\\1|g ; s|\\s+\\*|\\n\\n*|g'; }; f"
@@ -21,6 +26,7 @@
         # am-url = "!f() { curl -s $1 2>&- | git am ${@:2}; }; f"
 	paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git apply ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
 	am-paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git am ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
+        root = rev-parse --show-toplevel
 [push]
 	default = simple
 [url "git@gitlab.sd.apple.com:"]
@@ -30,3 +36,6 @@
 [core]
 	ignorecase = false
 	excludesfile = ~/.gitignore
+
+[includeIf "gitdir:~/repos/ext/"]
+      path = .gitconfig-personal

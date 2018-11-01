@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+COLLECTION_DIR=~/personal/tyler/preschool/enchantedcare
+
+get-today-dir() {
+    local last_n datemark
+    datemark=$(date +%Y%m%d)
+    # Not proud of this
+    last_n=$(echo "$COLLECTION_DIR/"day* | \
+                 sed 's|/day\([0-9]*\)_|\n# \1\n|g' | \
+                 awk '/^# /{ print $2 }' | sort -nr | head -n 1)
+    # If there is already a directory for today, then this is an update
+    if [[ -d $COLLECTION_DIR/day${last_n}_${datemark} ]]; then
+        echo "$COLLECTION_DIR/day${last_n}_${datemark}"
+    else
+        echo "$COLLECTION_DIR/day$((last_n + 1))_${datemark}"
+    fi
+}
+
+if [[ -z "$D" ]]; then
+    D=$(get-today-dir)
+    echo "Setting D -> $D"
+fi
+
+[[ ! -d $D ]] && mkdir -p "$D"
+# mv ~/Downloads/enchantedcare* $D 2>&-
+ACTION_SHOTS_N=0
+while read -r -d '' pic; do
+    if mdls "$pic" | grep -i tadpoles >/dev/null; then
+        mv "$pic" "$D"
+        ACTION_SHOTS_N=$((ACTION_SHOTS_N + 1))
+    fi
+done < <(find ~/Downloads -maxdepth 1 \( -name '*.jpg' -o -name '*.jpeg' \) -print0)
+
+# Summary
+N=$(find "$D" ! -type d | wc -l)
+SIZE=$(du -sh $D | awk '{ print $1}')
+echo "$N photos ($SIZE)"

@@ -135,6 +135,31 @@
   (global-set-key [C-down] (lambda () (interactive) (jsm/smooth-scroll 'down)))
   (global-set-key [C-up] (lambda () (interactive) (jsm/smooth-scroll 'up))))
 
+;; Support duplicating line(s) or region
+;; Credit to https://stackoverflow.com/a/4717026/871666
+(defun duplicate-line-or-region (&optional n)
+  "Duplicate current line, or region if active.
+With argument N, make N copies.
+With negative N, comment out original line and use the absolute value."
+  (interactive "*p")
+  (let ((use-region (use-region-p)))
+    (save-excursion
+      (let ((text (if use-region        ;Get region if active, otherwise line
+                      (buffer-substring (region-beginning) (region-end))
+                    (prog1 (thing-at-point 'line)
+                      (end-of-line)
+                      (if (< 0 (forward-line 1)) ;Go to beginning of next line, or make a new one
+                          (newline))))))
+        (dotimes (i (abs (or n 1)))     ;Insert N times, or once if not specified
+          (insert text))))
+    (if use-region nil                  ;Only if we're working with a line (not a region)
+      (let ((pos (- (point) (line-beginning-position)))) ;Save column
+        (if (> 0 n)                             ;Comment out original with negative arg
+            (comment-region (line-beginning-position) (line-end-position)))
+        (forward-line 1)
+        (forward-char pos)))))
+(global-set-key (kbd "s-d") (quote duplicate-line-or-region))
+
 ;; not only turn off the bell but turn any of them off
 (setq visible-bell t)
 (setq ring-bell-function 'ignore)
@@ -229,6 +254,10 @@
 ;; Damn my spelling / typing
 (define-abbrev global-abbrev-table "teh" "the")
 
+;; I like the Spanish leading upside-down question mark
+(define-abbrev global-abbrev-table "??" "¿")
+(global-set-key (kbd "s-?") '(lambda () (interactive) (insert "¿")))
+
 ;; don't iconify from within X
 (when (not (eq nil window-system))
   (global-unset-key "\C-z")) ; iconify-or-deiconify-frame (C-x C-z)
@@ -254,14 +283,16 @@
 (server-start nil)
 
 ;; Kill trailing whitespace but only in certain modes
-(defvar delete-trailing-whitespace-modes '("org-mode" "text-mode"))
 (defun delete-trailing-whitespace-inmodes ()
   "Conditionally execute delete-trailing-whitespace if you are in a desired major-mode"
-  (interactive)
-  (if (member (symbol-name major-mode) delete-trailing-whitespace-modes)
-      (delete-trailing-whitespace)
-    ; For all else, at least show trailing whitespace
-    (setq show-trailing-whitespace t)))
+  (let ((mode (symbol-name major-mode))
+        (delete-trailing-whitespace-modes '("org-mode" "text-mode"))
+        (exclude-whitespace-modes '("shell-mode" "term-mode")))
+      (if (member mode delete-trailing-whitespace-modes)
+          (delete-trailing-whitespace)
+        ;; For all else, at least show trailing whitespace unless excluded
+        (unless (member mode exclude-whitespace-modes)
+            (setq show-trailing-whitespace t)))))
 (add-hook 'before-save-hook 'delete-trailing-whitespace-inmodes)
 
 ; Bookmarks support
@@ -474,6 +505,7 @@
 (jsm:load-config-file "php_config")
 (jsm:load-config-file "ruby_config")
 (jsm:load-config-file "shell_config")
+(jsm:load-config-file "perl_config")
 (jsm:load-config-file "linux_config")
 (jsm:load-config-file "windows_config")
 (jsm:load-config-file "mac_config")
