@@ -4,7 +4,12 @@ COLLECTION_DIR=~/personal/tyler/preschool/enchantedcare
 
 get-today-dir() {
     local last_n datemark
-    datemark=$(date +%Y%m%d)
+    if [[ -n "${1:-}" ]]; then
+        datemark=$(date +%Y%m%d --date="$*")
+        echo "Setting date to $(date +%A) '${datemark}' thanks to '$*' input." 1>&2
+    else
+        datemark=$(date +%Y%m%d)
+    fi
     # Not proud of this
     last_n=$(echo "$COLLECTION_DIR/"day* | \
                  sed 's|/day\([0-9]*\)_|\n# \1\n|g' | \
@@ -17,8 +22,11 @@ get-today-dir() {
     fi
 }
 
-if [[ -z "$D" ]]; then
-    D=$(get-today-dir)
+if [[ -d "${1:-}" ]]; then
+    D="$1"
+    echo "Per request, setting D -> $D"
+elif [[ -z "$D" ]]; then
+    D=$(get-today-dir "$@")
     echo "Setting D -> $D"
 fi
 

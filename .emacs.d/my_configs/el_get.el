@@ -54,11 +54,11 @@
 
        '(ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
          lua-mode markdown-mode htmlize ldap-mode url-dav
-         org-caldav confluence-el expand-region iedit jedi mu4e org-mime
+         org-caldav expand-region iedit jedi mu4e org-mime ; confluence-el
          flx paredit ido-vertical-mode dash ; php-mode-improved
          multiple-cursors popwin popup guide-key visual-regexp projectile
          ack-and-a-half cl-lib yasnippet yasnippet-snippets
-         auto-complete-clang gtags multiple-cursors magit git-gutter
+         auto-complete-clang gtags multiple-cursors with-editor graphql magit git-gutter
          idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
          rpm-spec-mode cider rainbow-delimiters elixir org-reveal
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
