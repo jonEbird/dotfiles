@@ -1,0 +1,4 @@
+(:name flycheck-golangci-lint
+       :description "Flycheck checker for golangci-lint"
+       :type github
+       :pkgname "weijiangan/flycheck-golangci-lint")

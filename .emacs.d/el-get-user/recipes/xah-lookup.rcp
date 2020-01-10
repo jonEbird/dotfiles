@@ -1,0 +1,4 @@
+(:name xah-lookup
+       :description "jump to lang function doc or Wikipedia or Google or word definition"
+       :type github
+       :pkgname "xahlee/lookup-word-on-internet")

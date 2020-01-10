@@ -1,0 +1,4 @@
+(:name gotests-emacs
+       :description "generate missing tests based on its target source files"
+       :type github
+       :pkgname "damienlevin/GoTests-Emacs")

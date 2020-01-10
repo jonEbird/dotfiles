@@ -1,0 +1,5 @@
+(:name rustic
+       :description "Rust development environment for Emacs"
+       :type github
+       :depends (xterm-color dash s f projectile markdown-mode spinner let-alist seq ht)
+       :pkgname "brotzeit/rustic")

@@ -1,0 +1,4 @@
+(:name aweshell
+       :description "Awesome shell extension base on eshell with wonderful features!"
+       :type github
+       :pkgname "manateelazycat/aweshell")

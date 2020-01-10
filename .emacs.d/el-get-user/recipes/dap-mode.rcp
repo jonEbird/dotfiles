@@ -1,0 +1,6 @@
+(:name dap-mode
+       :website "https://github.com/emacs-lsp/dap-mode"
+       :description "Emacs ❤️ Debug Adapter Protocol"
+       :depends (lsp-mode dash tree-mode f s treemacs bui)
+       :type github
+       :pkgname "emacs-lsp/dap-mode")

@@ -1,0 +1,4 @@
+(:name gotest
+       :description "Emacs mode to go unit test command line tool"
+       :type github
+       :pkgname "nlamirault/gotest.el")

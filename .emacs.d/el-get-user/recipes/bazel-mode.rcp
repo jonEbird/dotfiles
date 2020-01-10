@@ -1,0 +1,4 @@
+(:name bazel-mode
+       :description "Bazel support"
+       :type github
+       :pkgname "bazelbuild/emacs-bazel-mode")

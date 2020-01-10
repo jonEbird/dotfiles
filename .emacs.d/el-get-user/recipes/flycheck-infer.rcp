@@ -1,0 +1,4 @@
+(:name flycheck-infer
+       :description "Java syntax check for emacs using infer"
+       :type github
+       :pkgname "calve/flycheck-infer")

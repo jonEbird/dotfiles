@@ -1,0 +1,4 @@
+(:name kotlin-imenu
+       :description "Indexing kotlin files for imenu"
+       :type github
+       :pkgname "fernando-jascovich/kotlin-imenu.el")

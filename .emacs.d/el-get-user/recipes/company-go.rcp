@@ -1,0 +1,5 @@
+(:name company-go
+       :description "company-mode backend for Go (using gocode)"
+       :type github
+       :load-path "emacs-company"
+       :pkgname "nsf/gocode")
