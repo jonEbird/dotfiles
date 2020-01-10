@@ -10,4 +10,4 @@
   (highlight-thing-mode))
 
 (add-hook 'sh-mode-hook 'my-sh-mode-hook)
-(add-hook 'shell-mode-hook 'my-sh-mode-hook)
+

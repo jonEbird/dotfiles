@@ -17,6 +17,9 @@ Usage: $(basename -- $0) [--debug|--profile] [emacs-args]
 EOF
 }
 
+# FIXME: Remove these annoying '#' leading recentf files:
+sed -i '/^[[:space:]]*#/d' ~/.emacs.d/recentf
+
 if [[ $(uname) == Darwin ]]; then
     EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
     # Need to add in bin directory so Emacs can find 'emacsclient'

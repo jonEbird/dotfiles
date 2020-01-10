@@ -52,15 +52,15 @@
       (append
        (mapcar 'el-get-as-symbol (mapcar 'el-get-source-name el-get-sources))
 
-       '(ace-jump-mode yaml-mode color-theme color-theme-solarized ; names
+       '(ace-jump-mode yaml-mode color-theme color-theme-solarized doom-themes ; names
          lua-mode markdown-mode htmlize ldap-mode url-dav
          org-caldav expand-region iedit jedi mu4e org-mime ; confluence-el
          flx paredit ido-vertical-mode dash ; php-mode-improved
-         multiple-cursors popwin popup guide-key visual-regexp projectile
+         multiple-cursors popwin popup which-key visual-regexp projectile counsel-projectile
          ack-and-a-half cl-lib yasnippet yasnippet-snippets
-         auto-complete-clang gtags multiple-cursors with-editor graphql magit git-gutter
-         idomenu undo-tree org-mode cmake-mode gist session smart-mode-line
-         rpm-spec-mode cider rainbow-delimiters elixir org-reveal
+         auto-complete-clang gtags multiple-cursors with-editor graphql magit git-gutter forge
+         idomenu undo-tree org-mode cmake-mode gist session doom-modeline
+         rpm-spec-mode cider rainbow-delimiters elixir ; org-reveal
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
          ;; helm helm-git-grep helm-mu helm-gtags helm-swoop helm-ag
          color-theme-zenburn dockerfile-mode command-log-mode key-chord
@@ -73,8 +73,13 @@
          solarized-emacs git-timemachine puppet-mode web-mode ox-rst
          github-browse-file profile-dotemacs slack
          google-c-style realgud smartparens emacs-neotree all-the-icons
-         virtualenvwrapper ripgrep define-word kotlin-mode
-         go-mode go-company go-eldoc go-projectile go-test gotests-emacs flycheck-gometalinter)))
+         virtualenvwrapper ripgrep define-word kotlin-mode kotlin-imenu
+         go-mode go-company go-eldoc go-projectile go-test gotests-emacs go-autocomplete flycheck-golangci-lint
+         git-link bats-mode aweshell readline-complete bash-completion
+         xah-lookup wgrep bazel-mode unicode-fonts
+         rust-racer emacs-racer flycheck-rust cargo toml-mode rustic ;; rust-mode
+         lsp-mode lsp-ui company-lsp lsp-ivy dap-mode)))
+;; magit-popup magit-gh-pulls
 ;; term+ term+ki term+mux faux-screen
 ;; auto-complete-etags elip powerline
 
@@ -82,6 +87,13 @@
 (el-get-bundle company-jedi :depends (company-mode))
 (el-get-bundle helpful)
 (el-get-bundle meghanada)
+
+; (el-get-bundle doom-modeline)
+
+;; Use this loop if you need to know which above package is breaking thing
+;; (dolist (p jsm-packages)
+;;   (message (format "Syncing package %s" p))
+;;   (el-get 'sync (list p)))
 
 (el-get 'sync jsm-packages)
 

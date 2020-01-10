@@ -11,6 +11,14 @@ if [ ! ${#} -ge 2 ]; then
     exit 1
 fi
 
+if [[ $(uname) == Darwin ]]; then
+    EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+    # Need to add in bin directory so Emacs can find 'emacsclient'
+    PATH="$PATH:$(brew --prefix emacs)/bin"
+else
+    EMACS=emacs
+fi
+
 # tools
 _EMACSCLIENT=$(which emacsclient)
 _BASENAME=$(which basename)

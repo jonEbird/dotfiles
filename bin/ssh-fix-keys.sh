@@ -11,13 +11,14 @@ red()  { echo -e "\x1B[0;31m${*}\x1B[0m"; }
 usage() {
     [[ -n $1 ]] && red "$*"
     cat <<EOF
-Usage: $(basename -- $0) [-l|--list] [-h|--help]
+Usage: $(basename -- $0) [-f|--full] [-l|--list] [-h|--help]
 Options:
-   -l|--list   List out current ssh key status
-   -h|--help   Show this help message
+   -f/--full   Removes all keys and re-adds them all (yubikey and personal)
+   -l/--list   List out current ssh key status
+   -h/--help   Show this help message
 
-Normal operation is to remove any keys and then re-add your Yubikey and
-personal ssh key to the ssh agent.
+Normal operation is to remove just your Yubikey and then re-add it.
+Use the -f/--full option if you wish to re-insert personal key as well.
 EOF
 }
 
@@ -61,6 +62,18 @@ fix() {
     info
 }
 
+readd_yubikey() {
+    # Just remove and re-add only the Yubikey
+    run "Removing the yubikey from ssh-agent" ykdel
+    if ! run "Adding Yubikey to ssh-agent" ykadd; then
+        if ! run "Perhaps you typed the PIN wrong" ykadd; then
+            reinsert
+            run "Trying again to add Yubikey to ssh-agent" ykadd
+        fi
+    fi
+    info
+}
+
 case "${1:-}" in
     -l|--list)
         info
@@ -70,9 +83,13 @@ case "${1:-}" in
         usage
         exit 0
         ;;
+    -f|--full)
+        fix
+        exit 0
+        ;;
     -*)
         usage "Unknown option \"$1\""
         exit 1
 esac
 
-fix
+readd_yubikey

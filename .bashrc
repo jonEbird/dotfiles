@@ -5,6 +5,9 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# Disable the annoying message about the default shell changing to zsh
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # Keep the admin commands in my PATH and ~/bin
 PATH=$PATH:/sbin:/usr/sbin
 PATH=$PATH:~/bin
@@ -79,7 +82,7 @@ org-store-file () {
 alias ppjson="python -m json.tool"
 
 # PS1 and related Status
-if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
+if [ -n "${INSIDE_EMACS:-}" ]; then
     if [ -n "$EMACS_PS1" ]; then
         PS1="$EMACS_PS1"
     else
@@ -87,6 +90,7 @@ if ps -o comm -p $PPID 2>/dev/null | grep -E '[Ee]macs$' >/dev/null; then
     fi
     # export PAGER=emacspager
     export TERM=eterm-color
+    export GIT_PAGER="cut -c 1-${COLUMNS-80}"  # alternative: alias git='git --no-pager '
     # Using virtualenvwrapper Emacs package which sets this
     unset VIRTUAL_ENV
     PATH=$(echo $PATH | sed 's/:/\n/g' | grep -v "^$WORKON_HOME" | tr '\n' ':' | sed 's/:$//g')
@@ -114,10 +118,7 @@ if [ -d ~/.bashrc.${MACHINE}.d ]; then
     done
 fi
 
-# virtualenvwrapper
-if type -P virtualenvwrapper.sh 1>/dev/null 2>&1; then
-    source virtualenvwrapper.sh
-fi
+[ -f ~/.bash_profile.brew ] && source ~/.bash_profile.brew
 
 # Solarized shell themes
 [ -f ~/gnome-terminal-colors-solarized/set_light.sh ] && alias light=~/gnome-terminal-colors-solarized/set_light.sh
@@ -139,3 +140,10 @@ fi
 PATH=$PATH:~/repos/rio/rio-cli/bin
 eval "$(rbenv init - 2>&-)"
 PATH=$PATH:~/repos/pe-infra/rio-toolbox/ciborg
+export REQUESTS_CA_BUNDLE=/opt/homebrew/etc/openssl/cert.pem
+
+# virtualenvwrapper
+if type -P virtualenvwrapper.sh 1>/dev/null 2>&1; then
+    export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python
+    source virtualenvwrapper.sh
+fi

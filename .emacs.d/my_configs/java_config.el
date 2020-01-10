@@ -51,10 +51,12 @@
   (flycheck-mode 1)
   (highlight-thing-mode)
   (rainbow-delimiters-mode)
-  (setq tab-width 4))
+  (setq tab-width 4
+        kotlin-tab-width 4))
 
 (use-package kotlin-mode
   :hook (kotlin-mode . my-kotlin-mode-hook))
+(use-package kotlin-imenu)
 
 (use-package meghanada
   :defer t

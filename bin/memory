@@ -1,0 +1,99 @@
+#!/usr/bin/env python
+
+"""Utility script to helping quiz or related practice with memory training
+"""
+import os
+import sys
+import random
+import fcntl
+import termios
+
+
+old_testament = [
+    "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges",
+    "Ruth", "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles",
+    "Ezra", "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes",
+    "Song Of Solomon", "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea",
+    "Joel", "Amos", "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah",
+    "Haggai", "Zechariah", "Malachi",
+]
+
+new_testament = [
+    "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians", "2 Corinthians",
+    "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians",
+    "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James",
+    "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation",
+]
+
+
+class LineRepeater(object):
+    """Utility class to print a line to the terminal and then erase it again.
+    """
+    def __init__(self):
+        self.__max_line = 0
+
+    def get_key(self):
+        """Return the single key hit without echoing to the terminal.
+        """
+        fd = sys.stdin.fileno()
+
+        oldterm = termios.tcgetattr(fd)
+        newattr = termios.tcgetattr(fd)
+        newattr[3] = newattr[3] & ~termios.ICANON & ~termios.ECHO
+        termios.tcsetattr(fd, termios.TCSANOW, newattr)
+
+        oldflags = fcntl.fcntl(fd, fcntl.F_GETFL)
+        fcntl.fcntl(fd, fcntl.F_SETFL, oldflags | os.O_NONBLOCK)
+
+        try:
+            while True:
+                try:
+                    return sys.stdin.read(1)
+                except IOError:
+                    pass
+        finally:
+            termios.tcsetattr(fd, termios.TCSAFLUSH, oldterm)
+            fcntl.fcntl(fd, fcntl.F_SETFL, oldflags)
+
+    def write(self, msg):
+        line = msg
+        if len(line) > self.__max_line:
+            self.__max_line = len(line)
+        else:
+            # Erase prior max length with spaces
+            sys.stdout.write('%s%s' % (' ' * self.__max_line,
+                                       '\b' * self.__max_line))
+        sys.stdout.write(line)
+        self.get_key()
+        sys.stdout.write('\b' * len(line))
+
+
+def quiz_missing(items, talk=False):
+    """Leaving one out, print rest in random order, then ask for what is missing.
+    """
+    shuffled = items[:]
+    random.shuffle(shuffled)
+
+    total = len(shuffled)
+    last_item = shuffled.pop()
+    term = LineRepeater()
+    for n, item in enumerate(shuffled):
+        if talk:
+            os.system("say -v Tessa %s" % item)
+        term.write("%2d/%d: %s" % (n, total, item))
+
+    if talk:
+        os.system("say -v Tessa Okay, what is missing?" % item)
+    ans = raw_input("What is missing? ")
+    if ans.lower() == last_item.lower():
+        print("Well done!")
+    else:
+        print("Sorry, it was '%s'." % last_item)
+
+
+if __name__ == "__main__":
+
+    try:
+        quiz_missing(old_testament + new_testament, 'talk' in ' '.join(sys.argv[1:]))
+    except KeyboardInterrupt:
+        print("\nOkay, fine. Another time.")

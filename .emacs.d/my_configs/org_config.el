@@ -56,6 +56,8 @@
   ;; http://endlessparentheses.com/ispell-and-org-mode.html
   (turn-on-flyspell)
   (make-local-variable 'ispell-skip-region-alist)
+  (make-local-variable 'electric-pair-pairs)
+  (add-to-list 'electric-pair-pairs '(?\~ . ?\~)) ;; This is for org-mode to wrap in verbatim
   (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
   (add-to-list 'ispell-skip-region-alist '("~" "~"))
   (add-to-list 'ispell-skip-region-alist '("=" "="))
@@ -457,8 +459,8 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 
 ;; Trying Reveal.js for presentations
 ;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
-(use-package ox-reveal
-  :custom (org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/"))
+;; (use-package ox-reveal
+;;   :custom (org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/"))
 
 ;; Currently using a single inactive date followed by a italicized comment to denote the beginning of meeting notes
 ;;  Idea is that a project would be at the 2nd level (under top-level "Projects"), then
@@ -578,6 +580,9 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 
 ;; Add the wonderful org-mac-link
 (use-package org-mac-link)
+
+;; You like those "<s TAB" short-cuts, right? Well:
+(require 'org-tempo)
 
 (if (eq system-type 'darwin)
     (add-hook 'org-mode-hook

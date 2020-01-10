@@ -131,3 +131,5 @@ fi
 # set +x
 # exec 2>&3 3>&-
 eval "$(pyenv init -)"
+
+export PATH="$HOME/.cargo/bin:$PATH"

@@ -39,3 +39,9 @@
 
 [includeIf "gitdir:~/repos/ext/"]
       path = .gitconfig-personal
+[includeIf "gitdir:~/Dropbox/"]
+      path = .gitconfig-personal
+[status]
+	submoduleSummary = true
+[diff]
+	submodule = log

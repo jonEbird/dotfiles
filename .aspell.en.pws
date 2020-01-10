@@ -91,6 +91,7 @@ eNB
 gdb
 hotfix
 DRI
+ctx
 Vadatech
 qgroup
 DSL
@@ -168,7 +169,9 @@ verdad
 IPC
 Makefile
 ansible
+rubyists
 Lync
+deepcopy
 IPI
 GYN
 cpack
@@ -439,6 +442,7 @@ SSN
 Children's
 TPE
 uio
+Golang
 DPDK
 handoffs
 SVG
@@ -513,6 +517,7 @@ cd
 btcheckpoint
 ap
 automountMapName
+ci
 SHAs
 BT
 ldapsearch
@@ -650,6 +655,7 @@ brokerless
 pychecker
 VirtualBox
 crontab
+Olentangy
 tipc
 QLDAP
 buildroot
@@ -695,6 +701,7 @@ SRIO
 spacecmd
 cpumask
 selinux
+HEALTHCHECK
 SSDs
 userspace
 dropbox
@@ -874,6 +881,7 @@ corefile
 roadmap
 ftrace
 Sendil
+Scioto
 sysconfig
 bootup
 bedrest
@@ -911,6 +919,7 @@ twilio
 pitocin
 ISOs
 Tomer's
+progn
 elisp
 pyplusplus
 ITOC
@@ -923,6 +932,7 @@ iptables
 rsyslog
 login
 ghantt
+Tekton
 dport
 automountMaps
 artix
@@ -1013,6 +1023,7 @@ Nati
 hostapd
 mgmt
 namespaces
+bazel
 AHCI
 MiniTest
 hermes
@@ -1035,6 +1046,7 @@ ACC
 Wisan
 profiler
 Kinecta
+semver
 ack
 searchable
 decrement
@@ -1044,6 +1056,7 @@ RedHat
 spinlock
 AFI
 Scripps
+codebase
 uemsim
 SUBTYPE
 metadata

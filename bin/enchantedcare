@@ -6,7 +6,7 @@ get-today-dir() {
     local last_n datemark
     if [[ -n "${1:-}" ]]; then
         datemark=$(date +%Y%m%d --date="$*")
-        echo "Setting date to $(date +%A) '${datemark}' thanks to '$*' input." 1>&2
+        echo "Setting date to $(date +%A --date="$*") '${datemark}' thanks to '$*' input." 1>&2
     else
         datemark=$(date +%Y%m%d)
     fi

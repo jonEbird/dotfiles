@@ -36,7 +36,7 @@
 ;;           ;(replace-regexp-in-string "\n$" "" (shell-command-to-string "brew --prefix rbenv"))
 ;;           ))
 (use-package rbenv
-  :custom ((rbenv-show-active-ruby-in-modeline t)
+  :custom ((rbenv-show-active-ruby-in-modeline nil)
            (ruby-deep-indent-paren nil))
   :config (global-rbenv-mode))
 
@@ -77,6 +77,7 @@
   (rainbow-delimiters-mode)
   (inf-ruby-minor-mode +1)
   (ruby-tools-mode +1)
+  (setq ruby-indent-level 4)
   (define-key 'help-command (kbd "R") 'yari)
   ;; These linters are annoying to configure
   ;; (add-to-list 'flycheck-disabled-checkers 'ruby-rubocop)

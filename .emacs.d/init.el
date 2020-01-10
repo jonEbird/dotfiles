@@ -93,14 +93,6 @@
   (setq search-default-mode 'case-fold-search)
   )
 
-;; Extra add-ons - Typcially from git submodules
-; nyan-mode
-;; (add-to-list 'load-path (expand-file-name "~/.emacs.d/nyan-mode/"))
-;; (require 'nyan-mode)
-;; (setq nyan-wavy-trail 't
-;;       nyan-animate-nyancat 't
-;;       nyan-bar-length 20)
-
 ;; Always show columns too and set the default fill width to 90
 (setq fill-column 90)
 (column-number-mode)
@@ -274,10 +266,10 @@ With negative N, comment out original line and use the absolute value."
 
 ;; Show the datetime in the modeline?
 ; display-time-format overrides display-time-day-and-date & display-time-24hr-format
-(defvar display-time-format "%a %Y-%m-%d %H:%M")
-(defvar display-time-load-average-threshold 5)
-; Enabling the modeline addition (Disable with a negative ARG)
-(display-time-mode 1)
+;; (defvar display-time-format "%a %Y-%m-%d %H:%M")
+;; (defvar display-time-load-average-threshold 5)
+;; ; Enabling the modeline addition (Disable with a negative ARG)
+;; (display-time-mode 1)
 
 ;; Start server for emacsclient
 (server-start nil)
@@ -439,12 +431,6 @@ With negative N, comment out original line and use the absolute value."
     (ansi-color-apply-on-region (point-min) (point-max))))
 (defalias 'ascii-unescape-buffer 'ansi-color-buffer)
 
-;; Excorporate - Support for retrieving calendaring info from Exchange
-;; Note: Need to load this before any other soap-clients like org-jira form my org_config
-;; FIXME: This is an ugly place to put this
-;(require 'excorporate)
-;(setq excorporate-configuration "jsmiller@qti.qualcomm.com")
-
 ;; --------------------------------------------------
 ;; Load my personalized, modular extra elisp files
 ;; --------------------------------------------------
@@ -487,7 +473,7 @@ With negative N, comment out original line and use the absolute value."
 ;; (jsm:load-config-file "yasnippet_config")
 (jsm:load-config-file "backup_config")
 (jsm:load-config-file "tramp_config")
-(jsm:load-config-file "erc_config")
+;; (jsm:load-config-file "erc_config")
 ;; Pick one: ido or helm or ivy
 ;; (jsm:load-config-file "ido_config")
 ;; (jsm:load-config-file "helm_config")
@@ -506,6 +492,9 @@ With negative N, comment out original line and use the absolute value."
 (jsm:load-config-file "ruby_config")
 (jsm:load-config-file "shell_config")
 (jsm:load-config-file "perl_config")
+(jsm:load-config-file "golang_config")
+(jsm:load-config-file "bazel_config")
+(jsm:load-config-file "rust_config")
 (jsm:load-config-file "linux_config")
 (jsm:load-config-file "windows_config")
 (jsm:load-config-file "mac_config")

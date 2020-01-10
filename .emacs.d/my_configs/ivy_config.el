@@ -40,7 +40,6 @@
          :map org-mode-map
          ("C-c h i" . counsel-org-goto)))
 
-
 ;; Swap TAB and C-j. The `ivy-alt-done' will immediately select the current
 ;; target and continue wheras the `ivy-partial-or-done' will only take it
 ;; if it is the only remaining selection. Essentially, Abo thinks you
@@ -73,7 +72,7 @@
   (let ((default-directory (projectile-project-root))
         (ignore-cmd "git config --file .gitmodules --get-regexp path | awk '{ print $2 }' > .ignore"))
     (shell-command ignore-cmd nil nil)
-    (counsel-rg (thing-at-point 'symbol) default-directory)))
+    (counsel-rg (thing-at-point 'symbol) default-directory "-S -U")))
 
 ;; Switching and opening files should always include recentf values
 ;; (kbd "C-x b")

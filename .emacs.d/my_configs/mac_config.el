@@ -29,10 +29,8 @@ tell application \"System Events\"
     set visible of every process whose ¬
         visible is true and ¬
         frontmost is false and ¬
-        name is not \"VLC\" and ¬
         name is not \"Jabber Video\" and ¬
-        name is not \"Cisco Jabber\" and ¬
-        name is not \"Sling\" ¬
+        name is not \"Cisco Jabber\" ¬
     to false
 end tell")))
 
@@ -136,17 +134,17 @@ end tell
   ;; Need to properly set a Font
   ;; (set-face-attribute 'default nil
   ;;       	      :family "Consolas" :height 130)
-  (cond
-   ((find-font (font-spec :name "DejaVu Sans Mono"))
-    (set-frame-font "DejaVu Sans Mono-13"))
-   ((find-font (font-spec :name "Monaco"))
-    (set-frame-font "monaco-13"))
-   ((find-font (font-spec :name "inconsolata"))
-    (set-frame-font "inconsolata-16"))
-   ((find-font (font-spec :name "Lucida Console"))
-    (set-frame-font "Lucida Console-12"))
-   ((find-font (font-spec :name "courier"))
-    (set-frame-font "courier-12")))
+  ;; (cond
+  ;;  ((find-font (font-spec :name "DejaVu Sans Mono"))
+  ;;   (set-frame-font "DejaVu Sans Mono-13"))
+  ;;  ((find-font (font-spec :name "Monaco"))
+  ;;   (set-frame-font "monaco-13"))
+  ;;  ((find-font (font-spec :name "inconsolata"))
+  ;;   (set-frame-font "inconsolata-16"))
+  ;;  ((find-font (font-spec :name "Lucida Console"))
+  ;;   (set-frame-font "Lucida Console-12"))
+  ;;  ((find-font (font-spec :name "courier"))
+  ;;   (set-frame-font "courier-12")))
 
   ;; (set-face-attribute 'default nil
   ;;                     :family "Monaco"
@@ -160,6 +158,10 @@ end tell
   )
 
 (font-exists-p "Inconsolata")
+
+(when (memq window-system '(mac ns))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark)) ; nil for dark text
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
 
 (provide 'mac_config)
 ;;; mac_config.el ends here

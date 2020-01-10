@@ -7,10 +7,22 @@
 ;;   (setq jedi:setup-keys t
 ;;         jedi:complete-on-dot t))
 
+;; python-mode-map
+
 (use-package jedi
+  :after company
   :custom ((jedi:setup-keys t)
            (jedi:complete-on-dot t))
-  :hook (python-mode . jedi:setup))
+  :hook (python-mode . jedi:setup)
+  :bind (:map python-mode-map
+              ("M-." . jedi:goto-definition)
+              ("M-*" . jedi:goto-definition-pop-marker)
+              ("M-," . jedi:goto-definition-pop-marker))
+  :config
+  (add-to-list 'company-backends 'company-jedi))
+
+;; jedi:goto-definition-config  "M-."
+;; jedi:key-goto-definition-pop-marker "M-*"  jedi-mode-map
 
 (setq python--prettify-symbols-alist
       '(("import pdb; pdb.set_trace()" . "🛑")
@@ -28,7 +40,8 @@
   (flyspell-prog-mode)
   (flycheck-mode 1)
   ;; (flycheck-select-checker 'python-pylint)  ;; use "C-c ! s" to select alt checker
-  (flycheck-select-checker 'python-flake8)
+  (ignore-errors
+    (flycheck-select-checker 'python-flake8))
   (git-gutter-mode 1)
   (highlight-thing-mode)
   (prettify-symbols-mode)
@@ -36,7 +49,8 @@
   (ac-flyspell-workaround))
 
 (use-package python
-  :bind ("M-s s" . jsm:insert-python-breakpoint)
+  :bind (:map python-mode-map
+              ("M-s s" . jsm:insert-python-breakpoint))
   :custom (flycheck-python-pylint-executable
            (concat "python " (locate-file "pylint" exec-path)))
   :init

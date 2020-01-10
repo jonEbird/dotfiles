@@ -13,12 +13,14 @@
 ;; 1. Magit support
 
 (use-package magit
-  :bind ("C-x C-z" . magit-status)
+  :bind (("C-x C-z" . magit-status)
+         ("C-c g" . magit-file-dispatch))
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
-                                 "Full screen magit mode."))
+  ((magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
+                                  "Full screen magit mode.")
+   (git-commit-fill-column 72)))
 
-;; 2. Linking to git commits
+;; 2. Linking to git commits for org files
 (use-package orgit
   :custom
   (orgit-remote "upstream" "Default remote used when exporting links.")
@@ -44,6 +46,13 @@
          ("C-x v n" . git-gutter:next-hunk)
          ("C-x v s" . git-gutter:stage-hunk)
          ("C-x v r" . git-gutter:revert-hunk)))
+
+;; 4. Use Forge to aid in pull-request reviews
+(use-package forge
+  :after magit
+  :config
+  (add-to-list 'forge-alist '("github.pie.apple.com" "github.pie.apple.com/api/v3"
+                              "github.pie.apple.com" forge-github-repository)))
 
 ;; Avy - Replacing previously used ace-jump-mode
 ;; ------------------------------
@@ -77,21 +86,31 @@
 ;; Install yaml-mode via the ELPA repository and associate file types
 (use-package yaml-mode)
 
-;; Guide Key - Woot
-;; ------------------------------
-(use-package guide-key
-  :custom (guide-key/guide-key-sequence
-           '("C-x r" ; registers
-             "C-x 4" ; window
-             "C-x 5" ; frame
-             "C-c p" "C-c p s" "C-c p 4" ; projectile
-             "C-c h" ; help
-             "C-x g" ; google-this
-             "C-c @" ; hide-show
-             "C-c C-v" ; ensime
-             "C-c C-b" ; sbt
-             ))
-  :config (guide-key-mode 1))
+;; ;; Guide Key - Woot
+;; ;; ------------------------------
+;; (use-package guide-key
+;;   :custom (guide-key/guide-key-sequence
+;;            '("C-c" "C-x"  ; common stuff
+;;              "C-x r"      ; registers
+;;              "C-x 4" ; window
+;;              "C-x 5" ; frame
+;;              "C-c p" "C-c p s" "C-c p 4" ; projectile
+;;              "C-h"   ; help
+;;              "C-x g" ; google-this
+;;              "C-c @" ; hide-show
+;;              "C-c C-v" ; ensime
+;;              "C-c C-c" ; rustic
+;;              "C-c C-b" ; sbt
+;;              "C-\\"   ; faux screen
+;;              "C-x 8 '" ; https://www.masteringemacs.org/article/diacritics-in-emacs
+;;              "C-c C-o" ; go-guru
+;;              ))
+;;   :config (guide-key-mode 1))
+
+;; which-key (used to use guide-key but it is no longer maintained)
+;; https://github.com/justbur/emacs-which-key
+(use-package which-key
+  :config (which-key-mode))
 
 ;; Visual Regexp Replacements
 ;; ------------------------------
@@ -121,27 +140,53 @@
            (projectile-buffers-filter-function 'projectile-buffers-with-file)
            (projectile-mode-line '(:eval "")))
   :config (progn
-            (projectile-global-mode)
+            (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+            (projectile-mode +1)
             (add-to-list 'projectile-globally-ignored-modes "helm.*")
             (add-to-list 'projectile-globally-ignored-modes "magit.*")
             (add-to-list 'projectile-globally-ignored-directories "gems")
+            (add-to-list 'projectile-globally-ignored-directories "vendor")
             (use-package ripgrep
               :config
               (def-projectile-commander-method ?A
                 "Find rg on project."
-                (call-interactively 'projectile-ripgrep))))
+                (call-interactively 'projectile-ripgrep)))
+            (use-package git-link))
   :bind (("C-M-s" . jsm/projectile-counsel-rg)
          :map projectile-command-map
               ("B" . 'github-browse)
               ("$" . 'projectile-utility-shell)
-              ("s s" . jsm/projectile-counsel-rg)))
+              ("s s" . jsm/projectile-counsel-rg)
+              ("L" . 'git-link)))
 
 ;; Need to pass 't to compilation-start to enable comint minor mode for *compilation* buffer
 (defun projectile-run-compilation (cmd)
   "Run external or Elisp compilation command CMD."
   (if (functionp cmd)
       (funcall cmd)
-    (compilation-start cmd t)))
+    (compile cmd t)))
+
+(def-projectile-commander-method ?S
+  "Sync project contents to/from iMac"
+  ;; default-directory is conveniently set for us by selecting the project
+  (let* ((target "darknight")
+         (project-dir default-directory)
+         (direction (completing-read "pull or push? " '(pull push)))
+         (cmd (if (equal direction "pull")
+                  (format "rsync -a --stats --delete %s:%s %s" target project-dir project-dir)
+                (format "rsync -a --stats --delete %s %s:%s" project-dir target project-dir))))
+    (async-shell-command cmd (format "*Sync %s with %s (%s)" project-dir target direction))
+    (magit-status)))
+
+(defun rsync-project (&optional arg)
+  "Sync project to or from machine."
+  (interactive "P")
+  (let ((target "darknight")
+        (project-dir (projectile-project-root))
+        (direction (completing-read "pull or push? " '(pull push))))
+    (if (equal direction "pull")
+        (async-shell-command (format "rsync -a --stats --delete %s:%s %s" target project-dir project-dir))
+      (async-shell-command (format "rsync -a --stats --delete %s %s:%s" project-dir target project-dir)))))
 
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
@@ -169,6 +214,9 @@
   (add-hook hook
             '(lambda () (local-set-key (kbd "<f12>") 'readme-preview))))
 
+(use-package markdown-mode
+  :custom (fill-column 90))
+
 ;; Multiple-cursors
 ;; ------------------------------
 (use-package multiple-cursors
@@ -177,6 +225,9 @@
          ("C-<" . mc/mark-previous-like-this)
          ("C--" . mc/mark-all-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
+;; Lookup words
+(use-package xah-lookup)
 
 ;; Allow isearch functionality with multiple-cursors
 ;; -------------------------------------------------
@@ -237,7 +288,6 @@
            '(
              (?\" . ?\")
              (?\{ . ?\})
-             (?\~ . ?\~)  ; This is for org-mode to wrap in verbatim
              ))
   :config (electric-pair-mode 1))
 
@@ -282,16 +332,35 @@
 
 ;; Use my faux-screen library for shell support
 ;; --------------------------------------------
+(use-package shell
+  :custom ((explicit-shell-file-name "bash")
+           (explicit-bash-args '("--noediting" "-i"))
+           (comint-process-echoes t))
+  :bind (:map shell-mode-map
+              ("M-." . comint-insert-previous-argument)
+              ("C-l" . comint-clear-buffer)
+              ("C-w" . backward-kill-word)
+              ("<up>" . (lambda () (interactive) (comint-previous-input 1)))
+              ("<down>" . (lambda () (interactive) (comint-next-input 1)))))
 
-;; Shell setup
-(setq explicit-shell-file-name "bash"
-      explicit-bash-args '("-c" "export EMACS=; stty echo; bash")
-      comint-process-echoes t)
+(use-package readline-complete)
+
+(use-package bash-completion
+  :config (add-hook 'shell-dynamic-complete-functions
+                    'bash-completion-dynamic-complete))
+
 
 (add-to-list 'load-path (expand-file-name "~/repos/faux-screen/"))
 (setq faux-screen-num-terminals 10
+      faux-screen-inferior-shell t
       faux-screen-keymap-prefix (kbd "C-\\")
-      faux-screen-terminal-ps1 "(\\[\\e[1;36m\\]%s\\[\\e[0m\\]) \\W $ ")
+      faux-screen-terminal-ps1 "(%s) \\W $ "
+      comint-password-prompt-regexp (concat comint-password-prompt-regexp
+                                            "\\|^Enter PIN for \\'[^']+\\':"))
+
+;; Lets make shell feel more like my "normal" shell
+
+;; faux-screen-terminal-ps1 "(\\[\\e[1;36m\\]%s\\[\\e[0m\\]) \\W $ " ;; <-- for ansi-term, this is okay
 (require 'faux-screen)
 (faux-screen-global-mode)
 (global-set-key [C-next]  'faux-screen-next-dwim)
@@ -311,6 +380,9 @@
                 (lambda ()
                   (interactive)
                   (funcall (faux-screen-utility-terminal "Utility") default-directory)))
+
+;; eshell configuration with aweshell - https://github.com/manateelazycat/aweshell
+(use-package aweshell)
 
 ;; Recentf Support
 ;; ------------------------------
