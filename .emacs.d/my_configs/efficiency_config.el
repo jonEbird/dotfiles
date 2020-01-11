@@ -188,6 +188,15 @@
         (async-shell-command (format "rsync -a --stats --delete %s:%s %s" target project-dir project-dir))
       (async-shell-command (format "rsync -a --stats --delete %s %s:%s" project-dir target project-dir)))))
 
+;; Misc effect with the cursor when switching between buffers
+(use-package beacon
+  :init
+  (beacon-mode 1)
+  :config
+  (setq beacon-blink-duration 0.2
+        beacon-blink-delay 0.1
+        beacon-size 20))
+
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
 (use-package ack-and-a-half)

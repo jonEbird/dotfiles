@@ -78,7 +78,7 @@
          git-link bats-mode aweshell readline-complete bash-completion
          xah-lookup wgrep bazel-mode unicode-fonts
          rust-racer emacs-racer flycheck-rust cargo toml-mode rustic ;; rust-mode
-         lsp-mode lsp-ui company-lsp lsp-ivy dap-mode)))
+         lsp-mode lsp-ui company-lsp lsp-ivy dap-mode beacon)))
 ;; magit-popup magit-gh-pulls
 ;; term+ term+ki term+mux faux-screen
 ;; auto-complete-etags elip powerline

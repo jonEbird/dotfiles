@@ -8,7 +8,11 @@
  ;; If there is more than one, they won't work right.
  '(alert-default-style (quote osx-notifier))
  '(autopair-autowrap t)
- '(aw-keys (quote (97 115 100 102 103 104 106 107 108)) t)
+ '(aw-keys (quote (97 115 100 102 103 104 106 107 108)))
+ '(beacon-dont-blink-major-modes
+   (quote
+    (t magit-status-mode magit-popup-mode inf-ruby-mode mu4e-headers-mode gnus-summary-mode gnus-group-mode shell-mode)))
+ '(comint-process-echoes t)
  '(command-log-mode-open-log-turns-on-mode t)
  '(command-log-mode-window-size 55)
  '(counsel-find-file-at-point t t)
