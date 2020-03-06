@@ -2,11 +2,11 @@
 
 ;;; Commentary:
 
-(require 'color-theme)
+; (require 'color-theme)
 ;; (require 'smart-mode-line)
 
 ;; Require my theme(s)
-(require 'color-theme-solarized)
+; (require 'color-theme-solarized)
 
 ;;; Code:
 
@@ -53,8 +53,8 @@
 ;; (sml/setup)
 
 ;; Extra customization for look and feel
-(set-face-attribute 'org-code nil :foreground "forest green")
-(set-face-attribute 'org-block nil :foreground "forest green")
+; (set-face-attribute 'org-code nil :foreground "forest green")
+; (set-face-attribute 'org-block nil :foreground "forest green")
 
 
 ;; https://github.com/hlissner/emacs-doom-themes
@@ -63,7 +63,11 @@
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t       ; if nil, bold is universally disabled
         doom-themes-enable-italic t)    ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+
+  ; (load-theme 'doom-one t)  ;; initial used, liked.
+  ; (load-theme 'doom-snazzy t)
+  ; (load-theme 'doom-peacock t) ;; I like this one
+  (load-theme 'doom-tomorrow-night t)
   ;; (load-theme 'doom-city-lights t)
 
   ;; Enable flashing mode-line on errors

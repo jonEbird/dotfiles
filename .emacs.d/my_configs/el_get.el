@@ -44,8 +44,11 @@
 
 ;; Special quick hack for Mac platform before getting too far
 (when (eq system-type 'darwin)
-  (el-get 'sync '(exec-path-from-shell))
-  (exec-path-from-shell-copy-env "PATH"))
+  (el-get 'sync '(exec-path-from-shell use-package))
+  (use-package exec-path-from-shell
+    :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "SSH_AGENT_PID"))
+    :config
+    (exec-path-from-shell-initialize)))
 
 ; Finally my list of packages wanting to be installed
 (setq jsm-packages
@@ -60,12 +63,12 @@
          ack-and-a-half cl-lib yasnippet yasnippet-snippets
          auto-complete-clang gtags multiple-cursors with-editor graphql magit git-gutter forge
          idomenu undo-tree org-mode cmake-mode gist session doom-modeline
-         rpm-spec-mode cider rainbow-delimiters elixir ; org-reveal
+         rpm-spec-mode cider rainbow-delimiters elixir org-reveal
          graphviz-dot-mode term+ term+ki term+mux phi-search smex
          ;; helm helm-git-grep helm-mu helm-gtags helm-swoop helm-ag
          color-theme-zenburn dockerfile-mode command-log-mode key-chord
-         flycheck ag wdired org-bullets zeal-at-point org-download
-         ace-window avy hydra use-package bb-mode swiper docker-tramp
+         flycheck ag wdired org-bullets zeal-at-point org-download ;; org-drill
+         ace-window avy hydra bb-mode swiper docker-tramp
          mtrace evil groovy-emacs-mode dired-hacks orgit flycheck-pmd
          json-mode protobuf-mode highlight-thing google-this mustache-mode
          rbenv robe-mode inf-ruby feature-mode hl-todo flycheck-yamllint
@@ -77,6 +80,7 @@
          go-mode go-company go-eldoc go-projectile go-test gotests-emacs go-autocomplete flycheck-golangci-lint
          git-link bats-mode aweshell readline-complete bash-completion
          xah-lookup wgrep bazel-mode unicode-fonts
+         typescript-mode tide js2-mode
          rust-racer emacs-racer flycheck-rust cargo toml-mode rustic ;; rust-mode
          lsp-mode lsp-ui company-lsp lsp-ivy dap-mode beacon)))
 ;; magit-popup magit-gh-pulls

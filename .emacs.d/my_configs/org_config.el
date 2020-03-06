@@ -129,7 +129,7 @@
 ;; Add a new quick template
 ;; For the record, I hate the new template system (C-c C-x w)
 (add-to-list 'org-structure-template-alist
-             '(?S . "src shell"))
+             '("S" . "src shell"))
 ;; (add-to-list 'org-structure-template-alist
 ;;              '("sh" "#+begin_src shell\n?\n#+end_src" "<src lang=\"shell\">\n\n</src>"))
 ;; (add-to-list 'org-structure-template-alist
@@ -142,7 +142,7 @@
   "Better src block completion experience"
   (interactive)
   (org-insert-structure-template
-   (concat "src " (completing-read "Source type: " org-src-lang-modes))))
+   (concat "src " (completing-read "Source type: " org-src-lang-modes) " :results value verbatim")))
 (define-key org-mode-map (kbd "C-c s") 'jsm/org-src-block)
 
 ; org-babel configuration
@@ -441,8 +441,10 @@ p code, li code {
 ;;   Official Site   - http://meyerweb.com/eric/tools/s5/themes/
 ;;   Nice Collection - http://atuan.com/s5/
 ;; Extract these into your ~/org/ui/ directory since that is where you store org files
-(setq org-s5-theme "mitaine") ; dark and slighty odd
-(setq org-s5-theme "yatil")   ; clean and bright
+;; (use-package ox-s5
+;;   ;; "mitaine" theme is dark and slightly odd
+;;   ;; "yatil" theme is clean and bright
+;;   :custom (org-s5-theme "yatil"))
 
 ;; A near direct copy of org-export-as-html-and-open from org-html.el
 (defun org-export-as-s5-and-open (arg)
@@ -459,6 +461,11 @@ headlines.  The default is 3.  Lower levels will become bulleted lists."
 
 ;; Trying Reveal.js for presentations
 ;; See https://github.com/yjwen/org-reveal/blob/master/Readme.org
+;; Installing reveal via: git clone https://github.com/hakimel/reveal.js.git ~/org/reveal.js
+(use-package ox-reveal
+  :defer t
+  :custom ((org-reveal-root (concat "file://" (expand-file-name "~/org/reveal.js")))
+           (org-reveal-klipsify-src t)))
 ;; (use-package ox-reveal
 ;;   :custom (org-reveal-root "http://qualnet.qualcomm.com/~jsmiller/org-reveal/"))
 
@@ -569,20 +576,23 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
                                          "☐")
                          nil)))))
 
-;; Allow linking to manual pages
-(use-package org-man)
+;; org-mode contrib packages: https://code.orgmode.org/bzg/org-mode/src/master/contrib
+
+;; Allow linking to manual pages - used to be called org-man
+(use-package ox-man)
+(use-package ol-man)
 
 ;; org-protocol setup
 (use-package org-protocol)
 
 ;; org-drill support
-(use-package org-drill)
+;; (use-package org-drill)
 
 ;; Add the wonderful org-mac-link
 (use-package org-mac-link)
 
 ;; You like those "<s TAB" short-cuts, right? Well:
-(require 'org-tempo)
+(use-package org-tempo)
 
 (if (eq system-type 'darwin)
     (add-hook 'org-mode-hook

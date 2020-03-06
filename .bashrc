@@ -5,6 +5,33 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+# Helpful functions
+epoch2date() {
+    date --date="@${1:-0}" +"${2:-%c}"
+}
+
+# TZ conversion functions
+utc-to-pacific() { TZ=America/Los_Angeles date --date="TZ=\"GMT\" $*" +"%H:%M %Z"; }
+pacific-to-utc() { TZ=GMT date --date="TZ=\"America/Los_Angeles\" $*" +"%H:%M %Z"; }
+
+pathgrep() { echo $PATH | sed 's/:/ /g' | xargs ls 2>/dev/null | grep -i ${1:-.}; }
+
+color-echo() {
+    # Use like: color-echo "Hello red{devil}, are you missing the yellow{sun}?"
+    declare -A colors
+    colors["red"]=31; colors["green"]=32; colors["yellow"]=33; colors["blue"]=34
+    echo $@ | sed -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
+        -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
+        -e "s/green{\([^}]*\)}/\x1b[${colors['green']}m\1\\x1b[0m/g" \
+        -e "s/yellow{\([^}]*\)}/\x1b[${colors['yellow']}m\1\\x1b[0m/g" \
+        -e "s/blue{\([^}]*\)}/\x1b[${colors['blue']}m\1\\x1b[0m/g"
+}
+
+blue ()   { color-echo "blue{$*}"; }
+green ()  { color-echo "green{$*}"; }
+red ()    { color-echo "red{$*}"; }
+yellow () { color-echo "yellow{$*}"; }
+
 # Disable the annoying message about the default shell changing to zsh
 export BASH_SILENCE_DEPRECATION_WARNING=1
 
@@ -137,7 +164,8 @@ fi
 [ -f ~/.proxy ] && source ~/.proxy
 [ -f ~/.bash_profile.workstation  ] && source ~/.bash_profile.workstation
 [ -f ~/.bash_profile.work ] && source ~/.bash_profile.work
-PATH=$PATH:~/repos/rio/rio-cli/bin
+[ -f ~/.bashrc.work ] && source ~/.bashrc.work
+
 eval "$(rbenv init - 2>&-)"
 PATH=$PATH:~/repos/pe-infra/rio-toolbox/ciborg
 export REQUESTS_CA_BUNDLE=/opt/homebrew/etc/openssl/cert.pem
@@ -147,3 +175,21 @@ if type -P virtualenvwrapper.sh 1>/dev/null 2>&1; then
     export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python
     source virtualenvwrapper.sh
 fi
+
+# pyenv via: brew install pyenv pyenv-virtualenvwrapper
+eval "$(pyenv init -)"
+# export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+
+show_virtual_env() {
+    if [[ -n "$VIRTUAL_ENV" && -n "$DIRENV_DIR" ]]; then
+        echo "[$(basename $VIRTUAL_ENV)]"
+    fi
+}
+export -f show_virtual_env
+PS1='$(show_virtual_env)'$PS1
+
+# direnv via: brew install direnv
+eval "$(direnv hook bash)"
+
+export NVM_DIR="$HOME/.nvm"
+. $(brew --prefix nvm)/nvm.sh

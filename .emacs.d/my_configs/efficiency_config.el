@@ -50,6 +50,8 @@
 ;; 4. Use Forge to aid in pull-request reviews
 (use-package forge
   :after magit
+  :custom (forge-database-file (concat (expand-file-name "~/.emacs.d/forge-database-")
+                                       my-hostname ".sqlite"))
   :config
   (add-to-list 'forge-alist '("github.pie.apple.com" "github.pie.apple.com/api/v3"
                               "github.pie.apple.com" forge-github-repository)))

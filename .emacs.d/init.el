@@ -246,6 +246,9 @@ With negative N, comment out original line and use the absolute value."
 ;; Damn my spelling / typing
 (define-abbrev global-abbrev-table "teh" "the")
 
+;; I hate this word
+(define-abbrev global-abbrev-table "tieing" "tying")
+
 ;; I like the Spanish leading upside-down question mark
 (define-abbrev global-abbrev-table "??" "¿")
 (global-set-key (kbd "s-?") '(lambda () (interactive) (insert "¿")))
@@ -270,6 +273,7 @@ With negative N, comment out original line and use the absolute value."
 ;; (defvar display-time-load-average-threshold 5)
 ;; ; Enabling the modeline addition (Disable with a negative ARG)
 ;; (display-time-mode 1)
+(display-time-mode -1)
 
 ;; Start server for emacsclient
 (server-start nil)

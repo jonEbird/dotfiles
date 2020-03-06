@@ -12,28 +12,6 @@ fi
 
 # User specific environment and startup programs
 
-# Helpful functions
-epoch2date() {
-    date --date="@${1:-0}" +"${2:-%c}"
-}
-
-# TZ conversion functions
-utc-to-pacific() { TZ=America/Los_Angeles date --date="TZ=\"GMT\" $*" +"%H:%M %Z"; }
-pacific-to-utc() { TZ=GMT date --date="TZ=\"America/Los_Angeles\" $*" +"%H:%M %Z"; }
-
-pathgrep() { echo $PATH | sed 's/:/ /g' | xargs ls 2>/dev/null | grep -i ${1:-.}; }
-
-color-echo() {
-    # Use like: color-echo "Hello red{devil}, are you missing the yellow{sun}?"
-    declare -A colors
-    colors["red"]=31; colors["green"]=32; colors["yellow"]=33; colors["blue"]=34
-    echo $@ | sed -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
-        -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
-        -e "s/green{\([^}]*\)}/\x1b[${colors['green']}m\1\\x1b[0m/g" \
-        -e "s/yellow{\([^}]*\)}/\x1b[${colors['yellow']}m\1\\x1b[0m/g" \
-        -e "s/blue{\([^}]*\)}/\x1b[${colors['blue']}m\1\\x1b[0m/g"
-}
-
 # Support for org-protocol
 if which gconftool-2 >/dev/null 2>&1 && [ -n "$DISPLAY" -a -z "$SSH_CLIENT" ]; then
     gconftool-2 -s /desktop/gnome/url-handlers/org-protocol/command "$(which emacsclient) %s" --type String
@@ -120,6 +98,9 @@ export GOPATH=\$HOME/go
 [[ -d \$GOPATH ]] || mkdir \$GOPATH
 export PATH=\$PATH:\$GOPATH/bin
 
+# Sphinx-doc
+PATH=\$PATH:$(brew --prefix sphinx-doc)/bin
+
 # Other Mac specific items
 alias cal='gcal'
 EOF
@@ -130,6 +111,6 @@ fi
 # Un-comment when profiling
 # set +x
 # exec 2>&3 3>&-
-eval "$(pyenv init -)"
 
 export PATH="$HOME/.cargo/bin:$PATH"
+[[ -s "$HOME/.avn/bin/avn.sh" ]] && source "$HOME/.avn/bin/avn.sh" # load avn
