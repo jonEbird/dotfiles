@@ -36,6 +36,7 @@
 (defun my-python-mode-hook ()
   "Minor setup when entering Python mode."
   (interactive)
+  (direnv-mode)
   (hs-minor-mode)
   (flyspell-prog-mode)
   (flycheck-mode 1)
@@ -49,6 +50,7 @@
   (ac-flyspell-workaround))
 
 (use-package python
+  :after direnv
   :bind (:map python-mode-map
               ("M-s s" . jsm:insert-python-breakpoint))
   :custom (flycheck-python-pylint-executable

@@ -1,0 +1,5 @@
+(:name direnv
+       :description "direnv integration for Emacs"
+       :type github
+       :pkgname "wbolster/emacs-direnv"
+       :depends (dash))

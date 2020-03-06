@@ -199,6 +199,11 @@
         beacon-blink-delay 0.1
         beacon-size 20))
 
+;; direnv support
+(use-package direnv
+  :config
+  (direnv-mode))
+
 ;; Ack support with ack-and-a-half
 ;; ------------------------------
 (use-package ack-and-a-half)
