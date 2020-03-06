@@ -489,6 +489,7 @@ With negative N, comment out original line and use the absolute value."
 (jsm:load-config-file "email_config")
 ;;(jsm:load-config-file "elip_edb")
 (jsm:load-config-file "java_config")
+(jsm:load-config-file "js_config")
 ;; (jsm:load-config-file "scala_config")
 (jsm:load-config-file "c-c++_tags_config")
 (jsm:load-config-file "python_config")

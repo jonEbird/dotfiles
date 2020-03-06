@@ -68,9 +68,6 @@
          ("\\.bbclass$" . bb-mode)
          ("\\.conf$" . bb-mode)))
 
-;; Javascript
-(setq js-indent-level 2)
-
 ;; yaml
 (use-package flycheck-yamllint
   :hook (flycheck-mode . flycheck-yamllint-setup))
