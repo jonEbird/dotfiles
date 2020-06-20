@@ -7,9 +7,12 @@
 ;; $ go get golang.org/x/tools/cmd/goimports
 ;; $ go get -u github.com/nsf/gocode
 ;; $ go get golang.org/x/tools/cmd/goimports
+;; $ go get -u github.com/rogpeppe/godef
 
 ;; For a lsp setup, consider:
 ;; https://arenzana.org/2019/12/emacs-go-mode-revisited/
+;; for a normal, non-lsp, setup:
+;; https://www.simplify.ba/articles/2016/03/04/go-development-with-gnu-emacs/
 
 ;; For lsp, need to install this, and possibly keep it up to date:
 ;; GO111MODULE=on go get golang.org/x/tools/gopls@latest

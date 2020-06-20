@@ -37,10 +37,17 @@
 ;; Looking to rustic to complete the setup
 ;; https://github.com/brotzeit/rustic
 (use-package rustic
-  :custom ((rustic-format-trigger 'on-save))
+  :custom ((rustic-format-trigger 'on-save)
+           (rustic-format-on-save nil)
+           (rustic-lsp-format t)
+           ;; alt here is 'rust-analyzer and see lsp-rust-analyzer-server-command
+           (rustic-lsp-server 'rls))
   :init
-  (add-hook 'rustic-mode-hook 'my-rust-mode-hook)
-  :after (rust-mode))
+  (add-hook 'rustic-mode-hook 'my-rust-mode-hook))
+
+;; auto-mode-alist
+(setq auto-mode-alist
+      (cl-remove 'rust-mode auto-mode-alist :test 'equal :key 'cdr))
 
 ;; (use-package racer)
 

@@ -18,6 +18,7 @@
         co = checkout
         # Good for finding odd references should you get "ambiguous reference" warning.
         refs = show-refs
+        # tagcommit shows which commmit a particular tag is referencing
         tagcommit = rev-list -n 1
         top = "!f() { git shortlog -sn | head -${1:-20}; }; f"
         # Prepping release notes
@@ -27,12 +28,12 @@
 	paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git apply ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
 	am-paste = "!f() { p=$(mktemp); (pbpaste; echo) > $p; git am ${@:-} $p && rm $p || { echo p @ $p; grep -n . $p; }; }; f"
         root = rev-parse --show-toplevel
+        code-changes = "!f() { git log --format=format: --name-only | egrep -v '^$' | sort | uniq -c | sort -rg | head -${1:-10}; }; f"
+        cc = "!git code-changes"
 [push]
 	default = simple
 [url "git@gitlab.sd.apple.com:"]
 	insteadOf = https://gitlab.sd.apple.com/
-[hub]
-	host = github.pie.apple.com
 [core]
 	ignorecase = false
 	excludesfile = ~/.gitignore
@@ -45,3 +46,11 @@
 	submoduleSummary = true
 [diff]
 	submodule = log
+#git log upstream/production --date=iso --pretty=format:'%ad%x08%aN' | awk '$0 >= "2019-03-11" && $0 <= "2019-03-18"' | wc -l
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[include]
+    path = .gitconfig-work

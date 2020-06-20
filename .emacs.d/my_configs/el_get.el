@@ -46,7 +46,7 @@
 (when (eq system-type 'darwin)
   (el-get 'sync '(exec-path-from-shell use-package))
   (use-package exec-path-from-shell
-    :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "SSH_AUTH_SOCK" "SSH_AGENT_PID"))
+    :custom (exec-path-from-shell-variables '("PATH" "MANPATH" "GOPATH" "SSH_AUTH_SOCK" "SSH_AGENT_PID"))
     :config
     (exec-path-from-shell-initialize)))
 
@@ -80,9 +80,9 @@
          go-mode go-company go-eldoc go-projectile go-test gotests-emacs go-autocomplete flycheck-golangci-lint
          git-link bats-mode aweshell readline-complete bash-completion
          xah-lookup wgrep bazel-mode unicode-fonts
-         typescript-mode tide js2-mode
+         typescript-mode tide js2-mode python-black pyenv swift-mode
          rust-racer emacs-racer flycheck-rust cargo toml-mode rustic ;; rust-mode
-         lsp-mode lsp-ui company-lsp lsp-ivy dap-mode beacon direnv)))
+         lsp-mode lsp-ui company-lsp lsp-ivy dap-mode beacon direnv longlines)))
 ;; magit-popup magit-gh-pulls
 ;; term+ term+ki term+mux faux-screen
 ;; auto-complete-etags elip powerline

@@ -9,6 +9,9 @@
 
 ;; python-mode-map
 
+;; TODO: Potentially use zimports (https://github.com/sqlalchemyorg/zimports)
+;; https://github.com/schmir/zimports.el
+
 (use-package jedi
   :after company
   :custom ((jedi:setup-keys t)
@@ -24,14 +27,20 @@
 ;; jedi:goto-definition-config  "M-."
 ;; jedi:key-goto-definition-pop-marker "M-*"  jedi-mode-map
 
-(setq python--prettify-symbols-alist
+(setq python-prettify-symbols-alist
       '(("import pdb; pdb.set_trace()" . "🛑")
-        ("lambda" . 955)))
+        ("lambda" . ?λ)))
 
 (defun jsm:insert-python-breakpoint ()
   "Insert typical Python breakpoint code."
   (interactive)
-  (insert "import pdb; pdb.set_trace()"))
+  (indent-according-to-mode)
+  (insert "# fmt: off")
+  (newline-and-indent)
+  (insert "import pdb; pdb.set_trace()")
+  (newline-and-indent)
+  (insert "# fmt: on")
+  (newline-and-indent))
 
 (defun my-python-mode-hook ()
   "Minor setup when entering Python mode."
@@ -44,6 +53,7 @@
   (ignore-errors
     (flycheck-select-checker 'python-flake8))
   (git-gutter-mode 1)
+  (python-black-on-save-mode 1)
   (highlight-thing-mode)
   (prettify-symbols-mode)
   (setq fill-column 90)
@@ -57,6 +67,14 @@
            (concat "python " (locate-file "pylint" exec-path)))
   :init
   (add-hook 'python-mode-hook 'my-python-mode-hook))
+
+(use-package python-black
+  :demand t
+  :after python)
+
+(use-package pyenv
+  :custom ((pyenv-show-active-python-in-modeline nil))
+  :config (global-pyenv-mode 1))
 
 ;; Would have tried Steve Purcell's flymake-python-pyflakes had flycheck
 ;; not worked out for me.

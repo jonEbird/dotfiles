@@ -19,7 +19,8 @@
 
 ;; TODO: Move the list of applications to NOT hide into a list and
 ;; dynamically (macro) insert the extra 'and not \"<name>\"' text into the
-;; AppleScript
+;; AppleScript. How do you get the name of the app? Run jsm:get-application-name
+;; sleep 5; osascript -e 'tell application "System Events"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'
 (defun jsm:hide-other-windows ()
   "Hide all other windows."
   (interactive)
@@ -30,9 +31,25 @@ tell application \"System Events\"
         visible is true and ¬
         frontmost is false and ¬
         name is not \"Jabber Video\" and ¬
+        name is not \"Event Center\" and ¬
+        name is not \"Meeting Center\" and ¬
+        name is not \"Phantom\" and ¬
         name is not \"Cisco Jabber\" ¬
     to false
 end tell")))
+
+;; 'tell application "System Events"' -e 'set frontApp to name of first application process whose frontmost is true' -e 'end tell'
+(defun jsm:get-application-name ()
+  "Get the application name as it is known from MacOS."
+  (interactive)
+  (message "Will tell you foremost application name after 5s...")
+  (sleep-for 5)
+  (message (do-applescript "
+tell application \"System Events\"
+    set frontApp to name of first application process whose frontmost is true
+end tell")))
+
+; (jsm:get-application-name)
 
 (defun jsm:toggle-hiding ()
   "Toggle `jsm:hiding-others' variable between nil and t."
@@ -44,6 +61,20 @@ end tell")))
     (setq jsm:hiding-others t)
     (message "Enabled hiding other windows")
     (jsm:hide-other-windows)))
+
+;; Little helper function to insert the common Mac unicode keys
+(defun insert-mac-key()
+  (interactive)
+  (let* ((mac-keys '(("Command" . "⌘") ; "COMMAND KEY"
+                     ("Option" . "⌥") ; "OPTION KEY"
+                     ("Shift" . "⇧") ; "UPWARDS WHITE ARROW"
+                     ("Up" . "⌃") ; "UP ARROWHEAD"
+                     ("Escape" . "⎋") ; "BROKEN CIRCLE WITH NORTHWEST ARROW"
+                     ("Delete" . "⌫") ; "DELETE TO THE LEFT KEY"
+                     ("Caps" . "⇪"))) ; "UPWARDS WHITE ARROW FROM BAR"
+         (choice (completing-read "Mac unicode key: " (mapcar (lambda (p) (format "%s (%s)" (car p) (cdr p))) mac-keys))))
+    (insert (cdr (assoc (car (split-string choice)) mac-keys)))))
+(global-set-key (kbd "C-x 9 RET") 'insert-mac-key)
 
 ;; http://qwan.org/2011/09/01/reloading-a-page-in-chrome-from-aquamacs/
 (defun mayoff:open-url-in-chrome (url)

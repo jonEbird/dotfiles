@@ -11,25 +11,15 @@
 ;; ------------------------------
 
 ;; 1. Magit support
-
 (use-package magit
   :bind (("C-x C-z" . magit-status)
          ("C-c g" . magit-file-dispatch))
   :custom
   ((magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
                                   "Full screen magit mode.")
-   (git-commit-fill-column 72)))
-
-;; 2. Linking to git commits for org files
-(use-package orgit
-  :custom
-  (orgit-remote "upstream" "Default remote used when exporting links.")
-  :config
-  (add-to-list 'orgit-export-alist
-               '("github.pie.apple.com[:/]\\(.+?\\)\\(?:\\.git\\)?$"
-                 "https://github.pie.apple.com/%n"
-                 "https://github.pie.apple.com/%n/commits/%r"
-                 "https://github.pie.apple.com/%n/commit/%r")))
+   (git-commit-fill-column 72)
+   (magit-section-initial-visibility-alist
+    '((stashes . show) (untracked . hide) (unpushed . hide)))))
 
 ;; always follow symlinks to files under source-control. dont ask.
 (setq vc-follow-symlinks t)
@@ -46,15 +36,6 @@
          ("C-x v n" . git-gutter:next-hunk)
          ("C-x v s" . git-gutter:stage-hunk)
          ("C-x v r" . git-gutter:revert-hunk)))
-
-;; 4. Use Forge to aid in pull-request reviews
-(use-package forge
-  :after magit
-  :custom (forge-database-file (concat (expand-file-name "~/.emacs.d/forge-database-")
-                                       my-hostname ".sqlite"))
-  :config
-  (add-to-list 'forge-alist '("github.pie.apple.com" "github.pie.apple.com/api/v3"
-                              "github.pie.apple.com" forge-github-repository)))
 
 ;; Avy - Replacing previously used ace-jump-mode
 ;; ------------------------------
@@ -225,13 +206,72 @@
     (browse-url (concat "file://" html-filename))
     (run-at-time "10 sec" nil `(lambda () (delete-file ,html-filename)))))
 
-;; Assign F12 to render README preview for select modes
-(dolist (hook '(markdown-mode-hook rst-mode-hook))
-  (add-hook hook
-            '(lambda () (local-set-key (kbd "<f12>") 'readme-preview))))
+(use-package rst
+  :bind (("<f12>" . readme-preview)))
+
+(defun md-separate-lines ()
+  "Takes a multi-line paragraph and makes each sentence into a single line of text with a newline."
+  (interactive)
+  (let ((begin (if (region-active-p) (region-beginning)
+                 (save-excursion (backward-paragraph) (point))))
+        (end (if (region-active-p) (region-end)
+               (save-excursion (forward-paragraph) (point))))
+        (fill-column (point-max))
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil t)
+    ;; while loop tip taken from replace-regexp help
+    (save-excursion
+      (goto-char begin)
+      (while (re-search-forward "\\([.?!]\\) +\\([^ ]\\)" end t) ; (sentence-end)
+        (replace-match "\\1\n\\2" nil nil)))))
+
+;; ;; Version created by Peter Strachan
+;; (defun md-separate-lines ()
+;;   (interactive)
+;;   (let* ((begin (if (region-active-p) (region-beginning)
+;;                   (save-excursion (backward-paragraph) (point))))
+;;          (end (if (region-active-p) (region-end)
+;;                 (save-excursion (forward-paragraph) (point))))
+;;          (fill-column (point-max))
+;;          (emacs-lisp-docstring-fill-column t)
+;;          (length (- end begin)))
+;;     (fill-paragraph nil t)
+;;     (save-excursion
+;;       (save-restriction
+;;         (narrow-to-region begin end)
+;;         (goto-char (point-min))
+;;         (while (< (forward-sentence) end)
+;;           (insert "\n")
+;;           (delete-horizontal-space))
+;;         ;; (let ((pt (point-min)))
+;;         ;;   (while (< pt (point))
+;;         ;;     (forward-sentence 1)
+;;         ;;     (insert "\n")
+;;         ;;     (setq pt (point))))
+;;         ))))
+
+;; (defun md-separate-lines ()
+;;   (interactive)
+;;   (if (region-active-p)
+;;       (let ((fill-column (point-max))
+;;             (emacs-lisp-docstring-fill-column t))
+;;         ; (fill-paragraph nil t)
+;;         ;; while loop tip taken from replace-regexp help
+;;         (save-excursion
+;;           (goto-char (region-beginning))
+;;           (while (re-search-forward "\\([.?]\\) +\\([^ ]\\)" (region-end) t)
+;;             (replace-match "\\1\n\\2" nil nil))))
+;;     (message "activate region first")))
+
+(defun my-markdown-hook ()
+  (interactive)
+  (setq fill-column 90))
 
 (use-package markdown-mode
-  :custom (fill-column 90))
+  :hook (markdown-mode . my-markdown-hook)
+  :bind (:map markdown-mode-map
+              ("M-q" . md-separate-lines)
+              ("<f12>" . readme-preview)))
 
 ;; Multiple-cursors
 ;; ------------------------------
@@ -376,7 +416,6 @@
 
 ;; Lets make shell feel more like my "normal" shell
 
-;; faux-screen-terminal-ps1 "(\\[\\e[1;36m\\]%s\\[\\e[0m\\]) \\W $ " ;; <-- for ansi-term, this is okay
 (require 'faux-screen)
 (faux-screen-global-mode)
 (global-set-key [C-next]  'faux-screen-next-dwim)
@@ -413,7 +452,8 @@
 
 ;; Enable semantic mode to better support imenu
 (use-package semantic
-  :custom (semantic-edits-verbose-flag nil)
+  :custom ((semantic-edits-verbose-flag nil)
+           (semantic-idle-scheduler-no-working-message t))
   :config (semantic-mode 1))
 
 ;; Capture my work window configuration and be able to switch back to it easily
@@ -579,7 +619,7 @@
 
 (defadvice tramp-completion-handle-file-name-all-completions
   (around dotemacs-completion-docker activate)
-  "(tramp-completion-handle-file-name-all-completions \"\" \"/docker:\" returns
+  "tramp-completion-handle-file-name-all-completions \"\" \"/docker:\" returns
     a list of active Docker container names, followed by colons."
   (if (equal (ad-get-arg 1) "/docker:")
       (let* ((dockernames-raw (shell-command-to-string "docker ps | awk '$NF != \"NAMES\" { print $NF \":\" }'"))
@@ -649,7 +689,8 @@
   :bind (("C-h f" . #'helpful-callable)
          ("C-h v" . #'helpful-variable)
          ("C-h k" . #'helpful-key)
-         ("C-c C-." .  #'helpful-at-point)))
+         ("C-c C-." . #'helpful-at-point)
+         ("C-c C-d" . #'helpful-at-point)))
 
 (provide 'efficiency_config)
 ;;; efficiency_config.el ends here

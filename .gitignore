@@ -136,3 +136,9 @@ libpeerconnection.log
 .stackato/*
 .vmware/*
 /org/*
+
+# work stuff
+/.ignore
+/.envrc
+/.agignore
+.meghanada/

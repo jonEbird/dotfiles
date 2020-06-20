@@ -13,6 +13,8 @@
 ;; Extra load path
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/site-lisp/"))
 
+; (setq debug-on-message "Unmatched bracket or quote")
+
 ;; Require cl early on since it's used in many places
 (require 'cl)
 
@@ -96,6 +98,17 @@
 ;; Always show columns too and set the default fill width to 90
 (setq fill-column 90)
 (column-number-mode)
+
+;; How to un-fill a paragraph (opposite of M-q fill-paragraph)
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
+
+(define-key global-map (kbd "s-q") 'unfill-paragraph)
 
 ;; Support an easier way to remember how to zoom in/out font size
 ;; Using M-mouse-wheel-up to increase and M-mouse-wheel-down to decrease
@@ -183,8 +196,8 @@ With negative N, comment out original line and use the absolute value."
   "Re-size and move frame to my pre-set values for monitor or laptop viewing."
   (interactive)
   (let* ((large (> (x-display-pixel-width) 2000))
-         (frame-height (if large 80 50))  ;; was 75 50
-         (frame-width (if large 280 178)) ;; was 260 178
+         (frame-height (if large 80 63))  ;; was 75 50; 80 50
+         (frame-width (if large 280 222)) ;; was 260 178; 280 178
          (x-offset 0)
          (y-offset 0))
     (set-frame-height (selected-frame) frame-height)
@@ -505,6 +518,8 @@ With negative N, comment out original line and use the absolute value."
 (jsm:load-config-file "mac_config")
 (jsm:load-config-file "company_config")
 ;; (jsm:load-config-file "screencast")
+
+(jsm:load-config-file "work_config")
 
 (provide '.emacs)
 ;;; .emacs ends here

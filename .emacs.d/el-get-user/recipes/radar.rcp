@@ -1,4 +1,0 @@
-(:name radar
-       :description "A simple Radar client in Emacs."
-       :type git
-       :url "git@github.pie.apple.com:thimbleby-w/emacs-radar.git")

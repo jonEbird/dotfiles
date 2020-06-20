@@ -41,6 +41,6 @@ if __name__ == '__main__':
         x = 3
         remote_debug = Rdb()
         remote_debug.set_trace()
-        print x
+        print(x)
 
     buggy_method()

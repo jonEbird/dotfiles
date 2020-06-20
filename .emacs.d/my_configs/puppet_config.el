@@ -9,7 +9,7 @@
 (require 'puppet-mode)
 
 (setq puppet-lint-command
-      "puppet-lint --with-context --log-format \"%{path}:%{line}: %{kind}: %{m)essage} (%{check})\"")
+      "puppet-lint --with-context --log-format \"%{path}:%{line}: %{kind}: %{message} (%{check})\"")
 
 (defun my-puppet-mode-hook ()
   "Minor setup when entering Puppet mode."

@@ -27,7 +27,7 @@
             (ivy-set-sources
              'counsel-find-file
              '((original-source)
-               (recentf-subset)
+               ; (recentf-subset)
                (my-config-files))))
   :bind (("<f9>" . ivy-resume)
          ("C-x C-r" . ivy-recentf-open)
@@ -78,7 +78,7 @@
 ;; (kbd "C-x b")
 ;; (kbd "C-x C-f")
 (defun recentf-subset ()
-  (cl-subseq recentf-list 0 30))
+  (cl-subseq recentf-list 1 30))
 
 (defun my-config-files ()
   "List my elisp config files."

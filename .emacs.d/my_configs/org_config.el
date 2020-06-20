@@ -63,7 +63,7 @@
   (add-to-list 'ispell-skip-region-alist '("=" "="))
   (add-to-list 'ispell-skip-region-alist '("`" "`"))
   (add-to-list 'ispell-skip-region-alist '("^#\\+BEGIN_SRC" . "^#\\+END_SRC"))
-  (setq fill-column 100)
+  (setq fill-column 90)
   ;; Other hacks
   (flycheck-mode -1)
   (org-bullets-mode 1))
@@ -536,7 +536,7 @@ sets the :EXPORT_TITLE: and :CATEGORY: properties to the same."
 ;; (?o "As HTML file and open"
 ;;     (lambda (a s v b)
 ;;       (if a (org-html-export-to-html t s v b)
-;;     (org-open-file (org-html-export-to-html nil s v b)))))))
+;;     (org-open-file (org-html-export-to-html nil s v b)))))
 
 
 ;; (defun jsm/org-export-subtree-as-html-with-subtree-name-and-open (arg)

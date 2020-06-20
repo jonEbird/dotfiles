@@ -1,0 +1,151 @@
+# -*- sh -*-
+
+# Helpful functions
+epoch2date() {
+    date --date="@${1:-0}" +"${2:-%c}"
+}
+
+# TZ conversion functions
+utc-to-pacific() { TZ=America/Los_Angeles date --date="TZ=\"GMT\" $*" +"%H:%M %Z"; }
+pacific-to-utc() { TZ=GMT date --date="TZ=\"America/Los_Angeles\" $*" +"%H:%M %Z"; }
+
+pathgrep() { echo $PATH | sed 's/:/ /g' | xargs ls 2>/dev/null | grep -i ${1:-.}; }
+
+color-echo() {
+    # Use like: color-echo "Hello red{devil}, are you missing the yellow{sun}?"
+    declare -A colors
+    colors["red"]=31; colors["green"]=32; colors["yellow"]=33; colors["blue"]=34
+    echo "${@:-}" | sed -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
+        -e "s/red{\([^}]*\)}/\x1b[${colors['red']}m\1\\x1b[0m/g" \
+        -e "s/green{\([^}]*\)}/\x1b[${colors['green']}m\1\\x1b[0m/g" \
+        -e "s/yellow{\([^}]*\)}/\x1b[${colors['yellow']}m\1\\x1b[0m/g" \
+        -e "s/blue{\([^}]*\)}/\x1b[${colors['blue']}m\1\\x1b[0m/g"
+}
+
+blue ()   { color-echo "blue{$*}"; }
+green ()  { color-echo "green{$*}"; }
+red ()    { color-echo "red{$*}"; }
+yellow () { color-echo "yellow{$*}"; }
+
+boot_time_s() { date --date="$(ps -o lstart -p 1 | tail -1)" +%s; }
+
+# -git--------------------------
+gitps1() {
+    _git_repo() {
+        basename "$(git remote -v | awk '/^origin.*(fetch)/{ print $2 }')" | sed 's/\.git//g'
+    }
+
+    if [ -r ~/git-prompt.sh ]; then
+        . ~/git-prompt.sh
+        PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+        #PS1='[\u@\h \W ($(_git_repo):$(__git_ps1 "%s)")]\$ '
+    fi
+}
+
+gpr() {
+    # Create a pull request from the current feature branch
+    local symbolic_rev
+    symbolic_rev=$(git rev-parse --abbrev-ref HEAD)
+    if [[ $symbolic_rev == HEAD ]]; then
+        echo "Cannot create PR in detached HEAD mode." && return 1
+    elif [[ $symbolic_rev =~ ^dev$|^master$|^release$ ]]; then
+        echo "Not creating PR from '$symbolic_rev'. Please use a feature branch instead." && return 2
+    fi
+    git push origin "$symbolic_rev" -u
+    hub compare "jonmiller:$symbolic_rev"
+}
+
+# -Emacs------------------------
+projectile() {
+    local project_dir="${1:-$(pwd)}"
+    emacsclient -a emacs -e "(projectile-add-known-project \"${project_dir%%/}/\")"
+}
+org-store-file () {
+    local f fp
+    for f in "$@"; do
+        fp=$(cd "$(dirname "$f")"; pwd -P)
+        fp="file+emacs:~${fp#${HOME}}/$(basename "$f")"
+        emacsclient -e "(add-to-list 'org-stored-links '(\"$fp\" \"$(basename "$f")\"))"
+    done
+}
+
+# -tmux-------------------------
+normal-screen() {
+    # Start a screen session
+    if screen -ls | egrep -q '[0-9]+\.normal'; then
+        echo "Normal session already started."
+        screen -x normal
+    else
+        echo "Starting screen session \"normal\" in background"
+        # Lets ensure a ssh-agent is started
+        eval $(ssh-agent )
+        ssh-add
+        screen -dmS normal
+        #screen -dmr normal -X screen -t linbird 11 repeat ssh -L6667:localhost:6667 linbird
+        # Are we in an X environment?
+        if /bin/xset -b >/dev/null 2>&1; then
+            # other things that need started
+            feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
+            sudo systemctl reload nscd
+            synergyc esp-dev-jsmiller-1
+            conky -x 5 -y 5 -d >/dev/null 2>&1
+            #screen -dmr normal -X screen -t synergy 20 repeat synergys -a :24800 -d DEBUG -f
+            [ -f ~/pithos/bin/pithos ] && screen -dmr normal -X screen -t pithos  21 repeat ~/pithos/bin/pithos
+            # Gnome or AwesomeWM ?
+            if ! ps --no-headers -e -o comm | egrep '^awesome$' >/dev/null 2>&1; then
+                screen -dmr normal -X screen -t devilspie 15 repeat /usr/bin/devilspie
+                #if [ -x /usr/bin/cairo-clock ]; then
+                #    screen -dmr normal -X screen -t wallclock 12 repeat -p 120 /usr/bin/cairo-clock -t radium --width=200 --height=200 -d -i
+                #elif [ -x /usr/bin/oclock ]; then
+                #    echo "FYI: Missing cairo-clock but settling for oclock"; sleep .25
+                #    screen -dmr normal -X screen -t wallclock 12 /usr/bin/oclock -transparent -minute darkblue
+                #fi
+            fi
+        fi
+        screen -dmr normal -X select 0
+        screen -x normal
+    fi
+}
+
+normal-tmux() {
+    # Start a tmux session
+    if tmux list-sessions -F "#{session_name}" | egrep -q '^normal$'; then
+        echo "Normal session already started"
+        tmux attach -t normal
+    else
+        echo 'Starting tmux session "normal"'
+        # Lets ensure a ssh-agent is started
+        eval $(ssh-agent )
+        ssh-add
+        tmux new-session -d -s normal
+
+        #tmux new-window -t normal:11 "repeat ssh -L6667:localhost:6667 linbird"
+        tmux set-window-option -t normal:11 monitor-activity off
+
+        # Are we in an X environment?
+        if /bin/xset -b >/dev/null 2>&1; then
+            # other things that need started
+            feh --bg-center /home/jsmiller/Pictures/20121224_203840.jpg
+            sudo systemctl condreload nscd >/dev/null 2>&1
+            tmux new-window -t normal:20 "repeat synergyc -f -d DEBUG esp-dev-jsmiller-1"
+            tmux set-window-option -t normal:20 monitor-activity off
+            conky -d >/dev/null 2>&1
+            if [ -f ~/pithos/bin/pithos ]; then
+                tmux new-window -t normal:21 "repeat ~/pithos/bin/pithos"
+                tmux set-window-option -t normal:21 monitor-activity off
+            fi
+            # Gnome or AwesomeWM ?
+            if ! ps --no-headers -e -o comm | egrep '^awesome$' >/dev/null 2>&1; then
+                tmux new-window -t normal:15 "repeat /usr/bin/devilspie"
+                tmux set-window-option -t normal:15 monitor-activity off
+            fi
+        fi
+        # Fire up my normal set of 5 shells
+        tmux new-window -t normal -n shell1
+        tmux new-window -t normal -n shell2
+        tmux new-window -t normal -n shell3
+        tmux new-window -t normal -n shell4
+        tmux new-window -t normal -n shell5
+        tmux attach -t normal:0
+    fi
+}

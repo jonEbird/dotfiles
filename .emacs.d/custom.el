@@ -21,6 +21,7 @@
     ("229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "31a01668c84d03862a970c471edbd377b2430868eccf5e8a9aec6831f1a0908d" "1297a022df4228b81bc0436230f211bad168a117282c20ddcba2db8c6a200743" "756597b162f1be60a12dbd52bab71d40d6a2845a3e3c2584c6573ee9c332a66e" "0fe229019b6395a78aefe7dd673d909b7aa89edb22bb6e077a94d9dcaee2de21" "6a37be365d1d95fad2f4d185e51928c789ef7a4ccf17e7ca13ad63a8bf5b922f" "3a727bdc09a7a141e58925258b6e873c65ccf393b2240c51553098ca93957723" "e4e97731f52a5237f37ceb2423cb327778c7d3af7dc831788473d4a76bcc9760" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
  '(display-time-mode t)
  '(electric-pair-pairs (quote ((34 . 34) (123 . 125))))
+ '(exec-path-from-shell-variables (quote ("PATH" "MANPATH" "SSH_AUTH_SOCK" "SSH_AGENT_PID")))
  '(explicit-bash-args (quote ("--noediting" "-i")))
  '(explicit-shell-file-name "bash")
  '(fill-column 90)
@@ -128,7 +129,7 @@
      (require-final-newline . t)
      (encoding . utf-8))))
  '(scroll-bar-mode nil)
- '(semantic-edits-verbose-flag nil)
+ '(semantic-edits-verbose-flag nil t)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tramp-default-method "ssh")
@@ -137,7 +138,11 @@
     (tramp-default-remote-path "/usr/sbin" "/usr/local/bin" "/local/bin" "/local/freeware/bin" "/local/gnu/bin" "/usr/freeware/bin" "/usr/pkg/bin" "/usr/contrib/bin" "/usr/bin")))
  '(uniquify-buffer-name-style (quote post-forward) nil (uniquify))
  '(virtualenv-root (expand-file-name "~/venv/"))
- '(visual-line-mode 1 t))
+ '(visual-line-mode 1 t)
+ '(web-mode-code-indent-offset 2 nil nil "Customized with use-package web-mode")
+ '(web-mode-css-indent-offset 2)
+ '(web-mode-markup-indent-offset 2)
+ '(web-mode-sql-indent-offset 2))
 ;; Same story for this block. Just leave it here for now.
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

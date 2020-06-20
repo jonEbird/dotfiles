@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu -o pipefail
+
 # This is created primarily for MacOS where I occasionally need to start
 # Emacs from a terminal vs. from Spotlight.
 
@@ -14,11 +16,12 @@ Usage: $(basename -- $0) [--debug|--profile] [emacs-args]
        Starts emacs for you and passes along any arguments
        --debug     = gets translated to '--debug-init'
        --profile   = ends up using a profiler to test your config
+       --update/-U = initiate an update of Emacs. 🤞
 EOF
 }
 
 # FIXME: Remove these annoying '#' leading recentf files:
-sed -i '/^[[:space:]]*#/d' ~/.emacs.d/recentf
+gsed -i '/^[[:space:]]*#/d' ~/.emacs.d/recentf
 
 if [[ $(uname) == Darwin ]]; then
     # EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
@@ -45,6 +48,17 @@ case ${1:-} in
     --help|-h|help)
         usage
         exit 0
+        ;;
+    --update|-U)
+        brew_package="railwaycat/emacsmacport/emacs-mac"
+        echo "Yeah, lets try to update $brew_package"
+        brew upgrade $brew_package
+        exit $?
+        ;;
+    -*)
+        echo "Unknown option"
+        usage
+        exit 1
         ;;
 esac
 

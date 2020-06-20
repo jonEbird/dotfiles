@@ -74,7 +74,7 @@
   (doom-themes-visual-bell-config)
 
   ;; increase font and frame size (default is 120) - See (read-face-attribute 'default :height)
-  (set-face-attribute 'default nil :height 130)
+  (set-face-attribute 'default nil :height 135)
 
   ;; Enable custom neotree theme (all-the-icons must be installed!)
   (doom-themes-neotree-config)
@@ -84,6 +84,9 @@
 
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
+
+;; Font selection
+;; (set-face-attribute 'default nil :font "SF Mono-14")
 
 (provide 'theme_config)
 ;;; theme_config.el ends here
